@@ -1,0 +1,5 @@
+This editor has been created on an earlier draft of pgi available at this url:
+http://jmonkeyengine.org/forum/topic/dead-nifty-gui-editor/
+
+Any mention in the source code about the author "Cris" refers to 
+the copyright holder.
