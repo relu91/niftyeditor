@@ -70,12 +70,8 @@ public class NiftyEditor {
               g.setComposite(AlphaComposite.Clear);
               g.setColor(Color.red);
               g.setPaintMode();
-              g.fillRect(10,200,135,10);
+              g.fillRect(10,200,130,10);
               splash.update();
-                
-           
-        
-        
              Properties props = new Properties();
              props.put("logoString", "Nifty-Editor");
              props.put("backgroundPattern","off");

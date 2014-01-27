@@ -44,9 +44,15 @@ public class PropretiesResolver {
           // url to remote xsd file
           //  String xmlfile = "http://nifty-gui.sourceforge.net/nifty.xsd";
             String localfile = "/jada/ngeditor/resources/properties.xsd";
-            File temp = new File(localfile);
+            URL res;
+            try{
+            res = new URL("https://raw.github.com/void256/nifty-gui/1.4/nifty-core/src/main/resources/nifty.xsd");
+            }catch(Exception e){
+                res = getClass().getResource(localfile);
+            }
+            
             XSOMParser parser = new XSOMParser();
-            URL res = getClass().getResource(localfile);
+            res = getClass().getResource(localfile);
             parser.parse(res);
             XSSchemaSet sset = parser.getResult();
             XSSchema s = sset.getSchema(1);

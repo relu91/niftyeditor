@@ -20,6 +20,7 @@ import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.builder.ElementBuilder;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.loaderv2.types.StyleType;
+import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.xml.xpp3.Attributes;
 import jada.ngeditor.model.Types;
 import java.awt.geom.Point2D;
@@ -209,15 +210,14 @@ public abstract class GElement {
     public void lightRefresh(){
        Nifty temp = nElement.getNifty();
        Attributes att = this.nElement.getElementType().getAttributes();
-       nElement.initializeFromAttributes(att, temp.getRenderEngine());
-       temp.getCurrentScreen().layoutLayers();
+        Screen currentScreen = temp.getCurrentScreen();
+       nElement.initializeFromAttributes(currentScreen,att, temp.getRenderEngine());
+        currentScreen.layoutLayers();
     }
     
     private void heavyRefresh(Nifty nifty){
         int index= parent.getNiftyElement().getElements().indexOf(nElement);
         Attributes att = this.nElement.getElementType().getAttributes();
-        if(att.isSet("renderOrder"))
-                nElement.setRenderOrder(att.getAsInteger("renderOrder"));
          nElement.markForRemoval();
          final HashMap<String,String> attributes = new HashMap<String,String>();
         for(int i =0;i<element.getAttributes().getLength();i++){
@@ -228,6 +228,7 @@ public abstract class GElement {
          for(String sel : attributes.keySet()){
                builder.set(sel, attributes.get(sel));
          }
+        
          nElement = builder.build(nifty, nifty.getCurrentScreen(), this.parent.getDropContext(),index);
          nifty.getCurrentScreen().layoutLayers();
     }

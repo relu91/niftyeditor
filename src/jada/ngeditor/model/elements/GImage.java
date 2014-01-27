@@ -16,6 +16,8 @@ package jada.ngeditor.model.elements;
 
 
 import de.lessvoid.nifty.builder.ImageBuilder;
+import de.lessvoid.nifty.render.NiftyImage;
+import de.lessvoid.nifty.tools.Color;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
 import java.util.Map;
@@ -55,9 +57,7 @@ public class GImage extends GElement{
       }
        return res;
     }
-    
-    
-    
+
     @Override
     public GElement create(String id, Element ele) {
         return new GImage(id,ele);

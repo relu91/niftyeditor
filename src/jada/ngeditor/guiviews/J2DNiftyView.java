@@ -224,6 +224,7 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
 	           graphics2D = (Graphics2D) bufferStrategy.getDrawGraphics();
                                graphics2D.setBackground(Color.BLACK);
                                graphics2D.scale(1, 1);
+                               
                                done = nifty.update();
                                nifty.render(true);
                                nifty.getRenderEngine().renderQuad(0, 0, 0, 0);
