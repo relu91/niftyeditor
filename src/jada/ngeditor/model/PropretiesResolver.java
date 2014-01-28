@@ -69,7 +69,7 @@ public class PropretiesResolver {
         XSComplexType ct = (XSComplexType) ctiter.next();
         String typeName = ct.getName();
         // these are extensiSons so look at the base type to see what it is
-        System.out.println("----------------------------------");
+       
         String baseTypeName = ct.getBaseType().getName();
         System.out.println(typeName + " is a " + baseTypeName);
         Iterator<XSAttributeUse> t = (Iterator<XSAttributeUse>) ct.iterateDeclaredAttributeUses();
@@ -77,17 +77,17 @@ public class PropretiesResolver {
         while(t.hasNext()){
           String prova = t.next().getDecl().getName();
         
-        System.out.println(typeName + " has " + prova);
+      
         pr.add(prova);
       }
         this.prop.put(new elementType(typeName,baseTypeName), pr);
         
       }
-       System.out.println("--------------------------------");
+       
         Iterator<XSSimpleType> iterate = s.iterateSimpleTypes();
         while(iterate.hasNext()){
             XSSimpleType type = (XSSimpleType) iterate.next();
-            System.out.println("Tipo semplice "+type.getName()) ;
+           
         }
        } catch (SAXException ex) {
             Logger.getLogger(PropretiesResolver.class.getName()).log(Level.SEVERE, null, ex);

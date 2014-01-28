@@ -249,6 +249,9 @@ public class GUIEditor extends Observable{
     
      public void removeSelected(){
         this.getGui().removeElement(selected);
+        if(selected.getType().equals(Types.LAYER)){
+            this.currentlayers.remove(selected);
+        }
         this.setChanged();
         this.notifyObservers(new Action(Action.DEL,selected));
         this.clearChanged();

@@ -275,7 +275,7 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
                 
             }
        v.displayRect(selected.x, selected.y, selected.height, selected.width);
-        this.gui.getSelected().getNiftyElement().layoutElements();
+       this.gui.getSelected().getNiftyElement().layoutElements();
         
         
         }
