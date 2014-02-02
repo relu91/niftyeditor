@@ -16,6 +16,7 @@ package jada.ngeditor.listeners;
 
 import de.lessvoid.nifty.layout.align.HorizontalAlign;
 import de.lessvoid.nifty.layout.align.VerticalAlign;
+import de.lessvoid.nifty.tools.SizeValue;
 import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.guiviews.J2DNiftyView;
 import jada.ngeditor.listeners.actions.Action;
@@ -124,6 +125,7 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
             sel.lightRefresh();
             this.selected.setRect(sel.getBounds());
             this.enable();
+            this.gui.selectElement(this.getSelected());
           }
          }
         }
@@ -214,12 +216,17 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
                      if((this.selected.width+to)>0){
                     this.selected.x=e.getX();
                     this.selected.width+=to;
-                    this.gui.getSelected().addAttribute("width",""+selected.width+"px" );
-                    if(this.gui.getSelected().getParent().getAttribute("childLayout").equals("absolute")){
+                     if(this.gui.getSelected().getParent().getAttribute("childLayout").equals("absolute")){
                         int x = gui.getSelected().getParent().getNiftyElement().getX();
                         this.gui.getSelected().addAttribute("x",""+(e.getX()-x)+"px" );
+                        this.gui.getSelected().getNiftyElement().setConstraintX(SizeValue.px(e.getX()-x));
+                        //this.gui.getSelected().getParent().getNiftyElement().layoutElements();
+                          this.gui.getSelected().getNiftyElement().setWidth(selected.width);
                     }
+                    this.gui.getSelected().addAttribute("width",""+selected.width+"px" );
+                   
                     }
+                    
                     break;
                  case DIR_S:
                     to=(int) (e.getY()-this.selected.getMaxY());
@@ -276,7 +283,9 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
             }
        v.displayRect(selected.x, selected.y, selected.height, selected.width);
        this.gui.getSelected().getNiftyElement().layoutElements();
-        
+        this.gui.getSelected().getParent().getNiftyElement().layoutElements();
+        this.gui.getSelected().getNiftyElement().layoutElements();
+       
         
         }
     }

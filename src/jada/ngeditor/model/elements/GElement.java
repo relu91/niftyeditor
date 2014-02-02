@@ -18,7 +18,11 @@ package jada.ngeditor.model.elements;
 
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.builder.ElementBuilder;
+import de.lessvoid.nifty.controls.AbstractController;
+import de.lessvoid.nifty.controls.Parameters;
+import de.lessvoid.nifty.controls.dynamic.attributes.ControlAttributes;
 import de.lessvoid.nifty.elements.Element;
+import de.lessvoid.nifty.loaderv2.types.ElementType;
 import de.lessvoid.nifty.loaderv2.types.StyleType;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.xml.xpp3.Attributes;
@@ -211,12 +215,12 @@ public abstract class GElement {
        Nifty temp = nElement.getNifty();
        Attributes att = this.nElement.getElementType().getAttributes();
         Screen currentScreen = temp.getCurrentScreen();
-       nElement.initializeFromAttributes(currentScreen,att, temp.getRenderEngine());
+        nElement.initializeFromAttributes(currentScreen,att, temp.getRenderEngine());
         currentScreen.layoutLayers();
     }
     
     private void heavyRefresh(Nifty nifty){
-        int index= parent.getNiftyElement().getElements().indexOf(nElement);
+        int index= parent.getNiftyElement().getChildren().indexOf(nElement);
         Attributes att = this.nElement.getElementType().getAttributes();
          nElement.markForRemoval();
          final HashMap<String,String> attributes = new HashMap<String,String>();
@@ -232,11 +236,13 @@ public abstract class GElement {
          nElement = builder.build(nifty, nifty.getCurrentScreen(), this.parent.getDropContext(),index);
          nifty.getCurrentScreen().layoutLayers();
     }
+    
+   
     public void reloadElement(Nifty manager){
            Nifty nif = manager;
         if(nElement != null)
             nif = nElement.getNifty();
-        nElement = nif.getCurrentScreen().findElementByName(id);
+        nElement = nif.getCurrentScreen().findElementById(id);
     }
     @Override
     public String toString(){

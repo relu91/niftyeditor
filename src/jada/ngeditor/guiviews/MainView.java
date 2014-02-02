@@ -66,14 +66,27 @@ public class MainView extends javax.swing.JFrame {
         this.editor.addObserver(proprietesView1);
        
     }
-    
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        cont.nifty.exit();
+        wel.nifty.exit();
+        try {
+            welcomeThread.join();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MainView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    private Thread welcomeThread;
     public void starGuiEditor() {
         //starts welcome page
-        new Thread(){
+       welcomeThread = new Thread(){
             public void run(){
                  wel.start();
             }
-        }.start();
+        };
+       welcomeThread.start();
         newGui();
         jTabbedPane2.setSelectedIndex(1);
         cont.start(); 

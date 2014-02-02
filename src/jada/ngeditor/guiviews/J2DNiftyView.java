@@ -276,7 +276,7 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
             }
                                 
 	    }
-	     }
+     }
     @Override
      public int getHeight(){
          return this.canvas.getHeight();
