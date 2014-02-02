@@ -16,6 +16,9 @@ package jada.ngeditor.listeners;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import sun.awt.SunToolkit;
 
 /**
  *
@@ -35,6 +38,19 @@ public class ClosingListener implements WindowListener{
 
     @Override
     public void windowClosed(WindowEvent e) {
+       
+        int num = Thread.activeCount();
+        
+        Thread[] temp = new Thread[num] ;
+        Thread.enumerate(temp);
+        System.out.println("GoodBye");
+        
+        for(Thread t : temp){
+                    t.stop();
+                System.out.println("Name : "+t.getName()+" "+t.getId());
+               // t.join();
+           
+        }
         System.exit(0);
     }
 

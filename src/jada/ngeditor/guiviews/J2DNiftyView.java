@@ -264,6 +264,7 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
 	                                fps="Fps: "+frames;
 	                                frames = 0;
 	                        }
+                               
              try {
                  Thread.sleep(15);
              } catch (InterruptedException ex) {

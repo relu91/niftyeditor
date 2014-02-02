@@ -58,8 +58,6 @@ public class PaletteDropTarget extends DropTarget implements Observer {
     }
     @Override
     public void drop(DropTargetDropEvent dtde) {
-        
-        
         if(dtde.isDataFlavorSupported(WidgetData.FLAVOR)){
          try {
           if(dtde.getDropAction() == DnDConstants.ACTION_COPY){

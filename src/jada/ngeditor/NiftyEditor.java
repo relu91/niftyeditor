@@ -88,7 +88,7 @@ public class NiftyEditor {
             
             
         
-            editor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            editor.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             editor.addWindowListener(new ClosingListener());
             
             editor.starGuiEditor();
