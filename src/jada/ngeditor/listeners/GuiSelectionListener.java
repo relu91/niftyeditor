@@ -220,7 +220,7 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
                         int x = gui.getSelected().getParent().getNiftyElement().getX();
                         this.gui.getSelected().addAttribute("x",""+(e.getX()-x)+"px" );
                         this.gui.getSelected().getNiftyElement().setConstraintX(SizeValue.px(e.getX()-x));
-                        //this.gui.getSelected().getParent().getNiftyElement().layoutElements();
+                        this.gui.getSelected().getParent().getNiftyElement().layoutElements();
                           this.gui.getSelected().getNiftyElement().setWidth(selected.width);
                     }
                     this.gui.getSelected().addAttribute("width",""+selected.width+"px" );
@@ -271,6 +271,9 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
                     this.gui.getSelected().addAttribute("height",""+selected.height+"px" );
                     if(this.gui.getSelected().getParent().getAttribute("childLayout").equals("absolute")){
                         int y = gui.getSelected().getParent().getNiftyElement().getY();
+                        gui.getSelected().getNiftyElement().setConstraintY(SizeValue.px(e.getY()-y));
+                          this.gui.getSelected().getParent().getNiftyElement().layoutElements();
+                         this.gui.getSelected().getNiftyElement().setHeight(selected.height);
                         this.gui.getSelected().addAttribute("y",""+(e.getY()-y)+"px" );
                     }
                     
@@ -282,8 +285,6 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
                 
             }
        v.displayRect(selected.x, selected.y, selected.height, selected.width);
-       this.gui.getSelected().getNiftyElement().layoutElements();
-        this.gui.getSelected().getParent().getNiftyElement().layoutElements();
         this.gui.getSelected().getNiftyElement().layoutElements();
        
         

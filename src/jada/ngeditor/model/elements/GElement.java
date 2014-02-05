@@ -47,6 +47,7 @@ public abstract class GElement {
     protected final org.w3c.dom.Element element;
     protected Element nElement;
     protected ElementBuilder builder;
+    private String oldStyle;
     
     protected GElement(){
         element=null;
@@ -183,11 +184,13 @@ public abstract class GElement {
          return att.get(key);
     }
     public void addAttribute(String key , String val){
+        Attributes att = this.nElement.getElementType().getAttributes();
         if(key.equals("id")){
             this.id = val;
-        }
+        }else if(key.equals("style"))
+            this.oldStyle = att.get("style");
+        
         this.element.setAttribute(key, val);
-        Attributes att = this.nElement.getElementType().getAttributes();
         att.set(key, val);
     }
     /*
@@ -196,32 +199,42 @@ public abstract class GElement {
     public void refresh(){
        Nifty temp = nElement.getNifty();
        Attributes att = this.nElement.getElementType().getAttributes();
-       StyleType style = temp.getDefaultStyleResolver().resolve(nElement.getStyle());
-       if(style != null)
-        style.applyTo(nElement.getElementType(), temp.getDefaultStyleResolver());
+       String newStyle = att.get("style");
+       Attributes attcopy = new Attributes(att);
+       // Aggiungo il vecchio stile se ce ne è uno
+       if(oldStyle != null){
+           att.set("style", oldStyle);
+       }
+       nElement.setStyle(newStyle);
        nElement.setId(id);
        if(getType().isControl()){
-          this.heavyRefresh(temp);
+          this.heavyRefresh(temp,attcopy);
        }else{
-           this.lightRefresh();
+           this.lightRefresh(attcopy);
        }
-         
        
     }
     /*
      * used for simple elment attributes
      */
-    public void lightRefresh(){
+     public void lightRefresh(){
+        Nifty temp = nElement.getNifty();
+        Screen currentScreen = temp.getCurrentScreen();
+         Attributes att = this.nElement.getElementType().getAttributes();
+        nElement.initializeFromAttributes(currentScreen,att, temp.getRenderEngine());
+        currentScreen.layoutLayers(); 
+     }
+    
+    private void lightRefresh(Attributes att){
        Nifty temp = nElement.getNifty();
-       Attributes att = this.nElement.getElementType().getAttributes();
         Screen currentScreen = temp.getCurrentScreen();
         nElement.initializeFromAttributes(currentScreen,att, temp.getRenderEngine());
         currentScreen.layoutLayers();
     }
     
-    private void heavyRefresh(Nifty nifty){
+    private void heavyRefresh(Nifty nifty,Attributes att){
         int index= parent.getNiftyElement().getChildren().indexOf(nElement);
-        Attributes att = this.nElement.getElementType().getAttributes();
+        
          nElement.markForRemoval();
          final HashMap<String,String> attributes = new HashMap<String,String>();
         for(int i =0;i<element.getAttributes().getLength();i++){
