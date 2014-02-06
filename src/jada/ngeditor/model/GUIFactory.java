@@ -34,14 +34,16 @@ public class GUIFactory {
 
     
     public static void registerProduct(GElement ele){
-        if(products == null)
+        if(products == null) {
             products = new HashMap<String,GElement>();
+        }
         products.put(ele.getType().toString(), ele);
     }
     
     public static GUIFactory getInstance(){
-        if(instance == null)
+        if(instance == null) {
             instance= new GUIFactory();
+        }
         return instance;
     }
     
@@ -53,6 +55,10 @@ public class GUIFactory {
     public GUI createGUI(Nifty manager,Document doc){
         gui = new GUI(manager,doc);
         return gui;
+    }
+    
+    public GElement newGElement(Types type){
+        return this.newGElement(type.toString());
     }
     
     public GElement newGElement(String tag){
@@ -76,18 +82,22 @@ public class GUIFactory {
         String key;
         String tag = ele.getTagName();
         key=tag;
-        if(tag.equals(Types.CONTROL_TAG))
+        if(tag.equals(Types.CONTROL_TAG)) {
             key = ele.getAttribute("name");
-        if(!products.containsKey(key))
+        }
+        if(!products.containsKey(key)) {
             throw new NoProductException(tag);
+        }
         String id = ele.getAttribute("id");
         GElement temp = products.get(key);
         
         Types t = temp.getType();
-        if(IDgenerator.getInstance().isUnique(t, id))
+        if(IDgenerator.getInstance().isUnique(t, id)) {
             return products.get(key).create(id,ele);
-        else
+        }
+        else {
             return products.get(key).create(IDgenerator.getInstance().generate(t),ele);
+        }
     }
     
 }

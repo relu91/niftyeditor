@@ -21,6 +21,7 @@ import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.elements.GLayer;
 import jada.ngeditor.model.elements.GScreen;
 import java.awt.geom.Point2D;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Observable;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -41,8 +42,6 @@ public class GUI extends Observable{
     private LinkedList<GLayer> currentlayers;
     
     private GScreen currentS;
-    private GLayer  currentL;
-    private GElement selected;
     private static Document document;
     private  Element root;
     
@@ -62,7 +61,6 @@ public class GUI extends Observable{
        this.currentlayers = new LinkedList<GLayer> ();
        
        this.currentS = null;  
-       this.currentL = null;
        document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
        root = document.createElement("nifty");
        Element style = document.createElement("useStyles");
@@ -83,7 +81,6 @@ public class GUI extends Observable{
        this.screens = new LinkedList<GScreen> ();
        this.currentlayers = new LinkedList<GLayer> ();
        this.currentS = null;  
-       this.currentL = null;
        document = doc;
        root = (Element) document.getElementsByTagName("nifty").item(0);
        this.GUIID++;
@@ -122,7 +119,6 @@ public class GUI extends Observable{
         }
         else if(parent.getType().equals(Types.SCREEN)){
             GLayer temp =(GLayer) child;
-            this.currentL=temp;
             this.currentlayers.add(temp);
             if(this.currentS != null)
                 parent.addChild(child, false);
@@ -182,12 +178,13 @@ public class GUI extends Observable{
     }
     
    public void reloadAfterFresh(){
-        for(GScreen sel : this.screens)
+        for(GScreen sel : this.screens){
             sel.reloadElement(manager);
-        for(GLayer lay : this.currentlayers){
+        for(GElement lay : sel.getElements()){
             lay.reloadElement(manager);
             for(GElement ele : this.getAllChild(lay))
                 ele.reloadElement(manager);
+        }
         }
     }
     public LinkedList<GElement> getAllChild(GElement element){
@@ -214,5 +211,9 @@ public class GUI extends Observable{
     
     public GLayer getTopLayer(){
         return this.currentlayers.peekLast();
+    }
+    
+    public Collection<GLayer> getLayers(){
+        return this.currentlayers;
     }
 }

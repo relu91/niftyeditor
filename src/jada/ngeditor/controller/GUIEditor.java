@@ -15,6 +15,8 @@
 package jada.ngeditor.controller;
 
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.controls.NiftyControl;
+import de.lessvoid.nifty.elements.Element;
 import jada.ngeditor.listeners.actions.Action;
 import jada.ngeditor.model.GUI;
 import jada.ngeditor.model.GUIFactory;
@@ -57,7 +59,7 @@ public class GUIEditor extends Observable{
     
     public GUIEditor(){
         currentlayers= new LinkedList<GLayer>();
-        eEditor=new ElementEditor(null);
+        eEditor=new ElementEditor(this);
     }
     /**
      * Create a new empty gui with one screen
@@ -100,6 +102,7 @@ public class GUIEditor extends Observable{
        reloadAfterFresh();
        currentL=gui.getTopLayer();
        currentS=gui.gettopScreen();
+       currentlayers.addAll(gui.getLayers());
        this.setChanged();
        this.notifyObservers(new Action(Action.NEW,screen));
        this.clearChanged();
@@ -174,7 +177,7 @@ public class GUIEditor extends Observable{
      * @param id id attribute
      * @return null if there's no Element with that id
      */
-    public GElement findElment(String id){
+    public GElement findElement(String id){
         GElement res = null;
         for(GScreen screen : this.gui.getScreens()){
             if(screen.getID().equals(id))
@@ -318,6 +321,27 @@ public class GUIEditor extends Observable{
 		}
             }  
         return result;
+    }
+    /**
+     * 
+     * Get Nifty element from a GElement
+     * @param id
+     * @return Nifty element inside the GElement
+     */
+    public Element getNiftyElement(String id){
+        return this.findElement(id).getNiftyElement();
+    }
+    
+    /**
+     * Util method that wraps Element.findNiftyControl
+     * @see Element#findNiftyControl(java.lang.String, java.lang.Class) 
+     * @param <T>
+     * @param id
+     * @param request
+     * @return 
+     */
+    public <T extends NiftyControl> T getNiftyControl(String id , Class<T> request){
+        return this.findElement(id).getNiftyElement().findNiftyControl(id, request);
     }
     
     /**

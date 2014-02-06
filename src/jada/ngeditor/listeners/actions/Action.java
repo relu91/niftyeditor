@@ -44,4 +44,8 @@ public class Action {
     public GElement getGUIElement(){
         return this.gele;
     }
+    
+    public Action getReverseAction(){
+        return new Action(this.type,this.gele);
+    }
 }

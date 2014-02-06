@@ -20,8 +20,6 @@ import com.sun.xml.xsom.XSSchema;
 import com.sun.xml.xsom.XSSchemaSet;
 import com.sun.xml.xsom.XSSimpleType;
 import com.sun.xml.xsom.parser.XSOMParser;
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,16 +67,12 @@ public class PropretiesResolver {
         XSComplexType ct = (XSComplexType) ctiter.next();
         String typeName = ct.getName();
         // these are extensiSons so look at the base type to see what it is
-       
         String baseTypeName = ct.getBaseType().getName();
-        System.out.println(typeName + " is a " + baseTypeName);
         Iterator<XSAttributeUse> t = (Iterator<XSAttributeUse>) ct.iterateDeclaredAttributeUses();
         ArrayList<String> pr = new ArrayList<String>();
         while(t.hasNext()){
           String prova = t.next().getDecl().getName();
-        
-      
-        pr.add(prova);
+          pr.add(prova);
       }
         this.prop.put(new elementType(typeName,baseTypeName), pr);
         

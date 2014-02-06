@@ -23,16 +23,25 @@ import jada.ngeditor.model.elements.GElement;
  * @author cris
  */
 public class ElementEditor {
-    private GElement selected;
-    
+    private GElement selected=null;
+    private GUIEditor ref=null;
+   
+    public ElementEditor(GUIEditor editor){
+       ref=editor; 
+    }
     public ElementEditor(GElement toEdit){
         selected=toEdit;
+    }
+    public ElementEditor(GUIEditor editor , GElement toEdit){
+         ref=editor;
+         selected=toEdit;
     }
     public ElementEditor setAttribute(String key,String value){
         if(selected!=null){
             selected.addAttribute(key, value);
             selected.refresh();
         }
+        this.update();
         return this;
     }
     
@@ -41,6 +50,7 @@ public class ElementEditor {
             selected.removeAttribute(key);
             selected.refresh();
         }
+        this.update();
         return this;
     }
     public void normalizeSize(){
@@ -48,12 +58,13 @@ public class ElementEditor {
         Element sel = selected.getNiftyElement();
         float width = (float)sel.getWidth()/parent.getWidth();
         float height = (float)sel.getHeight()/parent.getHeight();
-        int percW = (int) (width*100);
-        int percH = (int)(height*100);
+        int percW = Math.round(width*100);
+        int percH = Math.round(height*100);
        
         selected.addAttribute("width", ""+percW+"%");
         selected.addAttribute("height", ""+percH+"%");
         selected.lightRefresh();
+        this.update();
     }
     public void setEdited(GElement toEdit){
         selected=toEdit;
@@ -75,6 +86,12 @@ public class ElementEditor {
     }
     public Element getNiftyElement(){
         return selected.getNiftyElement();
+    }
+    /**
+     * Update selection not yet implemented
+     */
+    private void update(){
+        
     }
     
 }

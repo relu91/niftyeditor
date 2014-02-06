@@ -26,10 +26,10 @@ import javax.swing.table.TableModel;
  * @author cris
  */
 public class ProprietiesListener implements TableModelListener{
-    private ElementEditor editor;
+    private ElementEditor editor = null;
     
     public ProprietiesListener(){
-        editor = new ElementEditor(null);
+        editor = new ElementEditor(null,null);
     }
     
     @Override

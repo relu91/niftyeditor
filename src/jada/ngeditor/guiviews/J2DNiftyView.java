@@ -48,23 +48,15 @@ import java.util.logging.Logger;
  * @author cris
  */
 public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,Observer{
-    private final byte DIR_N=0;
-    private final byte DIR_E=1;
-    private final byte DIR_S=2;
-    private final byte DIR_W=3;
-    private final byte DIR_SE=4;
-    private final byte NOP=-1;
     protected Nifty nifty;
     private  Canvas canvas;
     private  long fps = 0;
-    private boolean dragging,selecting;
+    private boolean selecting;
     private Graphics2D graphics2D;
     private GuiSelectionListener previous;
-    private byte curDir;
     private Rectangle selected;
     AffineTransform transformer = new AffineTransform();
     private GUIEditor manager;
-    private Robot mouseBot;
     /**
      * Creates new form J2DNiftyView
      */
@@ -73,16 +65,9 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
         initComponents();
         this.setSize(new Dimension(width,height));
         previous=null;
-        dragging=false;
-        selecting=false;
-        curDir=-1;
         
+        selecting=false;
         this.selected= new Rectangle();
-        try {
-            mouseBot =new Robot();
-        } catch (AWTException ex) {
-            Logger.getLogger(J2DNiftyView.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
     }
     

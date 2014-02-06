@@ -202,10 +202,14 @@ public abstract class GElement {
        String newStyle = att.get("style");
        Attributes attcopy = new Attributes(att);
        // Aggiungo il vecchio stile se ce ne è uno
-       if(oldStyle != null){
-           att.set("style", oldStyle);
+       if(oldStyle != null && !oldStyle.equals(newStyle)){
+            
+            att.set("style", oldStyle);
+            nElement.setStyle(newStyle);
+            attcopy = att;
+            oldStyle = newStyle;
        }
-       nElement.setStyle(newStyle);
+      
        nElement.setId(id);
        if(getType().isControl()){
           this.heavyRefresh(temp,attcopy);
@@ -220,9 +224,9 @@ public abstract class GElement {
      public void lightRefresh(){
         Nifty temp = nElement.getNifty();
         Screen currentScreen = temp.getCurrentScreen();
-         Attributes att = this.nElement.getElementType().getAttributes();
+        Attributes att = this.nElement.getElementType().getAttributes();
         nElement.initializeFromAttributes(currentScreen,att, temp.getRenderEngine());
-        currentScreen.layoutLayers(); 
+        currentScreen.layoutLayers();
      }
     
     private void lightRefresh(Attributes att){
