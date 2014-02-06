@@ -173,7 +173,7 @@ public class GUIEditor extends Observable{
     }
     
     /**
-     * Find the first gui element by its id
+     * Find the first GUI element by its id
      * @param id id attribute
      * @return null if there's no Element with that id
      */
@@ -192,7 +192,50 @@ public class GUIEditor extends Observable{
         }
         return res;
     }
-    
+    /**
+     * Add element to selected or to last element added (not tested)
+     * @param child
+     * @return This editor useful for chains: editor.addElement(one,two).addElement(three);
+     */
+    public GUIEditor addElement(GElement child){
+        return this.addElement(child, this.selected);
+    }
+    /**
+     * Add Element to parent (not tested)
+     * @param child
+     * @param parent
+     * @return This editor useful for chains: editor.addElement(one,two).addElement(two,three);
+     */
+    public GUIEditor addElement(GElement child,GElement parent){
+        if(child.getType().equals(Types.SCREEN)){
+            this.currentS = (GScreen) child;
+            this.currentlayers.clear();
+            for(GElement lay : currentS.getElements()){
+                this.currentlayers.add((GLayer)lay);
+            }
+            this.getGui().addScreen(currentS);
+            this.getGui().goTo(currentS);
+        } else if(child.getType().equals(Types.LAYER)){
+            if(parent.getType().equals(Types.SCREEN)){
+                this.getGui().addElement(child,parent);
+            }else
+                throw new IllegalDropException("Can't add a layer to a simple element");
+            GLayer temp =(GLayer) child;
+            this.currentL=temp;
+            this.currentlayers.add(temp);
+        }
+        else{
+            if(findElement(parent.getID())==null){
+                throw new IllegalDropException("Parent is not in the GUI");
+            }
+            this.getGui().addElement(child, parent);
+        }
+        this.setChanged();
+        this.notifyObservers(new Action(Action.ADD,child));
+        parent.getNiftyElement().layoutElements();
+        this.selectElement(child);
+        return this;
+    }
     /**
      * Add an Element in a specific position
      * @param e element to add
