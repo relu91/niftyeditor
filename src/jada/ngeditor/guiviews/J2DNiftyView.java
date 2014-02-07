@@ -302,7 +302,7 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
     public void update(Observable o, Object arg) {
         
         Action act = (Action) arg;
-        if(act.getType()== Action.SEL && !act.getGUIElement().getType().equals(Types.LAYER)){
+        if((act.getType()== Action.SEL || act.getType()== Action.UPDATE) && !act.getGUIElement().getType().equals(Types.LAYER)){
             this.selected.setBounds( act.getGUIElement().getBounds());
             this.selecting=true;
         }else if(act.getType()== Action.NEW){

@@ -34,7 +34,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 public class NiftyTreeRender extends DefaultTreeCellRenderer{
     
     
-    
+    @Override
     public Component getTreeCellRendererComponent(
                         JTree tree,
                         Object value,
@@ -43,7 +43,7 @@ public class NiftyTreeRender extends DefaultTreeCellRenderer{
                         boolean leaf,
                         int row,
                         boolean hasFocus) {
-        super.getTreeCellRendererComponent(
+       Component c =  super.getTreeCellRendererComponent(
                         tree, value, sel,
                         expanded, leaf, row,
                         hasFocus);
@@ -67,7 +67,7 @@ public class NiftyTreeRender extends DefaultTreeCellRenderer{
             this.setIcon(new ImageIcon(image));
         }
         
-        return this;
+        return c;
     
     
     }

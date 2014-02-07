@@ -95,7 +95,7 @@ public class ElementEditor {
      * Update selection not yet implemented
      */
     private void update(){
-        
+       // this.ref.fireUpdate(selected);
     }
     
 }

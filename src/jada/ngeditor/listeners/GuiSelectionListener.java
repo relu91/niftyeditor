@@ -317,12 +317,15 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
         
             GElement sel = gui.getSelected();
             String layout = sel.getParent().getAttribute("childLayout");
-            if(layout.equals("horizontal"))
-                horizontalBeahvior(sel,e.getKeyCode());
-            else if(layout.equals("vertical"))
-                verticalBeahvior(sel,e.getKeyCode());
-            else
-                absoluteBehavior(sel,e.getKeyCode());
+            if(layout.equals("horizontal")) {
+            horizontalBeahvior(sel,e.getKeyCode());
+        }
+            else if(layout.equals("vertical")) {
+            verticalBeahvior(sel,e.getKeyCode());
+        }
+            else {
+            absoluteBehavior(sel,e.getKeyCode());
+        }
         this.gui.fireUpdate(sel);
      
     }
