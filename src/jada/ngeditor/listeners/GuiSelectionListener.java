@@ -14,6 +14,7 @@
  */
 package jada.ngeditor.listeners;
 
+import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.layout.align.HorizontalAlign;
 import de.lessvoid.nifty.layout.align.VerticalAlign;
 import de.lessvoid.nifty.tools.SizeValue;
@@ -332,8 +333,13 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
     }
     
     private void absoluteBehavior(GElement sel,int key){
-        int x = sel.getNiftyElement().getX();
-        int y = sel.getNiftyElement().getY();
+        Element parent = sel.getParent().getNiftyElement();
+        int xp = parent.getX();
+        int yp = parent.getY();
+        int totalPaddingHorz = parent.getPaddingLeft().getValueAsInt(parent.getWidth());
+        int totalPaddingVert = parent.getPaddingTop().getValueAsInt(parent.getHeight());
+        int x = sel.getNiftyElement().getX()-(xp+totalPaddingHorz);
+        int y = sel.getNiftyElement().getY()-(yp+totalPaddingVert);
         if(key==KeyEvent.VK_DOWN){
             y++;
             sel.addAttribute("y", ""+y);
