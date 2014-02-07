@@ -56,8 +56,12 @@ public class ElementEditor {
     public void normalizeSize(){
         Element parent = selected.getParent().getNiftyElement();
         Element sel = selected.getNiftyElement();
-        float width = (float)sel.getWidth()/parent.getWidth();
-        float height = (float)sel.getHeight()/parent.getHeight();
+        float hp = parent.getHeight();
+        float wp = parent.getWidth();
+        float totalPaddingHorz = parent.getPaddingLeft().getValue(wp) + parent.getPaddingRight().getValue(wp);
+        float totalPaddingVert = parent.getPaddingTop().getValue(hp) + parent.getPaddingBottom().getValue(hp);
+        float width = (float)sel.getWidth()/(parent.getWidth()- totalPaddingHorz);
+        float height = (float)sel.getHeight()/(parent.getHeight()-totalPaddingVert);
         int percW = Math.round(width*100);
         int percH = Math.round(height*100);
        
