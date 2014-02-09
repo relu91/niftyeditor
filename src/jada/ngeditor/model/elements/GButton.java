@@ -17,8 +17,10 @@ package jada.ngeditor.model.elements;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.button.ButtonControl;
 import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
+import de.lessvoid.nifty.elements.Element;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
+import jada.ngeditor.model.exception.IllegalDropException;
 import java.util.HashMap;
 import org.w3c.dom.Node;
 
@@ -59,5 +61,13 @@ public class GButton extends GElement{
     public GElement create(String id, org.w3c.dom.Element ele) {
         return new GButton(id,ele);
     }
+    
+    
+
+    @Override
+    protected Element getDropContext() {
+        throw new IllegalDropException("You can not add elements to a button");
+    }
+ 
     
 }

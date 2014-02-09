@@ -20,6 +20,7 @@ import jada.ngeditor.listeners.actions.Action;
 import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.elements.GLayer;
 import jada.ngeditor.model.elements.GScreen;
+import jada.ngeditor.model.exception.IllegalDropException;
 import java.awt.geom.Point2D;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -130,9 +131,14 @@ public class GUI extends Observable{
             
     }
     public boolean addElement(GElement child,GElement parent){
+        try{
          parent.addChild(child, true);
          child.createNiftyElement(manager);
          return true;
+        }catch(IllegalDropException e){
+            child.removeFromParent();
+            throw e;
+        }
     }
     
    

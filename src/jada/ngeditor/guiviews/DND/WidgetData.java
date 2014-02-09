@@ -50,7 +50,6 @@ public class WidgetData implements Transferable{
         if(flavor == FLAVOR)
             return  true;
         else if (flavor == POINTFLAVOR && p!=null){
-            System.out.println("Rasegan");
             return true;
         }
         return false;
