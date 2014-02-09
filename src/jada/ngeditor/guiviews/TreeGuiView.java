@@ -25,7 +25,9 @@ import jada.ngeditor.renderUtil.NiftyTreeRender;
 import java.util.Enumeration;
 import java.util.Observable;
 import java.util.Observer;
+import javax.swing.LookAndFeel;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
 /**
  *
@@ -49,17 +51,18 @@ public class TreeGuiView extends javax.swing.JPanel implements Observer {
         jTree2.setCellRenderer(new NiftyTreeRender());
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) this.jTree2.getModel().getRoot();
         root.removeAllChildren();
-        root.setUserObject("nifty");
+        root.setUserObject(gui);
 
         for (GScreen screen : gui.getGui().getScreens()) {
             DefaultMutableTreeNode screenNode = new DefaultMutableTreeNode(screen);
             addRecursive(screen, screenNode);
             root.add(screenNode);
+            
         }
-
         for (int row = 0; row < jTree2.getRowCount(); row++) {
             jTree2.expandRow(row);
         }
+      
         this.jTree2.updateUI();
     }
 
@@ -112,7 +115,7 @@ public class TreeGuiView extends javax.swing.JPanel implements Observer {
         jPopupMenu1.add(DelPop);
 
         setMinimumSize(new java.awt.Dimension(80, 20));
-        setPreferredSize(new java.awt.Dimension(0, 0));
+        setPreferredSize(new java.awt.Dimension(60, 60));
 
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("No-Gui");
         jTree2.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
@@ -122,11 +125,11 @@ public class TreeGuiView extends javax.swing.JPanel implements Observer {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -188,6 +191,11 @@ public class TreeGuiView extends javax.swing.JPanel implements Observer {
             DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
             parent.insert(node, i);
             jTree2.updateUI();
+        } else if (act.getType() == Action.SEL){
+            DefaultMutableTreeNode node = this.searchNode(act.getGUIElement());
+            TreePath temp = new TreePath(node.getPath());
+            jTree2.setSelectionPath(temp);
+            
         }
     }
 

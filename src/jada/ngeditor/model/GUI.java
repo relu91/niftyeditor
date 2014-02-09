@@ -206,7 +206,7 @@ public class GUI extends Observable{
     }
     @Override
     public String toString(){
-        return ""+this.GUIID;
+        return "GUI: "+this.GUIID;
     }
     
     public GLayer getTopLayer(){

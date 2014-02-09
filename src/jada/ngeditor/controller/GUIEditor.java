@@ -396,4 +396,12 @@ public class GUIEditor extends Observable{
         this.notifyObservers(new Action(Action.UPDATE,sel));
         this.clearChanged();
     }
+    
+    public GLayer getCurrentLayer(){
+        return this.currentL;
+    }
+    @Override
+    public String toString(){
+        return this.gui.toString();
+    }
 }

@@ -14,7 +14,9 @@
  */
 package jada.ngeditor.renderUtil;
 
+import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.model.elements.GElement;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -33,6 +35,9 @@ import javax.swing.tree.DefaultTreeCellRenderer;
  */
 public class NiftyTreeRender extends DefaultTreeCellRenderer{
     
+    public NiftyTreeRender(){
+        super();
+    }
     
     @Override
     public Component getTreeCellRendererComponent(
@@ -47,8 +52,11 @@ public class NiftyTreeRender extends DefaultTreeCellRenderer{
                         tree, value, sel,
                         expanded, leaf, row,
                         hasFocus);
-        if(row!=0){
+       if(row!=0){
+            
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+            DefaultMutableTreeNode root = (DefaultMutableTreeNode) node.getRoot();
+            GUIEditor edit = (GUIEditor) root.getUserObject();
             GElement element = (GElement)node.getUserObject();
              Image image =null;
              try {
