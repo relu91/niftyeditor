@@ -28,12 +28,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreeCellRenderer;
 
 /**
  *
  * @author cris
  */
-public class NiftyTreeRender extends DefaultTreeCellRenderer{
+public class NiftyTreeRender implements TreeCellRenderer{
     
     public NiftyTreeRender(){
         super();
@@ -48,10 +49,8 @@ public class NiftyTreeRender extends DefaultTreeCellRenderer{
                         boolean leaf,
                         int row,
                         boolean hasFocus) {
-       Component c =  super.getTreeCellRendererComponent(
-                        tree, value, sel,
-                        expanded, leaf, row,
-                        hasFocus);
+       DefaultTreeCellRenderer c =  new DefaultTreeCellRenderer();
+       c.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
        if(row!=0){
             
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
@@ -72,7 +71,12 @@ public class NiftyTreeRender extends DefaultTreeCellRenderer{
                 }
                     
                }
-            this.setIcon(new ImageIcon(image));
+            c.setIcon(new ImageIcon(image));
+            c.setText(value.toString());
+            if(element.equals(edit.getCurrentLayer())){
+                c.setBackgroundSelectionColor(Color.CYAN);
+                c.setBackgroundNonSelectionColor(Color.BLUE);
+            }
         }
         
         return c;
