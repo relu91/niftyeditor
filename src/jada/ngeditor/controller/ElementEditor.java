@@ -70,6 +70,12 @@ public class ElementEditor {
         selected.lightRefresh();
         this.update();
     }
+    
+    public void fill(){
+        selected.addAttribute("width", "*");
+        selected.addAttribute("height", "*");
+        selected.lightRefresh();
+    }
     public void setEdited(GElement toEdit){
         selected=toEdit;
     }

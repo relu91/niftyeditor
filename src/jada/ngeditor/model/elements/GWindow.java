@@ -15,6 +15,7 @@
 package jada.ngeditor.model.elements;
 
 
+import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.window.WindowControl;
 import de.lessvoid.nifty.controls.window.builder.WindowBuilder;
 import de.lessvoid.xml.xpp3.Attributes;
@@ -46,8 +47,7 @@ public class GWindow extends GElement{
     public Types getType() {
         return Types.WINDOW;
     }
-
-    
+        
      @Override
      protected de.lessvoid.nifty.elements.Element getDropContext(){
          return nElement.getControl(WindowControl.class).getContent();

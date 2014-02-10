@@ -16,6 +16,7 @@ package jada.ngeditor.model.elements;
 
 
 
+import de.lessvoid.nifty.EndNotify;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.builder.ElementBuilder;
 import de.lessvoid.nifty.controls.AbstractController;
@@ -236,10 +237,25 @@ public abstract class GElement {
         currentScreen.layoutLayers();
     }
     
-    private void heavyRefresh(Nifty nifty,Attributes att){
+    protected void heavyRefresh(Nifty nifty,Attributes att){
         int index= parent.getNiftyElement().getChildren().indexOf(nElement);
+        final GElement telement = this;
         
-         nElement.markForRemoval();
+         nElement.markForRemoval(new EndNotify() {
+
+            @Override
+            public void perform() {
+               this.buildChild(telement);
+            }
+            
+            private void buildChild(GElement ele){
+                for(GElement e : ele.getElements()){
+                    ele.getDropContext().addChild(e.getNiftyElement());
+                    e.refresh();
+                    this.buildChild(e);
+                }
+            }
+        });
          final HashMap<String,String> attributes = new HashMap<String,String>();
         for(int i =0;i<element.getAttributes().getLength();i++){
             Node n = element.getAttributes().item(i);
