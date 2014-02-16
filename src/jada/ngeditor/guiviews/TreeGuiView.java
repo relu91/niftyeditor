@@ -193,8 +193,10 @@ public class TreeGuiView extends javax.swing.JPanel implements Observer {
             jTree2.updateUI();
         } else if (act.getType() == Action.SEL){
             DefaultMutableTreeNode node = this.searchNode(act.getGUIElement());
-            TreePath temp = new TreePath(node.getPath());
-            jTree2.setSelectionPath(temp);
+            if(node != null){
+                TreePath temp = new TreePath(node.getPath());
+                jTree2.setSelectionPath(temp);
+            }
             
         }
     }

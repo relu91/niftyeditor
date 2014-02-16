@@ -54,7 +54,7 @@ public class NiftyEditor {
             Logger.getLogger(NiftyEditor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+    private static java.awt.Color line = new java.awt.Color(17,229,229);
     /**
      * @param args the command line arguments
      */
@@ -68,9 +68,11 @@ public class NiftyEditor {
         Graphics2D g = splash.createGraphics();
         if (g != null) {
               g.setComposite(AlphaComposite.Clear);
-              g.setColor(Color.red);
+              g.setColor(line);
               g.setPaintMode();
-              g.fillRect(10,200,130,10);
+              g.fillRect(10,205,130,5);
+              g.setColor(Color.black);
+              g.drawRect(10,205,130,5);
               splash.update();
              Properties props = new Properties();
              props.put("logoString", "Nifty-Editor");
@@ -79,19 +81,22 @@ public class NiftyEditor {
              HiFiLookAndFeel.setTheme(props);
              UIManager.setLookAndFeel("com.jtattoo.plaf.hifi.HiFiLookAndFeel");
              JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-             g.fillRect(10,200,280,10);
+             g.setColor(line);
+             g.fillRect(10,205,200,5);
+             g.setColor(Color.BLACK);
+             g.drawRect(10,205,200,5);
              splash.update(); 
              MainView editor = new MainView();
-            
+             g.setColor(line);
+             g.fillRect(10,205,280,5);
+             g.setColor(Color.BLACK);
+             g.drawRect(10,205,280,5);
+             splash.update();
             java.net.URL icon = editor.getClass().getResource("/jada/ngeditor/resources/icon.png");
             editor.setIconImage(Toolkit.getDefaultToolkit().getImage(icon));
+           
             
-            
-        
-            editor.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            editor.addWindowListener(new ClosingListener());
-            
-            editor.starGuiEditor();
+            editor.setVisible(true);
         }
         }
             } catch (ClassNotFoundException ex) {

@@ -35,7 +35,7 @@ import javax.swing.tree.TreeCellRenderer;
  * @author cris
  */
 public class NiftyTreeRender implements TreeCellRenderer{
-    
+    private Color bla = new Color(119,136,136);
     public NiftyTreeRender(){
         super();
     }
@@ -75,7 +75,7 @@ public class NiftyTreeRender implements TreeCellRenderer{
             c.setText(value.toString());
             if(element.equals(edit.getCurrentLayer())){
                 c.setBackgroundSelectionColor(Color.CYAN);
-                c.setBackgroundNonSelectionColor(Color.BLUE);
+                c.setBackgroundNonSelectionColor(bla);
             }
         }
         

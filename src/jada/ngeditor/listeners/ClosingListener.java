@@ -14,64 +14,31 @@
  */
 package jada.ngeditor.listeners;
 
+import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import sun.awt.SunToolkit;
+
 
 /**
  *
  * @author cris
  */
-public class ClosingListener implements WindowListener{
+public class ClosingListener extends WindowAdapter{
 
-    @Override
-    public void windowOpened(WindowEvent e) {
-        
-    }
+   
 
     @Override
     public void windowClosing(WindowEvent e) {
+        super.windowClosed(e);
+        System.out.println("GoodBye closing");
         e.getWindow().dispose();
     }
 
     @Override
     public void windowClosed(WindowEvent e) {
-       
-        int num = Thread.activeCount();
-        
-        Thread[] temp = new Thread[num] ;
-        Thread.enumerate(temp);
-        System.out.println("GoodBye");
-        
-        for(Thread t : temp){
-                    t.stop();
-                System.out.println("Name : "+t.getName()+" "+t.getId());
-               // t.join();
-           
-        }
+        super.windowClosed(e);
+        System.out.println("GoodBye closed");
         System.exit(0);
     }
 
-    @Override
-    public void windowIconified(WindowEvent e) {
-       
-    }
-
-    @Override
-    public void windowDeiconified(WindowEvent e) {
-       
-    }
-
-    @Override
-    public void windowActivated(WindowEvent e) {
-        
-    }
-
-    @Override
-    public void windowDeactivated(WindowEvent e) {
-        
-    }
-    
 }

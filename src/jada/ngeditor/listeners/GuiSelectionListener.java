@@ -80,10 +80,9 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
    
     public final void startDrag(MouseEvent e) {
         if(enable){
-        JPanel c = (JPanel) e.getComponent().getParent();
-       // this.gui.selectElement(e.getX(), e.getY());
-        TransferHandler handler = c.getTransferHandler();
-        handler.exportAsDrag(c, e, TransferHandler.MOVE);
+            JPanel c = (JPanel) e.getComponent();
+            TransferHandler handler = c.getTransferHandler();
+            handler.exportAsDrag(c, e, TransferHandler.MOVE);
         
         }
       

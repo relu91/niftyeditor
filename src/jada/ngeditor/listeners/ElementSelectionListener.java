@@ -17,6 +17,7 @@ package jada.ngeditor.listeners;
 import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.model.elements.GElement;
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -39,8 +40,15 @@ public class ElementSelectionListener implements TreeSelectionListener{
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
         if(!node.isRoot())
             this.gui.selectElement((GElement)node.getUserObject());
-        JTree temp = (JTree) e.getSource();
-        temp.updateUI();
+        final JTree temp = (JTree) e.getSource();
+        
+        SwingUtilities.invokeLater(new Runnable() {
+
+               @Override
+               public void run() {
+                  temp.updateUI();
+               }
+           });
        }
     }
     

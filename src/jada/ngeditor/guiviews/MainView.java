@@ -19,6 +19,7 @@ package jada.ngeditor.guiviews;
 import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.guiviews.DND.PaletteDropTarget;
 import jada.ngeditor.guiviews.DND.TrasferHandling;
+import jada.ngeditor.listeners.ClosingListener;
 import jada.ngeditor.persistence.XmlFileFilter;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -26,6 +27,7 @@ import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
@@ -48,10 +50,10 @@ public class MainView extends javax.swing.JFrame {
         IOmanager = new JFileChooser();
         XmlFileFilter filter = new XmlFileFilter();
         IOmanager.setFileFilter(filter);
-        this.setVisible(true);
         trans = new TrasferHandling();
         initComponents();
-       
+        this.addWindowListener(new ClosingListener());
+           
     
         PaletteDropTarget tmp = new PaletteDropTarget();
         this.cont.setTransferHandler(trans);
@@ -64,34 +66,19 @@ public class MainView extends javax.swing.JFrame {
         this.editor.addObserver(this.treeGuiView1);
         this.editor.addObserver(cont);
         this.editor.addObserver(proprietesView1);
+        this.newGui();
+        jTabbedPane2.setSelectedIndex(1);
        
     }
 
     @Override
     public void dispose() {
-        super.dispose();
         cont.nifty.exit();
         wel.nifty.exit();
-        try {
-            welcomeThread.join();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(MainView.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        System.out.println("Nifty Disposed");
+        super.dispose(); 
     }
-    private Thread welcomeThread;
-    public void starGuiEditor() {
-        //starts welcome page
-       welcomeThread = new Thread(){
-            public void run(){
-                 wel.start();
-            }
-        };
-       welcomeThread.start();
-        newGui();
-        jTabbedPane2.setSelectedIndex(1);
-        cont.start(); 
-        
-    }
+   
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -140,7 +127,7 @@ public class MainView extends javax.swing.JFrame {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(proprietesView1, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
+            .addComponent(proprietesView1, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
         );
 
         jPanel1.add(jPanel3);
@@ -164,7 +151,7 @@ public class MainView extends javax.swing.JFrame {
 
         wel.init();
         working.setLayout(new javax.swing.BoxLayout(working,javax.swing.BoxLayout.LINE_AXIS));
-        cont=  new J2DNiftyView(800,600);
+        cont=  new J2DNiftyView(1600,1200);
 
         working.add(cont);
         jTabbedPane2.addTab("WorkGUI", working);

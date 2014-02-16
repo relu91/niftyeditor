@@ -33,9 +33,13 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
 import java.io.File;
@@ -44,14 +48,15 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Timer;
 
 /**
  *
  * @author cris
  */
-public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,Observer{
+public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,Observer,ActionListener{
     protected Nifty nifty;
-    private  Canvas canvas;
+   // private  Canvas canvas;
     private  long fps = 0;
     private boolean selecting;
     private Graphics2D graphics2D;
@@ -90,8 +95,6 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
         HideButton = new javax.swing.JMenuItem();
         NormalizeButton = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jScrollBar1 = new javax.swing.JScrollBar();
-        jScrollBar2 = new javax.swing.JScrollBar();
 
         DeleteButton.setText("Delete");
         DeleteButton.addActionListener(new java.awt.event.ActionListener() {
@@ -126,10 +129,6 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
         popUp.add(jMenuItem1);
 
         setLayout(new java.awt.BorderLayout());
-
-        jScrollBar1.setOrientation(javax.swing.JScrollBar.HORIZONTAL);
-        add(jScrollBar1, java.awt.BorderLayout.PAGE_END);
-        add(jScrollBar2, java.awt.BorderLayout.LINE_END);
     }// </editor-fold>//GEN-END:initComponents
 
     private void HideButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HideButtonActionPerformed
@@ -155,14 +154,12 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
     private javax.swing.JMenuItem HideButton;
     private javax.swing.JMenuItem NormalizeButton;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JScrollBar jScrollBar1;
-    private javax.swing.JScrollBar jScrollBar2;
     private javax.swing.JPopupMenu popUp;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public Graphics2D getGraphics2d() {
-        return this.graphics2D;
+        return graphics2D;
     }
 
     private void registerFonts(FontProviderJava2dImpl fontProvider) {
@@ -173,23 +170,21 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
 
     public void init() {
         InputSystemAwtImpl inputSystem = new InputSystemAwtImpl();
-	canvas = new Canvas(){
-            public void addNotify() {
-    super.addNotify();
-    createBufferStrategy(2);
-}
-        };
-        canvas.setSize(this.getSize());
+//	canvas = new Canvas(){
+ //           public void addNotify() {
+  //  super.addNotify();
+//   createBufferStrategy(3);
+//}
+  //      };
+  //      canvas.setSize(this.getSize());
         //canvas.addMouseMotionListener(inputSystem);
        
 	//canvas.addMouseListener(inputSystem);
 	//canvas.addKeyListener(inputSystem);
-        this.add(canvas,BorderLayout.EAST);
+       // scrollPane.add(canvas);
        // this.setMaximumSize(new Dimension(this.getWidth(),this.getHeight()));
-        this.setIgnoreRepaint(true);
-	canvas.setIgnoreRepaint(true);
-        this.jScrollBar1.setVisibleAmount(60);
-       // canvas.createBufferStrategy(2);
+       // this.setIgnoreRepaint(true);
+	//canvas.setIgnoreRepaint(false);
         FontProviderJava2dImpl fontProvider = new FontProviderJava2dImpl();
 	registerFonts(fontProvider);
         RenderDeviceJava2dImpl renderDevice = new RenderDeviceJava2dImpl(this);
@@ -205,25 +200,29 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
             Logger.getLogger(J2DNiftyView.class.getName()).log(Level.SEVERE, null, ex);
         }
         nifty.resolutionChanged();
-     //   canvas.addMouseMotionListener(this);
-      //  canvas.addMouseListener(this);
-        
+        Timer t = new Timer(10,this); //This supplies your timing for your loop... this is 100 fps
+        t.start();
     }
-   
+   private static java.awt.Color line = new java.awt.Color(17,229,229);
      public void start() {
-         BasicStroke stroke = new BasicStroke(2,BasicStroke.CAP_SQUARE,BasicStroke.JOIN_ROUND,30,new float[] { 10.0f, 8.0f },0);
-	
+       
+     }
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        
+        BasicStroke stroke = new BasicStroke(1.5f,BasicStroke.CAP_SQUARE,BasicStroke.JOIN_ROUND,30,new float[] { 10.0f, 4.0f },0);
          boolean done = false;
 	 long time = System.currentTimeMillis();
 	 long frames = 0;
-        // this.canvas.setSize((int)(this.getHeight()*1), (int)(this.getWidth()*1));
          Font fpsFont =new Font("arial",Font.BOLD, 14);
          String fps="Fps: 0";
-	       while (!done) {
-                    try{
-	            BufferStrategy bufferStrategy = canvas.getBufferStrategy();
-	           graphics2D = (Graphics2D) bufferStrategy.getDrawGraphics();
-                               graphics2D.setBackground(Color.BLACK);
+         int h = this.getSize().height > 600 ? 600 : this.getSize().height;
+         int w = this.getSize().width > 800 ? 800 : this.getSize().width;
+         nifty.getRenderEngine().getRenderDevice().enableClip(0, 0,w, h);
+         graphics2D = (Graphics2D) g;
+         
+                               graphics2D.setBackground(Color.darkGray);
                                graphics2D.scale(1, 1);
                                
                                done = nifty.update();
@@ -235,27 +234,30 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
                                 graphics2D.drawString(fps, 0, fpsFont.getSize());
                               }
                               if(selecting){
+                               
+                                
+                                
+                                graphics2D.setColor(line);
                                 graphics2D.drawLine((int)selected.getCenterX()-10, (int)selected.getCenterY(), (int)selected.getCenterX()+10,(int) selected.getCenterY());
                                 graphics2D.drawLine((int)selected.getCenterX(), (int)selected.getCenterY()-10, (int)selected.getCenterX(),(int) selected.getCenterY()+10);
-                                
-                                
-                                graphics2D.setColor(java.awt.Color.red);
                                 graphics2D.setStroke(stroke);
                                 graphics2D.draw(selected);
                                 graphics2D.setColor(java.awt.Color.black);
                                 graphics2D.setStroke(new BasicStroke());
                                 graphics2D.drawRect((int)selected.getMaxX()-6,(int)selected.getMaxY()-6, 11, 11);
                                 nifty.getRenderEngine().renderQuad((int)selected.getMaxX()-5,(int)selected.getMaxY()-5, 10, 10);
-                                
-                                
-                                
-                                
+                                graphics2D.setColor(Color.WHITE);
+                                graphics2D.fillOval(selected.x-4, selected.y-4,8, 8);
+                                graphics2D.setColor(Color.BLACK);
+                                graphics2D.drawOval(selected.x-4, selected.y-4,8, 8);
                               }
+                              graphics2D.setColor(Color.BLACK);
+                              graphics2D.drawRect(0, 0, 800,600);
+                              Toolkit.getDefaultToolkit().sync();
                               graphics2D.setTransform(transformer);
-                              bufferStrategy.show();
+                             
                                
 	                       graphics2D.dispose();
-	                       graphics2D = null;
 	                        frames++;
 	
 	                        long diff = System.currentTimeMillis() - time;
@@ -265,24 +267,7 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
 	                                fps="Fps: "+frames;
 	                                frames = 0;
 	                        }
-                               
-             try {
-                 Thread.sleep(15);
-             } catch (InterruptedException ex) {
-                 Logger.getLogger(J2DNiftyView.class.getName()).log(Level.SEVERE, null, ex);
-             }
-             
-            }catch(Exception e){
-                e.printStackTrace();
-                continue;
-            }
-                                
-	    }
-     }
-    @Override
-     public int getHeight(){
-         return this.canvas.getHeight();
-     }
+    }
      public Nifty getNifty(){
          return nifty;
      }
@@ -296,11 +281,11 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
     
     protected void setClickListener(GuiSelectionListener list){
        
-        this.canvas.removeMouseListener(previous);
-        this.canvas.removeMouseMotionListener(previous);
-        this.canvas.addMouseListener(list);
-        this.canvas.addMouseMotionListener(list);
-        this.canvas.addKeyListener(list);
+        this.removeMouseListener(previous);
+        this.removeMouseMotionListener(previous);
+        this.addMouseListener(list);
+        this.addMouseMotionListener(list);
+        this.addKeyListener(list);
         
         previous=list;
     }
@@ -343,6 +328,11 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
     
     public void cancelRect(){
         this.selecting=false;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        this.repaint();
     }
     
     
