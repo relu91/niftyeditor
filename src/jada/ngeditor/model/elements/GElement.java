@@ -210,7 +210,9 @@ public abstract class GElement {
             attcopy = att;
             oldStyle = newStyle;
        }
-      
+       if(att.isSet("renderOrder")){
+           nElement.setRenderOrder(att.getAsInteger("renderOrder"));
+       }
        nElement.setId(id);
        if(getType().isControl()){
           this.heavyRefresh(temp,attcopy);

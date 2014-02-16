@@ -27,7 +27,7 @@ import javax.swing.table.TableCellEditor;
  * @author cris
  */
 public class PropTable extends JTable{
-    private static final JComboEditor layoutEditor = new JComboEditor("center", "vertical", "horizontal","overlay");
+    private static final JComboEditor layoutEditor = new JComboEditor("absolute","center", "vertical", "horizontal","overlay");
     public PropTable() {
 	super();
         this.setModel(new javax.swing.table.DefaultTableModel(
