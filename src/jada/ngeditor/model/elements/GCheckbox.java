@@ -18,8 +18,6 @@ import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.checkbox.builder.CheckboxBuilder;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
-import java.util.HashMap;
-import org.w3c.dom.Node;
 
 /**
  *

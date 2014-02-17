@@ -71,8 +71,16 @@ public abstract class GElement {
            throw new IllegalArgumentException("Element null");
     }
     
-    public GElement(String id, org.w3c.dom.Element docElement) throws IllegalArgumentException {
-       if(docElement != null){
+    protected GElement(String id, org.w3c.dom.Element docElement) throws IllegalArgumentException {
+       if(docElement == null){
+           throw new IllegalArgumentException("Element null");
+       }
+       if(this.getType().isControl() && !docElement.getTagName().equals("control")){
+           throw new IllegalArgumentException("Illegal tag name");
+       }
+       if(!this.getType().isControl() && !docElement.getTagName().equals(this.getType().toString())){
+          throw new IllegalArgumentException("Illegal tag name");
+       }
        this.id = id;
        this.element = docElement;
        this.parent = null;
@@ -81,8 +89,8 @@ public abstract class GElement {
        this.UniID=UID;
        UID++; 
        this.element.setAttribute("id", id);
-       } else
-            throw new IllegalArgumentException("Element null");
+       
+            
        
     }
     
@@ -202,7 +210,7 @@ public abstract class GElement {
        Attributes att = this.nElement.getElementType().getAttributes();
        String newStyle = att.get("style");
        Attributes attcopy = new Attributes(att);
-       // Aggiungo il vecchio stile se ce ne è uno
+       // Add the old style if there was one
        if(oldStyle != null && !oldStyle.equals(newStyle)){
             
             att.set("style", oldStyle);

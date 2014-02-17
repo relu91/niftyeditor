@@ -33,7 +33,8 @@ public enum Types {
     RADIOBUTTON("radioButton",true),
     IMAGE("image",false),
     LISTBOX("listBox",true),
-    SCROLLPANEL("scrollPanel",true);
+    SCROLLPANEL("scrollPanel",true),
+    DROPDOWN("dropDown",true);
     
     public static String CONTROL_TAG = "control";
     private String val;
