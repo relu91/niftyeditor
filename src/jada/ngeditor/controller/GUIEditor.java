@@ -34,8 +34,11 @@ import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.Observable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
@@ -97,7 +100,7 @@ public class GUIEditor extends Observable{
        for(String sel : nifty.getAllScreensName()){
                     nifty.removeScreen(sel);
        }
-       nifty.fromXml(""+this.getGui(),writer.getDocumentStream() ,
+       nifty.fromXml(""+this,writer.getDocumentStream() ,
                         screen.getID());
        reloadAfterFresh();
        currentL=gui.getTopLayer();
@@ -122,12 +125,12 @@ public class GUIEditor extends Observable{
     public void refresh(Nifty nifty) throws Exception{
         if(getGui() != null){
             String screenID =this.currentS.getID();
-                for(String sel : nifty.getAllScreensName()){
+               for(String sel : nifty.getAllScreensName()){
                     nifty.removeScreen(sel);
-                }
-                nifty.fromXml(""+this.getGui(),writer.getDocumentStream() ,
-                        screenID);
-                this.reloadAfterFresh();
+               }
+                nifty.scheduleEndOfFrameElementAction(new Reload(nifty, screenID), null);
+                
+                
         }
     }
     /**
@@ -409,5 +412,28 @@ public class GUIEditor extends Observable{
     @Override
     public String toString(){
         return this.gui.toString();
+    }
+    
+    private class Reload implements de.lessvoid.nifty.elements.Action{
+        private final Nifty nifty;
+        private final String screen;
+        
+        private Reload(Nifty nifty,String screen){
+            this.nifty = nifty;
+            this.screen = screen;
+            
+        }
+
+        @Override
+        public void perform() {
+            try {
+                nifty.fromXml(""+getGui(),writer.getDocumentStream() ,
+                             this.screen);
+                reloadAfterFresh();
+            } catch (Exception ex) {
+                Logger.getLogger(GUIEditor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
     }
 }

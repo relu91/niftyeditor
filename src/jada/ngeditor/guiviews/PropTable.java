@@ -17,6 +17,7 @@ package jada.ngeditor.guiviews;
 import jada.ngeditor.guiviews.editors.FileChooserEditor;
 import jada.ngeditor.guiviews.editors.HexColorCellEditor;
 import jada.ngeditor.guiviews.editors.JComboEditor;
+import jada.ngeditor.guiviews.editors.SizeEditor;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -79,6 +80,8 @@ public class PropTable extends JTable{
             }else if(pname.equalsIgnoreCase("filename") 
                     || pname.equalsIgnoreCase("backgroundImage")){
                 editor = new FileChooserEditor(JOptionPane.getFrameForComponent(this));
+            }else if( pname.equalsIgnoreCase("height")){
+                editor = new SizeEditor();
             }
 	return editor;
     }
