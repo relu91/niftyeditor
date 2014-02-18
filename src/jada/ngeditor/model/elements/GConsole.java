@@ -16,6 +16,7 @@
 package jada.ngeditor.model.elements;
 
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.controls.Console;
 import de.lessvoid.nifty.controls.console.ConsoleControl;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
@@ -49,9 +50,11 @@ public class GConsole extends GElement{
     @Override
     public void createNiftyElement(Nifty nifty) {
         super.createNiftyElement(nifty);
+        nElement.getNiftyControl(Console.class).setFocusable(false);
+        nElement.removeFromFocusHandler();
         nElement.disableFocus();
-        nElement.disable();
-        nElement.findControl(this.id,ConsoleControl.class).getTextField().getElement().disable();
+        nElement.getEffectManager().removeAllEffects();
+        nElement.getNiftyControl(Console.class).getTextField().getElement().getEffectManager().removeAllEffects();
         
     }
     

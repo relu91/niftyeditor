@@ -14,6 +14,8 @@
  */
 package jada.ngeditor.guiviews.DND;
 
+import de.lessvoid.nifty.elements.Element;
+import de.lessvoid.nifty.tools.SizeValue;
 import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.guiviews.J2DNiftyView;
 import jada.ngeditor.listeners.actions.Action;
@@ -52,8 +54,15 @@ public class PaletteDropTarget extends DropTarget implements Observer {
     public synchronized void dragOver(DropTargetDragEvent dtde){
         super.dragOver(dtde);
         J2DNiftyView comp = (J2DNiftyView) this.getComponent();
-        if(dtde.getDropAction() == DnDConstants.ACTION_MOVE )
+        if(dtde.getDropAction() == DnDConstants.ACTION_MOVE ){
             comp.moveRect(dtde.getLocation().x, dtde.getLocation().y);
+            Element ele = obj.getSelected().getNiftyElement();
+            int x  = dtde.getLocation().x - ele.getParent().getX() - ele.getWidth()/2 ;
+            int y = dtde.getLocation().y - ele.getParent().getY() - ele.getHeight()/2;
+            ele.setConstraintX(SizeValue.px(x));
+            ele.setConstraintY(SizeValue.px(y));
+            ele.getParent().layoutElements();
+        }
         
     }
     @Override

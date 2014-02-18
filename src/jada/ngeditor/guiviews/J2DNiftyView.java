@@ -20,16 +20,12 @@ import de.lessvoid.nifty.java2d.renderer.FontProviderJava2dImpl;
 import de.lessvoid.nifty.java2d.renderer.GraphicsWrapper;
 import de.lessvoid.nifty.java2d.renderer.RenderDeviceJava2dImpl;
 import de.lessvoid.nifty.tools.TimeProvider;
-import de.lessvoid.nifty.tools.resourceloader.FileSystemLocation;
 import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.listeners.GuiSelectionListener;
 import jada.ngeditor.listeners.actions.Action;
 import jada.ngeditor.model.Types;
 import jada.ngeditor.renderUtil.SoudDevicenull;
-import java.awt.AWTException;
 import java.awt.BasicStroke;
-import java.awt.BorderLayout;
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -56,7 +52,6 @@ import javax.swing.Timer;
  */
 public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,Observer,ActionListener{
     protected Nifty nifty;
-   // private  Canvas canvas;
     private  long fps = 0;
     private boolean selecting;
     private Graphics2D graphics2D;
@@ -170,21 +165,6 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
 
     public void init() {
         InputSystemAwtImpl inputSystem = new InputSystemAwtImpl();
-//	canvas = new Canvas(){
- //           public void addNotify() {
-  //  super.addNotify();
-//   createBufferStrategy(3);
-//}
-  //      };
-  //      canvas.setSize(this.getSize());
-        //canvas.addMouseMotionListener(inputSystem);
-       
-	//canvas.addMouseListener(inputSystem);
-	//canvas.addKeyListener(inputSystem);
-       // scrollPane.add(canvas);
-       // this.setMaximumSize(new Dimension(this.getWidth(),this.getHeight()));
-       // this.setIgnoreRepaint(true);
-	//canvas.setIgnoreRepaint(false);
         FontProviderJava2dImpl fontProvider = new FontProviderJava2dImpl();
 	registerFonts(fontProvider);
         RenderDeviceJava2dImpl renderDevice = new RenderDeviceJava2dImpl(this);
@@ -199,14 +179,10 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
         } catch (IOException ex) {
             Logger.getLogger(J2DNiftyView.class.getName()).log(Level.SEVERE, null, ex);
         }
-        nifty.resolutionChanged();
-        Timer t = new Timer(10,this); //This supplies your timing for your loop... this is 100 fps
+        Timer t = new Timer(60,this); //This supplies your timing for your loop... this is 100 fps
         t.start();
     }
    private static java.awt.Color line = new java.awt.Color(17,229,229);
-     public void start() {
-       
-     }
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -223,11 +199,11 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
          graphics2D = (Graphics2D) g;
          
                                graphics2D.setBackground(Color.darkGray);
-                               graphics2D.scale(1, 1);
                                
                                done = nifty.update();
+                                nifty.getRenderEngine().saveStates();
                                nifty.render(true);
-                               nifty.getRenderEngine().renderQuad(0, 0, 0, 0);
+                              nifty.getRenderEngine().restoreStates();
                               if(nifty.isDebugOptionPanelColors()){
                                 graphics2D.setColor(java.awt.Color.red);
                                 graphics2D.setFont(fpsFont);
@@ -255,8 +231,6 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
                               graphics2D.drawRect(0, 0, 800,600);
                               Toolkit.getDefaultToolkit().sync();
                               graphics2D.setTransform(transformer);
-                             
-                               
 	                       graphics2D.dispose();
 	                        frames++;
 	
@@ -310,8 +284,6 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
         }else
             this.selecting=false;
     }
-   
-    
     
     public void moveRect(int x,int y){
         if(selected!=null){
@@ -323,6 +295,7 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
     
     public void displayRect(int x,int y,int h,int w){
         this.selected.setBounds(x, y, w, h);
+     
         this.selecting=true;
     }
     

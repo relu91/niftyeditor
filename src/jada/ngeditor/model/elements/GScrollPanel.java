@@ -4,8 +4,6 @@
  */
 package jada.ngeditor.model.elements;
 
-import de.lessvoid.nifty.controls.ScrollPanel;
-import de.lessvoid.nifty.controls.scrollpanel.ScrollPanelControl;
 import de.lessvoid.nifty.controls.scrollpanel.builder.ScrollPanelBuilder;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;

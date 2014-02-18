@@ -65,7 +65,7 @@ public class MainView extends javax.swing.JFrame {
         this.editor.addObserver(trans);
         this.editor.addObserver(this.treeGuiView1);
         this.editor.addObserver(cont);
-        this.editor.addObserver(proprietesView1);
+        this.editor.addObserver(proprietesView2);
         this.newGui();
         jTabbedPane2.setSelectedIndex(1);
        
@@ -89,9 +89,10 @@ public class MainView extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jSplitPane1 = new javax.swing.JSplitPane();
+        proprietesView2 = new jada.ngeditor.guiviews.ProprietesView();
+        jScrollPane1 = new javax.swing.JScrollPane();
         paletteView1 = new jada.ngeditor.guiviews.PaletteView();
-        jPanel3 = new javax.swing.JPanel();
-        proprietesView1 = new jada.ngeditor.guiviews.ProprietesView();
         treeGuiView1 = new jada.ngeditor.guiviews.TreeGuiView();
         guiView = new javax.swing.JPanel();
         jTabbedPane2 = new javax.swing.JTabbedPane();
@@ -111,26 +112,23 @@ public class MainView extends javax.swing.JFrame {
         setTitle("Nifty-Editor v. 0.5.7");
         setBackground(new java.awt.Color(51, 51, 51));
 
+        jPanel1.setMinimumSize(new java.awt.Dimension(50, 50));
+        jPanel1.setPreferredSize(new java.awt.Dimension(200, 100));
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.PAGE_AXIS));
 
-        paletteView1.setBorder(javax.swing.BorderFactory.createTitledBorder("Palette"));
-        paletteView1.setPreferredSize(new java.awt.Dimension(238, 250));
-        jPanel1.add(paletteView1);
+        jSplitPane1.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
+        jSplitPane1.setDividerLocation(400);
+        jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Proprietes"));
+        proprietesView2.setBorder(javax.swing.BorderFactory.createTitledBorder("Proprities"));
+        jSplitPane1.setBottomComponent(proprietesView2);
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(proprietesView1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(proprietesView1, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
-        );
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane1.setViewportView(paletteView1);
 
-        jPanel1.add(jPanel3);
+        jSplitPane1.setLeftComponent(jScrollPane1);
+
+        jPanel1.add(jSplitPane1);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.LINE_END);
 
@@ -151,7 +149,7 @@ public class MainView extends javax.swing.JFrame {
 
         wel.init();
         working.setLayout(new javax.swing.BoxLayout(working,javax.swing.BoxLayout.LINE_AXIS));
-        cont=  new J2DNiftyView(1600,1200);
+        cont=  new J2DNiftyView(800,600);
 
         working.add(cont);
         jTabbedPane2.addTab("WorkGUI", working);
@@ -249,7 +247,7 @@ public class MainView extends javax.swing.JFrame {
            
            if(ris == JOptionPane.YES_OPTION){
                editor.addObserver(treeGuiView1);
-               editor.addObserver(proprietesView1);
+               editor.addObserver(proprietesView2);
                editor.createNewGui(cont.getNifty()); 
            }
         } catch (ParserConfigurationException ex) {
@@ -363,10 +361,11 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private jada.ngeditor.guiviews.PaletteView paletteView1;
-    private jada.ngeditor.guiviews.ProprietesView proprietesView1;
+    private jada.ngeditor.guiviews.ProprietesView proprietesView2;
     private javax.swing.JMenuItem refresh;
     private jada.ngeditor.guiviews.TreeGuiView treeGuiView1;
     // End of variables declaration//GEN-END:variables
