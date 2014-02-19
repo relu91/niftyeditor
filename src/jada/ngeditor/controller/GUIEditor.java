@@ -14,6 +14,7 @@
  */
 package jada.ngeditor.controller;
 
+import de.lessvoid.nifty.EndNotify;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.NiftyControl;
 import de.lessvoid.nifty.elements.Element;
@@ -96,19 +97,22 @@ public class GUIEditor extends Observable{
        String res = "";
        this.gui = reader.readGUI(filename);
        res = reader.getTagNotLoaded();
-       GScreen screen =this.getGui().gettopScreen();
+       final GScreen screen =this.getGui().gettopScreen();
        for(String sel : nifty.getAllScreensName()){
                     nifty.removeScreen(sel);
        }
-       nifty.fromXml(""+this,writer.getDocumentStream() ,
-                        screen.getID());
-       reloadAfterFresh();
+      nifty.scheduleEndOfFrameElementAction(new Reload(nifty, screen.getID()), new EndNotify() {
+
+            @Override
+            public void perform() {
+               setChanged();
+               notifyObservers(new Action(Action.NEW,screen));
+               clearChanged();
+            }
+        });
        currentL=gui.getTopLayer();
        currentS=gui.gettopScreen();
        currentlayers.addAll(gui.getLayers());
-       this.setChanged();
-       this.notifyObservers(new Action(Action.NEW,screen));
-       this.clearChanged();
        return res;
             
     }
@@ -262,6 +266,7 @@ public class GUIEditor extends Observable{
             GLayer temp =(GLayer) e;
             this.currentL=temp;
             this.currentlayers.add(temp);
+            e.getParent().getNiftyElement().layoutElements();
         }
         else{
             if(this.currentlayers.isEmpty()){
@@ -279,12 +284,13 @@ public class GUIEditor extends Observable{
                 e.addAttribute("y",""+ (int)(mouse.getY()-parentY));
                 e.refresh();
             }
+             e.getParent().getNiftyElement().layoutElements();
           }
         }
         this.setChanged();
         this.notifyObservers(new Action(Action.ADD,e));
         this.clearChanged();
-        e.getParent().getNiftyElement().layoutElements();
+       
     }
     
     public GScreen getCurrentScreen(){
@@ -430,6 +436,7 @@ public class GUIEditor extends Observable{
                 nifty.fromXml(""+getGui(),writer.getDocumentStream() ,
                              this.screen);
                 reloadAfterFresh();
+                nifty.getCurrentScreen().getFocusHandler().resetFocusElements();
             } catch (Exception ex) {
                 Logger.getLogger(GUIEditor.class.getName()).log(Level.SEVERE, null, ex);
             }
