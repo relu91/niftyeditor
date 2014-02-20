@@ -81,7 +81,6 @@ public class NiftyEditor {
              props.put("dynamicLayout","on");
              HiFiLookAndFeel.setTheme(props);
              UIManager.setLookAndFeel("com.jtattoo.plaf.hifi.HiFiLookAndFeel");
-             JPopupMenu.setDefaultLightWeightPopupEnabled(false);
              g.setColor(line);
              g.fillRect(10,205,200,5);
              g.setColor(Color.BLACK);
@@ -95,8 +94,6 @@ public class NiftyEditor {
              splash.update();
             java.net.URL icon = editor.getClass().getResource("/jada/ngeditor/resources/icon.png");
             editor.setIconImage(Toolkit.getDefaultToolkit().getImage(icon));
-           
-            
             editor.setVisible(true);
         }
         }

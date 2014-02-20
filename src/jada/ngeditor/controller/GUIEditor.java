@@ -173,9 +173,13 @@ public class GUIEditor extends Observable{
             this.getGui().goTo(currentS);
         }else if(UID.getType().equals(Types.LAYER)){
             this.currentL = (GLayer)UID;
+            if(!UID.getParent().equals(this.currentS)){
+                this.currentS = (GScreen) UID.getParent();
+                this.gui.goTo(this.currentS);
+            }
         }else{
             GElement temp = UID;
-            while(temp.getType() != Types.LAYER){
+            while(temp!= null && temp.getType() != Types.LAYER){
                 temp = temp.getParent();
             }
             if(!temp.equals(this.currentL)){

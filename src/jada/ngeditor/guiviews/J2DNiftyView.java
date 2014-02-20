@@ -32,13 +32,10 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
-import java.awt.image.BufferStrategy;
-import java.io.File;
 import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
@@ -199,6 +196,8 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
                                graphics2D.setBackground(Color.darkGray);
                                done = nifty.update();
                                nifty.render(true);
+                               graphics2D.setClip(0, 0, w, h);
+                               graphics2D.setPaintMode();
                               if(nifty.isDebugOptionPanelColors()){
                                 graphics2D.setColor(java.awt.Color.red);
                                 graphics2D.setFont(fpsFont);
