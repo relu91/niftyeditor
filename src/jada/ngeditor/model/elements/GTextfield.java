@@ -48,7 +48,6 @@ public class GTextfield extends GElement{
     public void createNiftyElement(Nifty nifty) {
         super.createNiftyElement(nifty);
         nElement.disable();
-       
     }
 
     @Override

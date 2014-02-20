@@ -81,6 +81,9 @@ public class PaletteView extends javax.swing.JPanel {
    NWidgetDropDown down = new NWidgetDropDown();
    NWidgetScrollbar scrolB = new NWidgetScrollbar();
    NWidgetRadioButtonGroup radioG = new NWidgetRadioButtonGroup();
+   NWidgetScrollbarV vscrol = new NWidgetScrollbarV();
+   NWidgetTree tree = new NWidgetTree();
+   NWidgetImageSelect imgs = new NWidgetImageSelect();
    jPanel1.add(screen);
    jPanel1.add(layer);
    jPanel1.add(image);
@@ -97,6 +100,9 @@ public class PaletteView extends javax.swing.JPanel {
    jPanel1.add(down);
    jPanel1.add(scrolB);
    jPanel1.add(radioG);
+   jPanel1.add(vscrol);
+   jPanel1.add(tree);
+   jPanel1.add(imgs);
     }catch (Exception e){}
     }
 }

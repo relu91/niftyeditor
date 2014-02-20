@@ -37,7 +37,11 @@ public enum Types {
     SCROLLPANEL("scrollPanel", true),
     DROPDOWN("dropDown", true),
     HORIZONTALSCROLLBAR("horizontalScrollbar", true),
-    RADIOBUTTONGROUP("radioButtonGroup",true);
+    RADIOBUTTONGROUP("radioButtonGroup",true),
+    VERTICALSCROLLBAR("verticalScrollbar",true),
+    NIFTYTREEBOX("nifty-tree-box",true),
+    IMAGESELECT("imageSelect",true);
+    
     public static String CONTROL_TAG = "control";
     private String val;
     private boolean iscont;

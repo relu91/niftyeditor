@@ -5,8 +5,6 @@
 package jada.ngeditor.model.elements;
 
 import de.lessvoid.nifty.controls.scrollbar.builder.ScrollbarBuilder;
-import jada.ngeditor.model.Types;
-import org.w3c.dom.Element;
 
 /**
  *

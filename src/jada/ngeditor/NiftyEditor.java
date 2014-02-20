@@ -42,13 +42,14 @@ public class NiftyEditor {
             System.out.println("Loding all gui components");
             String classPack = "jada.ngeditor.model.elements";
             for(Types type : Types.values()){
-              if(!type.equals(Types.NIFTYCONSOLE)){
+              if(!type.equals(Types.NIFTYCONSOLE) && !type.equals(Types.NIFTYTREEBOX) ){
               String suffix = "G"+Character.toUpperCase(type.toString().charAt(0));
               String name = suffix+type.toString().substring(1);
               Class.forName(classPack+"."+name);
               }
             }
             Class.forName(classPack+"."+"GConsole");
+            Class.forName(classPack+"."+"GTree");
             System.out.println("Done");
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(NiftyEditor.class.getName()).log(Level.SEVERE, null, ex);

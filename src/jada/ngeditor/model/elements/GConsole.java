@@ -50,12 +50,8 @@ public class GConsole extends GElement{
     @Override
     public void createNiftyElement(Nifty nifty) {
         super.createNiftyElement(nifty);
-        nElement.getNiftyControl(Console.class).setFocusable(false);
-        nElement.removeFromFocusHandler();
-        nElement.disableFocus();
-        nElement.getEffectManager().removeAllEffects();
-        nElement.getNiftyControl(Console.class).getTextField().getElement().getEffectManager().removeAllEffects();
-        
+        nElement.disable();
+        nElement.getNiftyControl(Console.class).getTextField().getElement().disable();
     }
     
   
