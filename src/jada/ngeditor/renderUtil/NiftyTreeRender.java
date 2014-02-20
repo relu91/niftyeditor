@@ -52,9 +52,8 @@ public class NiftyTreeRender implements TreeCellRenderer{
        DefaultTreeCellRenderer c =  new DefaultTreeCellRenderer();
        c.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
        if(row!=0){
-            
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-            DefaultMutableTreeNode root = (DefaultMutableTreeNode) node.getRoot();
+            DefaultMutableTreeNode root = (DefaultMutableTreeNode) tree.getModel().getRoot();
             GUIEditor edit = (GUIEditor) root.getUserObject();
             GElement element = (GElement)node.getUserObject();
              Image image =null;

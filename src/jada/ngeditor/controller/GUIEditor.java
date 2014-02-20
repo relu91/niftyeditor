@@ -76,6 +76,8 @@ public class GUIEditor extends Observable{
         GScreen screen = (GScreen) GUIFactory.getInstance().newGElement(""+Types.SCREEN);
         getGui().addScreen(screen);
         this.currentS = screen;
+        this.currentL = null;
+        this.currentlayers.clear();
         this.setChanged();
         this.notifyObservers(new Action(Action.NEW,screen));
         this.clearChanged();

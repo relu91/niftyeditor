@@ -46,8 +46,8 @@ public class GScrollPanel extends GElement {
 
     @Override
     public void initDefault() {
-        element.setAttribute("width", "50%");
-         element.setAttribute("name", ""+Types.SCROLLPANEL);
+      element.setAttribute("width", "50%");
+      element.setAttribute("name", ""+Types.SCROLLPANEL);
       element.setAttribute("height", "30%");
       element.setAttribute("verticalScrollbar", "true");
       element.setAttribute("horizontalScrollbar", "true");
