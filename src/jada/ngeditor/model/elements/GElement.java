@@ -285,7 +285,7 @@ public abstract class GElement {
            Nifty nif = manager;
         if(nElement != null)
             nif = nElement.getNifty();
-        nElement = nif.getCurrentScreen().findElementById(id);
+        nElement = parent.nElement.findElementById(id);
     }
     @Override
     public String toString(){
