@@ -51,14 +51,21 @@ import javax.swing.Timer;
  * @author cris
  */
 public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,Observer,ActionListener{
+    private static final BasicStroke BASIC_STROKE = new BasicStroke();
     protected Nifty nifty;
-    private  long fps = 0;
     private boolean selecting;
     private Graphics2D graphics2D;
     private GuiSelectionListener previous;
     private Rectangle selected;
     AffineTransform transformer = new AffineTransform();
     private GUIEditor manager;
+    private long time =0;
+    private long diff = 0;
+    private int frames;
+    private String fps;
+    private final static Font fpsFont = new Font("arial",Font.BOLD, 14);
+    private final static BasicStroke stroke = new BasicStroke(1.5f,BasicStroke.CAP_SQUARE,BasicStroke.JOIN_ROUND,30,new float[] { 10.0f, 4.0f },0);;
+    private Timer timer;
     /**
      * Creates new form J2DNiftyView
      */
@@ -179,27 +186,21 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
         } catch (IOException ex) {
             Logger.getLogger(J2DNiftyView.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Timer t = new Timer(60,this); //This supplies your timing for your loop... this is 100 fps
-        t.start();
+        timer = new Timer(60,this); //This supplies your timing for your loop... this is 100 fps
+        timer.start();
     }
    private static java.awt.Color line = new java.awt.Color(17,229,229);
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        
-        BasicStroke stroke = new BasicStroke(1.5f,BasicStroke.CAP_SQUARE,BasicStroke.JOIN_ROUND,30,new float[] { 10.0f, 4.0f },0);
          boolean done = false;
-	 long time = System.currentTimeMillis();
-	 long frames = 0;
-         Font fpsFont =new Font("arial",Font.BOLD, 14);
-         String fps="Fps: 0";
+	 diff += System.currentTimeMillis() - time;
+         time = System.currentTimeMillis();
          int h = this.getSize().height > 600 ? 600 : this.getSize().height;
          int w = this.getSize().width > 800 ? 800 : this.getSize().width;
          nifty.getRenderEngine().getRenderDevice().enableClip(0, 0,w, h);
          graphics2D = (Graphics2D) g;
-         
                                graphics2D.setBackground(Color.darkGray);
-                               
                                done = nifty.update();
                                 nifty.getRenderEngine().saveStates();
                                nifty.render(true);
@@ -219,7 +220,7 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
                                 graphics2D.setStroke(stroke);
                                 graphics2D.draw(selected);
                                 graphics2D.setColor(java.awt.Color.black);
-                                graphics2D.setStroke(new BasicStroke());
+                                graphics2D.setStroke(BASIC_STROKE);
                                 graphics2D.drawRect((int)selected.getMaxX()-6,(int)selected.getMaxY()-6, 11, 11);
                                 nifty.getRenderEngine().renderQuad((int)selected.getMaxX()-5,(int)selected.getMaxY()-5, 10, 10);
                                 graphics2D.setColor(Color.WHITE);
@@ -230,17 +231,17 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
                               graphics2D.setColor(Color.BLACK);
                               graphics2D.drawRect(0, 0, 800,600);
                               Toolkit.getDefaultToolkit().sync();
-                              graphics2D.setTransform(transformer);
+                             
 	                       graphics2D.dispose();
 	                        frames++;
-	
-	                        long diff = System.currentTimeMillis() - time;
-	                        if (diff >= 1000) {
-	                              
-	                                time += diff;
+	                        if (diff >= 1000){
+	                                diff = 0;
 	                                fps="Fps: "+frames;
 	                                frames = 0;
 	                        }
+                            if(done) {
+                                timer.stop();
+        }
     }
      public Nifty getNifty(){
          return nifty;
@@ -252,7 +253,10 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
             temp.removeScreen(sel);
         }
      }
-    
+    public void close(){
+        nifty.exit();
+        timer.stop();
+    }
     protected void setClickListener(GuiSelectionListener list){
        
         this.removeMouseListener(previous);

@@ -73,8 +73,8 @@ public class MainView extends javax.swing.JFrame {
 
     @Override
     public void dispose() {
-        cont.nifty.exit();
-        wel.nifty.exit();
+        cont.close();
+        wel.close();
         System.out.println("Nifty Disposed");
         super.dispose(); 
     }
