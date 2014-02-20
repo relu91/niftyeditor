@@ -101,7 +101,7 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
          }
           if(e.isPopupTrigger()){
               this.gui.selectElement(e.getX(), e.getY());
-                this.p.show(e.getComponent(), e.getX(), e.getY());
+              this.p.show(e.getComponent(), e.getX(), e.getY());
           }
         
      }
@@ -159,37 +159,38 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
                    && e.getY()>selected.getMaxY()-5
                    && e.getY()<selected.getMaxY()+5
                    ){
-               e.getComponent().setCursor(new Cursor(Cursor.SE_RESIZE_CURSOR));
+               
+               e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR));
                curDir=DIR_SE;
                
            }else if(e.getX()==selected.getMinX() && (e.getY()<selected.getMaxY() && e.getY()>selected.getMinY() )){
-               e.getComponent().setCursor(new Cursor(Cursor.W_RESIZE_CURSOR));
+               e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR));
                curDir=DIR_W;
            }else if(e.getX()==selected.getMaxX() && (e.getY()<selected.getMaxY() && e.getY()>selected.getMinY() )){
-              e.getComponent().setCursor(new Cursor(Cursor.E_RESIZE_CURSOR));
+              e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR));
               curDir=DIR_E;
            }
            else if(e.getY()<selected.getMaxY()+5 && e.getY()>selected.getMaxY()-5 
                    && (e.getX()<selected.getMaxX() && e.getX()>selected.getMinX() )){
-                e.getComponent().setCursor(new Cursor(Cursor.S_RESIZE_CURSOR)); 
+                e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR)); 
                 curDir=DIR_S;
            }
             else if(e.getY()==selected.getMinY() && (e.getX()<selected.getMaxX() && e.getX()>selected.getMinX() )){
                 curDir=DIR_N;
-                e.getComponent().setCursor(new Cursor(Cursor.N_RESIZE_CURSOR)); 
+                e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR)); 
        }else if(e.getY()<selected.getCenterY()+10 &&
                e.getY()>selected.getCenterY()-10 && (e.getX()<(selected.getCenterX()+10) && e.getX()>selected.getCenterX()-10 )){
-                 e.getComponent().setCursor(new Cursor(Cursor.MOVE_CURSOR)); 
+                 e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR)); 
                  this.enable();
                  
                  curDir = NOP;
             }
             else{
-                e.getComponent().setCursor(new Cursor(Cursor.DEFAULT_CURSOR)); 
+                e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR)); 
                 curDir=NOP;
             }
           }else{
-            e.getComponent().setCursor(new Cursor(Cursor.DEFAULT_CURSOR)); 
+            e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR)); 
            curDir=NOP;
            
        }

@@ -185,7 +185,7 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
         timer = new Timer(30,this); 
         timer.start();
     }
-   private static java.awt.Color line = new java.awt.Color(17,229,229);
+   private final static java.awt.Color line = new java.awt.Color(17,229,229);
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -198,18 +198,13 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
          graphics2D = (Graphics2D) g;
                                graphics2D.setBackground(Color.darkGray);
                                done = nifty.update();
-                                nifty.getRenderEngine().saveStates();
                                nifty.render(true);
-                              nifty.getRenderEngine().restoreStates();
                               if(nifty.isDebugOptionPanelColors()){
                                 graphics2D.setColor(java.awt.Color.red);
                                 graphics2D.setFont(fpsFont);
                                 graphics2D.drawString(fps, 0, fpsFont.getSize());
                               }
                               if(selecting){
-                               
-                                
-                                
                                 graphics2D.setColor(line);
                                 graphics2D.drawLine((int)selected.getCenterX()-10, (int)selected.getCenterY(), (int)selected.getCenterX()+10,(int) selected.getCenterY());
                                 graphics2D.drawLine((int)selected.getCenterX(), (int)selected.getCenterY()-10, (int)selected.getCenterX(),(int) selected.getCenterY()+10);
@@ -225,7 +220,8 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
                                 graphics2D.drawOval(selected.x-4, selected.y-4,8, 8);
                               }
                               graphics2D.setColor(Color.BLACK);
-                              graphics2D.drawRect(0, 0, 800,600);
+                              graphics2D.setStroke(BASIC_STROKE);
+                              graphics2D.drawRect(0, 0, 799,599);
                               Toolkit.getDefaultToolkit().sync();
                              
 	                       graphics2D.dispose();
