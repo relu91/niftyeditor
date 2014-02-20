@@ -79,10 +79,6 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
         this.selected= new Rectangle();
         
     }
-    
-    public void createBuffer(){
-       
-    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -186,7 +182,7 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
         } catch (IOException ex) {
             Logger.getLogger(J2DNiftyView.class.getName()).log(Level.SEVERE, null, ex);
         }
-        timer = new Timer(60,this); //This supplies your timing for your loop... this is 100 fps
+        timer = new Timer(30,this); 
         timer.start();
     }
    private static java.awt.Color line = new java.awt.Color(17,229,229);
@@ -243,28 +239,20 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
                                 timer.stop();
         }
     }
-     public Nifty getNifty(){
+    public Nifty getNifty(){
          return nifty;
-     }
+    }
      
-     public void clearNifty(){
-         Nifty temp = this.getNifty();
-        for(String sel : temp.getAllScreensName()){
-            temp.removeScreen(sel);
-        }
-     }
     public void close(){
         nifty.exit();
         timer.stop();
     }
     protected void setClickListener(GuiSelectionListener list){
-       
         this.removeMouseListener(previous);
         this.removeMouseMotionListener(previous);
         this.addMouseListener(list);
         this.addMouseMotionListener(list);
         this.addKeyListener(list);
-        
         previous=list;
     }
 
