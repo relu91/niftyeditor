@@ -209,6 +209,15 @@ public class GUI extends Observable{
   
     public void goTo(GScreen screen){
         this.manager.gotoScreen(screen.getID());
+        manager.scheduleEndOfFrameElementAction(new de.lessvoid.nifty.elements.Action() {
+
+            @Override
+            public void perform() {
+               manager.getCurrentScreen().getFocusHandler().resetFocusElements(); 
+            }
+        }
+                , null);
+              
     }
     @Override
     public String toString(){
@@ -222,4 +231,6 @@ public class GUI extends Observable{
     public Collection<GLayer> getLayers(){
         return this.currentlayers;
     }
+
+    
 }
