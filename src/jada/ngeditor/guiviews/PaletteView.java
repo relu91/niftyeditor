@@ -84,6 +84,8 @@ public class PaletteView extends javax.swing.JPanel {
    NWidgetScrollbarV vscrol = new NWidgetScrollbarV();
    NWidgetTree tree = new NWidgetTree();
    NWidgetImageSelect imgs = new NWidgetImageSelect();
+   NWidgetDraggable drag = new NWidgetDraggable();
+   NWidgetDroppable drop = new NWidgetDroppable();
    jPanel1.add(screen);
    jPanel1.add(layer);
    jPanel1.add(image);
@@ -103,6 +105,8 @@ public class PaletteView extends javax.swing.JPanel {
    jPanel1.add(vscrol);
    jPanel1.add(tree);
    jPanel1.add(imgs);
+   jPanel1.add(drag);
+   jPanel1.add(drop);
     }catch (Exception e){}
     }
 }

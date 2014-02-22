@@ -40,7 +40,9 @@ public enum Types {
     RADIOBUTTONGROUP("radioButtonGroup",true),
     VERTICALSCROLLBAR("verticalScrollbar",true),
     NIFTYTREEBOX("nifty-tree-box",true),
-    IMAGESELECT("imageSelect",true);
+    IMAGESELECT("imageSelect",true),
+    DRAGGABLE("draggable",true),
+    DROPPABLE("droppable",true);
     
     public static String CONTROL_TAG = "control";
     private String val;
