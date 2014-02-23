@@ -186,52 +186,52 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-         boolean done = false;
-	 diff += System.currentTimeMillis() - time;
-         time = System.currentTimeMillis();
-         int h = this.getSize().height > 600 ? 600 : this.getSize().height;
-         int w = this.getSize().width > 800 ? 800 : this.getSize().width;
-         nifty.getRenderEngine().getRenderDevice().enableClip(0, 0,w, h);
-         graphics2D = (Graphics2D) g;
-                               graphics2D.setBackground(Color.darkGray);
-                               done = nifty.update();
-                               nifty.render(true);
-                               graphics2D.setClip(0, 0, w, h);
-                               graphics2D.setPaintMode();
-                              if(nifty.isDebugOptionPanelColors()){
-                                graphics2D.setColor(java.awt.Color.red);
-                                graphics2D.setFont(fpsFont);
-                                graphics2D.drawString(fps, 0, fpsFont.getSize());
-                              }
-                              if(selecting){
-                                graphics2D.setColor(line);
-                                graphics2D.drawLine((int)selected.getCenterX()-10, (int)selected.getCenterY(), (int)selected.getCenterX()+10,(int) selected.getCenterY());
-                                graphics2D.drawLine((int)selected.getCenterX(), (int)selected.getCenterY()-10, (int)selected.getCenterX(),(int) selected.getCenterY()+10);
-                                graphics2D.setStroke(stroke);
-                                graphics2D.draw(selected);
-                                graphics2D.setColor(java.awt.Color.black);
-                                graphics2D.setStroke(BASIC_STROKE);
-                                graphics2D.drawRect((int)selected.getMaxX()-6,(int)selected.getMaxY()-6, 11, 11);
-                                nifty.getRenderEngine().renderQuad((int)selected.getMaxX()-5,(int)selected.getMaxY()-5, 10, 10);
-                                graphics2D.setColor(Color.WHITE);
-                                graphics2D.fillOval(selected.x-4, selected.y-4,8, 8);
-                                graphics2D.setColor(Color.BLACK);
-                                graphics2D.drawOval(selected.x-4, selected.y-4,8, 8);
-                              }
-                              graphics2D.setColor(Color.BLACK);
-                              graphics2D.setStroke(BASIC_STROKE);
-                              graphics2D.drawRect(0, 0, 799,599);
-                              Toolkit.getDefaultToolkit().sync();
-                             
-	                       graphics2D.dispose();
-	                        frames++;
-	                        if (diff >= 1000){
-	                                diff = 0;
-	                                fps="Fps: "+frames;
-	                                frames = 0;
-	                        }
-                            if(done) {
-                                timer.stop();
+        boolean done = false;
+        diff += System.currentTimeMillis() - time;
+        time = System.currentTimeMillis();
+        int h = this.getSize().height > 600 ? 600 : this.getSize().height;
+        int w = this.getSize().width > 800 ? 800 : this.getSize().width;
+        nifty.getRenderEngine().getRenderDevice().enableClip(0, 0, w, h);
+        graphics2D = (Graphics2D) g;
+        graphics2D.setBackground(Color.darkGray);
+        done = nifty.update();
+        nifty.render(true);
+        graphics2D.setClip(0, 0, w, h); //need to set again caused to renderText
+        graphics2D.setPaintMode();
+        if (nifty.isDebugOptionPanelColors()) {
+            graphics2D.setColor(java.awt.Color.red);
+            graphics2D.setFont(fpsFont);
+            graphics2D.drawString(fps, 0, fpsFont.getSize());
+        }
+        if (selecting) {
+            graphics2D.setColor(line);
+            graphics2D.drawLine((int) selected.getCenterX() - 10, (int) selected.getCenterY(), (int) selected.getCenterX() + 10, (int) selected.getCenterY());
+            graphics2D.drawLine((int) selected.getCenterX(), (int) selected.getCenterY() - 10, (int) selected.getCenterX(), (int) selected.getCenterY() + 10);
+            graphics2D.setStroke(stroke);
+            graphics2D.draw(selected);
+            graphics2D.setColor(java.awt.Color.black);
+            graphics2D.setStroke(BASIC_STROKE);
+            graphics2D.drawRect((int) selected.getMaxX() - 6, (int) selected.getMaxY() - 6, 11, 11);
+            nifty.getRenderEngine().renderQuad((int) selected.getMaxX() - 5, (int) selected.getMaxY() - 5, 10, 10);
+            graphics2D.setColor(Color.WHITE);
+            graphics2D.fillOval(selected.x - 4, selected.y - 4, 8, 8);
+            graphics2D.setColor(Color.BLACK);
+            graphics2D.drawOval(selected.x - 4, selected.y - 4, 8, 8);
+        }
+        graphics2D.setColor(Color.BLACK);
+        graphics2D.setStroke(BASIC_STROKE);
+        graphics2D.drawRect(0, 0, 799, 599);
+        Toolkit.getDefaultToolkit().sync();
+
+        graphics2D.dispose();
+        frames++;
+        if (diff >= 1000) {
+            diff = 0;
+            fps = "Fps: " + frames;
+            frames = 0;
+        }
+        if (done) {
+            timer.stop();
         }
     }
     public Nifty getNifty(){
@@ -260,16 +260,17 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
 
     @Override
     public void update(Observable o, Object arg) {
-        
+       
         Action act = (Action) arg;
-        if((act.getType()== Action.SEL || act.getType()== Action.UPDATE) && !act.getGUIElement().getType().equals(Types.LAYER)){
-            this.selected.setBounds( act.getGUIElement().getBounds());
-            this.selecting=true;
-        }else if(act.getType()== Action.NEW){
-            this.newGui(((GUIEditor)o));
+        if ((act.getType() == Action.SEL || act.getType() == Action.UPDATE) && !act.getGUIElement().getType().equals(Types.LAYER)) {
+            this.selected.setBounds(act.getGUIElement().getBounds());
+            this.selecting = true;
+        } else if (act.getType() == Action.NEW) {
+            this.newGui(((GUIEditor) o));
             o.addObserver(this.previous);
-        }else
-            this.selecting=false;
+        } else {
+            this.selecting = false;
+        }
     }
     
     public void moveRect(int x,int y){

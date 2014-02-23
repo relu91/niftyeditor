@@ -57,8 +57,13 @@ public class PaletteDropTarget extends DropTarget implements Observer {
         if(dtde.getDropAction() == DnDConstants.ACTION_MOVE ){
             comp.moveRect(dtde.getLocation().x, dtde.getLocation().y);
             Element ele = obj.getSelected().getNiftyElement();
-            int x  = dtde.getLocation().x - ele.getParent().getX() - ele.getWidth()/2 ;
-            int y = dtde.getLocation().y - ele.getParent().getY() - ele.getHeight()/2;
+            Element parent = ele.getParent();
+            float hp = parent.getHeight();
+            float wp = parent.getWidth();
+            int totalPaddingHorz = parent.getPaddingLeft().getValueAsInt(wp);
+            int totalPaddingVert = parent.getPaddingTop().getValueAsInt(hp);
+            int x  = dtde.getLocation().x - ele.getParent().getX() - ele.getWidth()/2 - totalPaddingHorz ;
+            int y = dtde.getLocation().y - ele.getParent().getY() - ele.getHeight()/2 - totalPaddingVert;
             ele.setConstraintX(SizeValue.px(x));
             ele.setConstraintY(SizeValue.px(y));
             ele.getParent().layoutElements();
