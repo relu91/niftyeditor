@@ -7,6 +7,7 @@ package jada.ngeditor.model.elements;
 import de.lessvoid.nifty.controls.treebox.builder.TreeBoxBuilder;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
+import jada.ngeditor.model.exception.IllegalDropException;
 import org.w3c.dom.Element;
 
 /**
@@ -42,6 +43,11 @@ static{
       element.setAttribute("width", "30%");
       element.setAttribute("height", "50%");
       element.setAttribute("childLayout", "vertical");
+    }
+    
+     @Override
+    protected de.lessvoid.nifty.elements.Element getDropContext() {
+        throw new IllegalDropException("You can not add elements to a tree,only from your code");
     }
     
 }

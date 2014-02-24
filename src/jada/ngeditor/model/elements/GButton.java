@@ -14,15 +14,13 @@
  */
 package jada.ngeditor.model.elements;
 
-import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.controls.button.ButtonControl;
+
 import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
 import de.lessvoid.nifty.elements.Element;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
 import jada.ngeditor.model.exception.IllegalDropException;
-import java.util.HashMap;
-import org.w3c.dom.Node;
+
 
 /**
  *

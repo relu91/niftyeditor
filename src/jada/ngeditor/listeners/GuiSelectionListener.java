@@ -379,8 +379,8 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
         VerticalAlign  newAlign= VerticalAlign.values()[index];
           sel.addAttribute("valign", newAlign.name());
           sel.lightRefresh();
-        }else  if(key==KeyEvent.VK_DOWN && index < VerticalAlign.values().length){
-          index++;
+        }else  if(key==KeyEvent.VK_DOWN && ++index < VerticalAlign.values().length){
+          
          VerticalAlign  newAlign= VerticalAlign.values()[index];
           sel.addAttribute("valign", newAlign.name());
           sel.lightRefresh();
@@ -415,8 +415,8 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
          HorizontalAlign  newAlign= HorizontalAlign.values()[index];
           sel.addAttribute("align", newAlign.name());
           sel.lightRefresh();
-        }else  if(key==KeyEvent.VK_RIGHT && index < HorizontalAlign.values().length){
-          index++;
+        }else  if(key==KeyEvent.VK_RIGHT && ++index < HorizontalAlign.values().length){
+          
          HorizontalAlign  newAlign= HorizontalAlign.values()[index];
           sel.addAttribute("align", newAlign.name());
           sel.lightRefresh();

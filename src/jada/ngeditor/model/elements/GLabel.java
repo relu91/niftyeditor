@@ -16,8 +16,10 @@ package jada.ngeditor.model.elements;
 
 
 import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
+import de.lessvoid.nifty.elements.Element;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
+import jada.ngeditor.model.exception.IllegalDropException;
 
 /**
  *
@@ -60,6 +62,11 @@ public class GLabel extends GElement{
     @Override
     public GElement create(String id,org.w3c.dom.Element ele) {
         return new GLabel(id,ele);
+    }
+    
+     @Override
+    protected Element getDropContext() {
+        throw new IllegalDropException("You can not add elements to a label");
     }
     
 }

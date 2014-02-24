@@ -16,8 +16,10 @@ package jada.ngeditor.model.elements;
 
 
 import de.lessvoid.nifty.controls.radiobutton.builder.RadioButtonBuilder;
+import de.lessvoid.nifty.elements.Element;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
+import jada.ngeditor.model.exception.IllegalDropException;
 /**
  *
  * @author cris
@@ -54,6 +56,11 @@ public class GRadioButton extends GElement {
     @Override
     public void initDefault() {
         element.setAttribute("name", ""+Types.RADIOBUTTON);
+    }
+    
+     @Override
+    protected Element getDropContext() {
+        throw new IllegalDropException("You can not add elements to a radiobutton");
     }
 
     

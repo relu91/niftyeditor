@@ -17,6 +17,7 @@ package jada.ngeditor.model.elements;
 import de.lessvoid.nifty.controls.dropdown.builder.DropDownBuilder;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
+import jada.ngeditor.model.exception.IllegalDropException;
 import org.w3c.dom.Element;
 
 /**
@@ -51,6 +52,11 @@ public class GDropDown extends GElement{
     public void initDefault() {
       element.setAttribute("width", "100px");
       element.setAttribute("name", ""+Types.DROPDOWN);
+    }
+    
+     @Override
+    protected de.lessvoid.nifty.elements.Element getDropContext() {
+        throw new IllegalDropException("You can not add elements to a dropdown control");
     }
     
 }

@@ -6,6 +6,7 @@ package jada.ngeditor.model.elements;
 
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
+import jada.ngeditor.model.exception.IllegalDropException;
 import org.w3c.dom.Element;
 
 /**
@@ -38,6 +39,11 @@ public class GVerticalScrollbar extends GScrollbar{
     public void initDefault() {
         element.setAttribute("name", ""+Types.VERTICALSCROLLBAR);
         element.setAttribute("height", "50%");
+    }
+    
+     @Override
+    protected de.lessvoid.nifty.elements.Element getDropContext() {
+        throw new IllegalDropException("You can not add elements to a scrollbar");
     }
     
 }

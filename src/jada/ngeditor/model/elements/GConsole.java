@@ -20,6 +20,7 @@ import de.lessvoid.nifty.controls.Console;
 import de.lessvoid.nifty.controls.console.ConsoleControl;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
+import jada.ngeditor.model.exception.IllegalDropException;
 import org.w3c.dom.Element;
 
 /**
@@ -72,6 +73,10 @@ public class GConsole extends GElement{
     element.setAttribute("name", ""+Types.NIFTYCONSOLE);
      element.setAttribute("width", "50%");
       
+    }
+    @Override
+    protected de.lessvoid.nifty.elements.Element getDropContext() {
+        throw new IllegalDropException("You can not add elements to a console");
     }
     
 }
