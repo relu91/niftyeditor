@@ -62,10 +62,7 @@ public class GButton extends GElement{
     
     
 
-    @Override
-    protected Element getDropContext() {
-        throw new IllegalDropException("You can not add elements to a button");
-    }
+    
  
     
 }

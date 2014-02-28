@@ -16,6 +16,8 @@ package jada.ngeditor.listeners;
 
 
 import jada.ngeditor.controller.ElementEditor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
@@ -25,7 +27,7 @@ import javax.swing.table.TableModel;
  *
  * @author cris
  */
-public class ProprietiesListener implements TableModelListener{
+public class ProprietiesListener implements TableModelListener,ActionListener{
     private ElementEditor editor = null;
     
     public ProprietiesListener(){
@@ -53,6 +55,11 @@ public class ProprietiesListener implements TableModelListener{
     
     public void setEditor(ElementEditor editor){
         this.editor = editor;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        
     }
     
 }

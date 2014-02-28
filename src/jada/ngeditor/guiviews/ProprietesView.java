@@ -58,7 +58,7 @@ public class ProprietesView extends javax.swing.JPanel implements Observer{
         jScrollPane1 = new javax.swing.JScrollPane();
         jButton1 = new javax.swing.JButton();
 
-        jButton1.setText("jButton1");
+        jButton1.setText("Remove");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -67,7 +67,7 @@ public class ProprietesView extends javax.swing.JPanel implements Observer{
             .addComponent(jScrollPane1)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jButton1)
-                .addGap(0, 112, Short.MAX_VALUE))
+                .addGap(0, 114, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

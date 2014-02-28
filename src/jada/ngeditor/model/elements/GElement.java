@@ -23,12 +23,14 @@ import de.lessvoid.nifty.controls.AbstractController;
 import de.lessvoid.nifty.controls.Parameters;
 import de.lessvoid.nifty.controls.dynamic.attributes.ControlAttributes;
 import de.lessvoid.nifty.elements.Element;
+import de.lessvoid.nifty.elements.render.ImageRenderer;
 import de.lessvoid.nifty.loaderv2.types.ElementType;
 import de.lessvoid.nifty.loaderv2.types.StyleType;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.xml.xpp3.Attributes;
 import jada.ngeditor.model.Types;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -49,6 +51,7 @@ public abstract class GElement {
     protected Element nElement;
     protected ElementBuilder builder;
     private String oldStyle;
+    private ArrayList<String> toBeRemoved = new ArrayList<String>();
     
     protected GElement(){
         element=null;
@@ -183,8 +186,23 @@ public abstract class GElement {
     
     public void removeAttribute(String key){
         this.element.removeAttribute(key);
-        Attributes att = this.nElement.getElementType().getAttributes();
-        att.remove(key);
+        if(key.equals("style")){
+            this.nElement.setStyle("");
+            this.nElement.getElementType().removeWithTag("style");
+            this.nElement.getRenderer(ImageRenderer.class).setImage(null);
+        }else{
+            Attributes att = this.nElement.getElementType().getAttributes();
+            att.set(key, "");
+            this.toBeRemoved.add(key);
+        }
+        
+    }
+    
+    protected void processRemoved(){
+         Attributes att = this.nElement.getElementType().getAttributes();
+         for(String s : this.toBeRemoved){
+             att.remove(s);
+         }
     }
     public String getAttribute(String key){
          Attributes att = this.nElement.getElementType().getAttributes();
@@ -196,8 +214,9 @@ public abstract class GElement {
         Attributes att = this.nElement.getElementType().getAttributes();
         if(key.equals("id")){
             this.id = val;
-        }else if(key.equals("style"))
+        }else if(key.equals("style")) {
             this.oldStyle = att.get("style");
+        }
         
         this.element.setAttribute(key, val);
         att.set(key, val);
@@ -227,7 +246,7 @@ public abstract class GElement {
        }else{
            this.lightRefresh(attcopy);
        }
-       
+       this.processRemoved();
     }
     /*
      * used for simple elment attributes
