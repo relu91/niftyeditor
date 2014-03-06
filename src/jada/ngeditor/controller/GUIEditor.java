@@ -31,6 +31,7 @@ import jada.ngeditor.persistence.GUIReader;
 import jada.ngeditor.persistence.GUIWriter;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -185,7 +186,7 @@ public class GUIEditor extends Observable{
             if(temp!= null && !temp.equals(this.currentL)){
                 this.currentL = (GLayer) temp;
             }
-            temp = temp.getParent();
+            temp = temp != null ? temp.getParent() : null;
             if(temp!= null && !temp.equals(this.currentS)){
                 this.currentS = (GScreen)temp;
                 this.gui.goTo(this.currentS);
@@ -235,6 +236,7 @@ public class GUIEditor extends Observable{
     public GUIEditor addElement(GElement child,GElement parent){
         if(child.getType().equals(Types.SCREEN)){
             this.currentS = (GScreen) child;
+            this.currentL = null;
             this.currentlayers.clear();
             for(GElement lay : currentS.getElements()){
                 this.currentlayers.add((GLayer)lay);
@@ -271,6 +273,7 @@ public class GUIEditor extends Observable{
     public void addElement(GElement e,Point2D mouse){
         if(e.getType().equals(Types.SCREEN)){
             this.currentS = (GScreen) e;
+            this.currentL = null;
             this.currentlayers.clear();
             for(GElement lay : currentS.getElements()){
                 this.currentlayers.add((GLayer)lay);
@@ -380,23 +383,29 @@ public class GUIEditor extends Observable{
      * @param point screen coordinate 
      * @return the upper element or if there's no one the upper layer visible
      */
-    public GElement findElement(Point2D point){
+    public GElement findElement(Point2D point) {
+        //Fixme : there's a little mess .. this was done to salve issue #3
+        GElement result = null;
+        if (currentL == null) {
+            result = currentS;
+        } else {
             LinkedList<GElement> res = new LinkedList<GElement>();
-                for(GElement ele : this.gui.getAllChild(currentL)){
-                    if(ele.contains(point))
-                        res.add(ele); 
+            for (GElement ele : this.gui.getAllChild(currentL)) {
+                if (ele.contains(point)) {
+                    res.add(ele);
                 }
-
-            GElement result = currentL;
+            }
+            result = currentL;
             Rectangle minArea = currentS.getBounds();
-            while(!res.isEmpty()){
+            while (!res.isEmpty()) {
                 GElement temp = res.pop();
                 Rectangle area = temp.getBounds();
-                if(area.width <= minArea.width && area.height <= minArea.height) {
-		    result = temp;
-		    minArea = area;
-		}
-            }  
+                if (area.width <= minArea.width && area.height <= minArea.height) {
+                    result = temp;
+                    minArea = area;
+                }
+            }
+        }
         return result;
     }
     /**

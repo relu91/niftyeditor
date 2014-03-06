@@ -18,6 +18,7 @@ package jada.ngeditor.model.elements;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.Console;
 import de.lessvoid.nifty.controls.console.ConsoleControl;
+import de.lessvoid.nifty.elements.Action;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
 import jada.ngeditor.model.exception.IllegalDropException;
@@ -55,14 +56,6 @@ public class GConsole extends GElement{
         nElement.getNiftyControl(Console.class).getTextField().getElement().disable();
     }
     
-  
-    @Override
-     public void reloadElement(Nifty manager){
-         super.reloadElement(manager);
-         nElement.disable();
-         nElement.layoutElements();
-         
-     }
     @Override
     public GElement create(String id,Element ele) {
        return new GConsole(id,ele);

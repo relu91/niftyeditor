@@ -195,6 +195,8 @@ public class GUI extends Observable{
     }
     public LinkedList<GElement> getAllChild(GElement element){
          LinkedList<GElement> res = new LinkedList<GElement>();
+         if(element == null)
+             return res;
          for(GElement ele : element.getElements()){
                res.add(ele);
                res.addAll(getAllChild(ele));

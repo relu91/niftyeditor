@@ -21,6 +21,7 @@ import jada.ngeditor.guiviews.DND.PaletteDropTarget;
 import jada.ngeditor.guiviews.DND.TrasferHandling;
 import jada.ngeditor.listeners.ClosingListener;
 import jada.ngeditor.persistence.XmlFileFilter;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.*;
@@ -317,6 +318,7 @@ public class MainView extends javax.swing.JFrame {
       {
         File select = IOmanager.getSelectedFile();
         try {
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             String errors = this.editor.createNewGui(cont.getNifty(),select);
             if(!errors.equals("")){
                  JOptionPane.showMessageDialog(this, "Some elements cannot be handled: "+errors);
@@ -334,6 +336,7 @@ public class MainView extends javax.swing.JFrame {
         }catch (Exception ex) {
             Logger.getLogger(MainView.class.getName()).log(Level.SEVERE, null, ex);
         }
+         this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
       }
    
         

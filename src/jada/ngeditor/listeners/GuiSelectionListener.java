@@ -294,7 +294,7 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
     @Override
     public void update(Observable o, Object arg) {
         Action act = (Action) arg;
-        if(act.getType()== Action.SEL && !act.getGUIElement().getType().equals(Types.LAYER)){
+        if(act.getType()== Action.SEL && !Types.LAYER.equals(act.getGUIElement().getType())){
             this.selected.setBounds( act.getGUIElement().getBounds());
             this.selecting=true;
         }else if(act.getType()== Action.NEW){

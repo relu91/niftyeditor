@@ -27,6 +27,7 @@ import de.lessvoid.nifty.elements.render.ImageRenderer;
 import de.lessvoid.nifty.loaderv2.types.ElementType;
 import de.lessvoid.nifty.loaderv2.types.StyleType;
 import de.lessvoid.nifty.screen.Screen;
+import de.lessvoid.nifty.tools.SizeValue;
 import de.lessvoid.xml.xpp3.Attributes;
 import jada.ngeditor.model.Types;
 import java.awt.geom.Point2D;
@@ -193,6 +194,7 @@ public abstract class GElement {
         }else{
             Attributes att = this.nElement.getElementType().getAttributes();
             att.set(key, "");
+            //this.nElement.setConstraintY(SizeValue.px(200));
             this.toBeRemoved.add(key);
         }
         
