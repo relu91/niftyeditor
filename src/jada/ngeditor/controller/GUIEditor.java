@@ -131,9 +131,10 @@ public class GUIEditor extends Observable{
     public void refresh(Nifty nifty) throws Exception{
         if(getGui() != null){
             String screenID =this.currentS.getID();
-               for(String sel : nifty.getAllScreensName()){
+              /* for(String sel : nifty.getAllScreensName()){
                     nifty.removeScreen(sel);
-               }
+                *  seems that is not needed !
+               }*/
                 nifty.scheduleEndOfFrameElementAction(new Reload(nifty, screenID), null);
                 
                 

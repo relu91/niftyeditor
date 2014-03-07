@@ -194,7 +194,6 @@ public abstract class GElement {
         }else{
             Attributes att = this.nElement.getElementType().getAttributes();
             att.set(key, "");
-            //this.nElement.setConstraintY(SizeValue.px(200));
             this.toBeRemoved.add(key);
         }
         
@@ -240,7 +239,8 @@ public abstract class GElement {
             oldStyle = newStyle;
        }
        if(att.isSet("renderOrder")){
-           nElement.setRenderOrder(att.getAsInteger("renderOrder"));
+           int renderorder = att.get("renderOrder").isEmpty()? this.parent.children.indexOf(this) : att.getAsInteger("renderOrder");
+           nElement.setRenderOrder(renderorder);
        }
        nElement.setId(id);
        if(getType().isControl()){
