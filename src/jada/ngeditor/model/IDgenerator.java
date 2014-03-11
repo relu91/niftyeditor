@@ -36,10 +36,7 @@ public class IDgenerator {
         
     }
     private IDgenerator(){
-        ids= new EnumMap<Types,ArrayList<String>>(Types.class);
-        counter = new int [Types.values().length];
-        for(int i=0;i<counter.length;i++)
-            counter[i]=0;
+        invalidate();
     }
     
     
@@ -71,6 +68,13 @@ public class IDgenerator {
             ids.put(t, tmp);
         }
             
+    }
+
+    public final void invalidate() {
+        ids= new EnumMap<Types,ArrayList<String>>(Types.class);
+        counter = new int [Types.values().length];
+        for(int i=0;i<counter.length;i++)
+            counter[i]=0;
     }
     
 }

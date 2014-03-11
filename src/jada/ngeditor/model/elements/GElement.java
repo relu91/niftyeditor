@@ -307,6 +307,7 @@ public abstract class GElement {
         if(nElement != null)
             nif = nElement.getNifty();
         nElement = parent.nElement.findElementById(id);
+        System.out.println("nElement:"+nElement+" "+id);
     }
     @Override
     public String toString(){

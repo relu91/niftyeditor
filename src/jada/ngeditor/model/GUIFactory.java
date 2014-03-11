@@ -93,6 +93,7 @@ public class GUIFactory {
         
         Types t = temp.getType();
         if(IDgenerator.getInstance().isUnique(t, id)) {
+            IDgenerator.getInstance().addID(id, t);
             return products.get(key).create(id,ele);
         }
         else {

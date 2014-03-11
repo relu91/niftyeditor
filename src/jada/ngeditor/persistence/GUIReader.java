@@ -17,6 +17,7 @@ package jada.ngeditor.persistence;
 import de.lessvoid.nifty.Nifty;
 import jada.ngeditor.model.GUI;
 import jada.ngeditor.model.GUIFactory;
+import jada.ngeditor.model.IDgenerator;
 import jada.ngeditor.model.Types;
 import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.exception.NoProductException;
@@ -50,25 +51,33 @@ public class GUIReader {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(f);
-               GUI result = GUIFactory.getInstance().createGUI(loader,document);
+            document.getDocumentElement().normalize();
+            GUI result = GUIFactory.getInstance().createGUI(loader,document);
+            IDgenerator.getInstance().invalidate();
             Element root = (Element) document.getElementsByTagName("nifty").item(0);
-            NodeList screens = root.getElementsByTagName(Types.SCREEN.toString());
-            for(int i =0;i<screens.getLength();i++){
+            NodeList screens = document.getElementsByTagName("screen");
+            for (int i = 0; i < screens.getLength(); i++) {
+            if (screens.item(i).getNodeType() == Node.ELEMENT_NODE) {
                 Element screen = (Element) screens.item(i);
-            try {
-                this.addRecursiveChild(screen, null, result);
-            } catch (NoProductException ex) {
-                this.errors.add(ex.getProduct());
-                continue;
+                System.out.println("id "+screen.getAttribute("id"));
+                try {
+                    this.addRecursiveChild(screen, null, result);
+                } catch (NoProductException ex) {
+                    this.errors.add(ex.getProduct());
+                    continue;
+                }
             }
-            }
+        }
         return result;
     }
     
     
     private void addRecursiveChild(Element element,GElement parent,GUI gui) throws NoProductException{
-            
+            String id = element.getAttribute("id");
+            System.out.print("before "+id);
             GElement Gchild =GUIFactory.getInstance().createGElement(element);
+            id= element.getAttribute("id");
+            System.out.println(" after "+id);
             gui.addElementToParent(Gchild, parent);
             NodeList child = element.getChildNodes();
             

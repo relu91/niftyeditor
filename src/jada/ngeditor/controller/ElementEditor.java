@@ -15,6 +15,7 @@
 package jada.ngeditor.controller;
 
 import de.lessvoid.nifty.elements.Element;
+import jada.ngeditor.model.IDgenerator;
 import jada.ngeditor.model.Types;
 import jada.ngeditor.model.elements.GElement;
 
@@ -37,11 +38,22 @@ public class ElementEditor {
          selected=toEdit;
     }
     public ElementEditor setAttribute(String key,String value){
-        if(selected!=null){
-            selected.addAttribute(key, value);
-            selected.refresh();
+        if(selected==null)
+            return this;
+        if(key.equals("id")){
+            boolean unique = IDgenerator.getInstance().isUnique(selected.getType(), value);
+            if(!unique)
+                throw new RuntimeException("The id is invalid");
         }
-        this.update();
+            String backup = selected.getAttribute(key);
+            selected.addAttribute(key, value);
+         try{
+            selected.refresh();
+            this.update();
+         }catch(RuntimeException ex){
+             selected.addAttribute(key, backup);
+             throw ex;
+         }
         return this;
     }
     
@@ -101,7 +113,7 @@ public class ElementEditor {
      * Update selection not yet implemented
      */
     private void update(){
-       // this.ref.fireUpdate(selected);
+       this.ref.fireUpdate(selected);
     }
     
 }

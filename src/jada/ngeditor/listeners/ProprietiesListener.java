@@ -18,8 +18,11 @@ package jada.ngeditor.listeners;
 import jada.ngeditor.controller.ElementEditor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 
@@ -27,7 +30,7 @@ import javax.swing.table.TableModel;
  *
  * @author cris
  */
-public class ProprietiesListener implements TableModelListener,ActionListener{
+public class ProprietiesListener implements TableModelListener{
     private ElementEditor editor = null;
     
     public ProprietiesListener(){
@@ -36,30 +39,27 @@ public class ProprietiesListener implements TableModelListener,ActionListener{
     
     @Override
     public void tableChanged(TableModelEvent e) {
-        if(e.getType() == TableModelEvent.UPDATE){
-          TableModel mod = (TableModel) e.getSource();
-          String proName = (String) mod.getValueAt(e.getLastRow(), 0);
-          String proVal = (String) mod.getValueAt(e.getLastRow(), 1);
-          if(proName != null && !proName.isEmpty()) {
-		    if(proVal == null || proVal.isEmpty()) {
-			editor.removeAttribute(proName);
-		    } else {
-			editor.setAttribute(proName, proVal);
-		    }
-                    
-		}
         
-          
+        if (e.getType() == TableModelEvent.UPDATE) {
+            TableModel mod = (TableModel) e.getSource();
+            String proName = (String) mod.getValueAt(e.getLastRow(), 0);
+            String proVal = (String) mod.getValueAt(e.getLastRow(), 1);
+            if (proName != null && !proName.isEmpty()) {
+                try{
+                if (proVal == null || proVal.isEmpty()) {
+                    editor.removeAttribute(proName);
+                } else {
+                    editor.setAttribute(proName, proVal);
+                }
+                }catch(Exception ex){
+                    JOptionPane.showMessageDialog(null,"Can't set the attribute. " + ex.getMessage());
+                }
+            }
         }
     }
     
     public void setEditor(ElementEditor editor){
         this.editor = editor;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        
     }
     
 }

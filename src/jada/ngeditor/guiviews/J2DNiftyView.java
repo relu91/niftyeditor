@@ -193,7 +193,7 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
         int w = this.getSize().width > 800 ? 800 : this.getSize().width;
         nifty.getRenderEngine().getRenderDevice().enableClip(0, 0, w, h);
         graphics2D = (Graphics2D) g;
-        graphics2D.setBackground(Color.darkGray);
+        graphics2D.setBackground(this.getBackground());
         done = nifty.update();
         nifty.render(true);
         graphics2D.setClip(0, 0, w, h); //need to set again caused to renderText

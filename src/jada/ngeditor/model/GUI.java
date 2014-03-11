@@ -112,21 +112,21 @@ public class GUI extends Observable{
         return this.screens;
     }
     public void addElementToParent(GElement child,GElement parent){
-        if(parent == null){
-        GScreen screen = (GScreen) child;
-        this.screens.add(screen);
-        this.currentS=screen;
-        root.appendChild(screen.toXml());
-        }
-        else if(parent.getType().equals(Types.SCREEN)){
-            GLayer temp =(GLayer) child;
+        if (parent == null) {
+            GScreen screen = (GScreen) child;
+            this.screens.add(screen);
+            this.currentS = screen;
+        } else if (parent.getType().equals(Types.SCREEN)) {
+            GLayer temp = (GLayer) child;
             this.currentlayers.add(temp);
-            if(this.currentS != null)
+            if (this.currentS != null) {
                 parent.addChild(child, false);
-        } else 
+            }
+        } else {
             parent.addChild(child, false);
+        }
         this.setChanged();
-        this.notifyObservers(new Action(Action.ADD,child));
+        this.notifyObservers(new Action(Action.ADD, child));
         this.clearChanged();
             
     }

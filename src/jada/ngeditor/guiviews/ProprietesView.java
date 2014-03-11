@@ -86,9 +86,9 @@ public class ProprietesView extends javax.swing.JPanel implements Observer{
     @Override
     public void update(Observable o, Object arg) {
        
-        Action act = (Action) arg;
-       
-        
+        Action act = (Action) arg; 
+         // create a safe zone where to edit the table without changing the element
+        this.jTable1.getModel().removeTableModelListener(listener);
         //Clear previous editing
         jTable1.clearSelection();
         jTable1.editCellAt(-1, -1);
@@ -101,8 +101,7 @@ public class ProprietesView extends javax.swing.JPanel implements Observer{
         }else{
             GUIEditor editor = (GUIEditor) o;
             GElement ele = act.getGUIElement();
-            // create a safe zone where to edit the table without changing the element
-            this.jTable1.getModel().removeTableModelListener(listener);
+           
             Map<String,String> attribut = ele.getAttributes();
             model.setNumRows(attribut.keySet().size());
             int line =0;

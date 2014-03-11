@@ -301,7 +301,10 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
             this.gui = (((GUIEditor)o));
             this.selecting=false;
            
-        }else{
+        }else if(act.getType() == Action.UPDATE){
+            this.selected.setBounds( act.getGUIElement().getBounds());
+            this.selecting=true;
+        } else{
             this.selecting=false;
         }
     }
