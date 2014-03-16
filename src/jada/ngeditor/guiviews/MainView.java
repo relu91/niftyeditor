@@ -110,7 +110,7 @@ public class MainView extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Nifty-Editor v. 0.5.7");
+        setTitle("Nifty-Editor v. 0.5.9");
         setBackground(new java.awt.Color(51, 51, 51));
 
         jPanel1.setMinimumSize(new java.awt.Dimension(50, 50));

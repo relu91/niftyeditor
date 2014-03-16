@@ -131,7 +131,7 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
      @Override
      public void mouseClicked(MouseEvent e) {
            this.gui.selectElement(e.getX(), e.getY());
-           
+           e.getComponent().requestFocus();
      }
 
     @Override

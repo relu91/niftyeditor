@@ -161,6 +161,7 @@ public abstract class GElement {
         
         
     }
+    
     public Map<String,String> getAttributes(){
       Map<String,String> res = new HashMap<String,String>();
       Types type = getType();
