@@ -18,6 +18,7 @@ import de.lessvoid.nifty.elements.Element;
 import jada.ngeditor.model.IDgenerator;
 import jada.ngeditor.model.Types;
 import jada.ngeditor.model.elements.GElement;
+import jada.ngeditor.model.elements.GScreen;
 
 /**
  *
@@ -91,15 +92,12 @@ public class ElementEditor {
     public void setEdited(GElement toEdit){
         selected=toEdit;
     }
-    public void setVisibile(boolean visibility){
-        selected.getNiftyElement().setVisible(visibility);
-    }
     public int getIndex(){
         return selected.getParent().getElements().indexOf(selected);
     }
     
     public void setVisibileSelected(boolean vis){
-        if(!this.selected.getType().equals(Types.SCREEN)){
+        if(!(this.selected instanceof GScreen)){
         if(vis){
             this.selected.getNiftyElement().showWithoutEffects();
         } else

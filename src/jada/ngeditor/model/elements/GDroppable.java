@@ -8,6 +8,7 @@ import de.lessvoid.nifty.controls.dragndrop.builder.DraggableBuilder;
 import de.lessvoid.nifty.controls.dragndrop.builder.DroppableBuilder;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
+import jada.ngeditor.model.visitor.Visitor;
 import org.w3c.dom.Element;
 
 /**
@@ -47,4 +48,9 @@ static{
         element.setAttribute("backgroundImage", "jada/ngeditor/resources/drop.png");
     }
     
+     @Override
+    public void accept(Visitor visitor) {
+        super.accept(visitor);
+        visitor.visit(this);
+    }
 }

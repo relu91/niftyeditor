@@ -20,6 +20,7 @@ import de.lessvoid.nifty.elements.Element;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
 import jada.ngeditor.model.exception.IllegalDropException;
+import jada.ngeditor.model.visitor.Visitor;
 
 
 /**
@@ -60,6 +61,11 @@ public class GButton extends GElement{
         return new GButton(id,ele);
     }
     
+     @Override
+    public void accept(Visitor visitor) {
+        super.accept(visitor);
+        visitor.visit(this);
+    }
     
 
     

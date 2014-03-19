@@ -7,6 +7,7 @@ package jada.ngeditor.model.elements;
 import de.lessvoid.nifty.controls.scrollpanel.builder.ScrollPanelBuilder;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
+import jada.ngeditor.model.visitor.Visitor;
 import org.w3c.dom.Element;
 
 /**
@@ -64,5 +65,10 @@ public class GScrollPanel extends GElement {
          if(key.equals("childLayout"))
              return "absolute";
          return super.getAttribute(key);
+    }
+      @Override
+    public void accept(Visitor visitor) {
+        super.accept(visitor);
+        visitor.visit(this);
     }
 }

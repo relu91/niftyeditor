@@ -27,6 +27,7 @@ import jada.ngeditor.model.elements.GLayer;
 import jada.ngeditor.model.elements.GScreen;
 import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.exception.NoProductException;
+import jada.ngeditor.model.visitor.toXmlVisitor;
 import jada.ngeditor.persistence.GUIReader;
 import jada.ngeditor.persistence.GUIWriter;
 import java.awt.Point;
@@ -121,6 +122,11 @@ public class GUIEditor extends Observable{
     
     
     public void saveGui(String filename) throws FileNotFoundException{
+        try {
+            gui.firstLevelVisit(new toXmlVisitor());
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(GUIEditor.class.getName()).log(Level.SEVERE, null, ex);
+        }
         writer.writeGUI(filename);
     }
     /**
@@ -165,7 +171,7 @@ public class GUIEditor extends Observable{
      * @param UID GElement to select
      */
     public void selectElement(GElement UID){
-        if(UID.getType().equals(Types.SCREEN)){
+        if(UID instanceof GScreen ){
             this.currentS = (GScreen) UID;
             this.currentlayers.clear();
             for(GElement lay : currentS.getElements()){
@@ -173,7 +179,7 @@ public class GUIEditor extends Observable{
             }
             this.currentL = this.currentlayers.peekLast();
             this.getGui().goTo(currentS);
-        }else if(UID.getType().equals(Types.LAYER)){
+        }else if(UID instanceof GLayer ){
             this.currentL = (GLayer)UID;
             if(!UID.getParent().equals(this.currentS)){
                 this.currentS = (GScreen) UID.getParent();
@@ -181,7 +187,7 @@ public class GUIEditor extends Observable{
             }
         }else{
             GElement temp = UID;
-            while(temp!= null && temp.getType() != Types.LAYER){
+            while(temp!= null && !(temp instanceof GLayer)){
                 temp = temp.getParent();
             }
             if(temp!= null && !temp.equals(this.currentL)){
@@ -235,7 +241,7 @@ public class GUIEditor extends Observable{
      * @return This editor useful for chains: editor.addElement(one,two).addElement(two,three);
      */
     public GUIEditor addElement(GElement child,GElement parent){
-        if(child.getType().equals(Types.SCREEN)){
+        if(child instanceof GScreen){
             this.currentS = (GScreen) child;
             this.currentL = null;
             this.currentlayers.clear();
@@ -244,8 +250,8 @@ public class GUIEditor extends Observable{
             }
             this.getGui().addScreen(currentS);
             this.getGui().goTo(currentS);
-        } else if(child.getType().equals(Types.LAYER)){
-            if(parent.getType().equals(Types.SCREEN)){
+        } else if(child instanceof GLayer){
+            if(parent instanceof GScreen){
                 this.getGui().addElement(child,parent);
             }else
                 throw new IllegalDropException("Can't add a layer to a simple element");
@@ -272,7 +278,7 @@ public class GUIEditor extends Observable{
      * 
      */
     public void addElement(GElement e,Point2D mouse){
-        if(e.getType().equals(Types.SCREEN)){
+        if(e instanceof GScreen){
             this.currentS = (GScreen) e;
             this.currentL = null;
             this.currentlayers.clear();
@@ -281,7 +287,7 @@ public class GUIEditor extends Observable{
             }
             this.getGui().addScreen(currentS);
             this.getGui().goTo(currentS);
-        } else if(e.getType().equals(Types.LAYER)){
+        } else if(e instanceof GLayer){
             if(this.currentS != null){
                 this.getGui().addElement(e,this.currentS);
             }else
@@ -327,7 +333,7 @@ public class GUIEditor extends Observable{
     
      public void removeSelected(){
         this.getGui().removeElement(selected);
-        if(selected.getType().equals(Types.LAYER)){
+        if(selected instanceof GLayer){
             this.currentlayers.remove(selected);
             if(this.currentlayers.size() > 0){
                 this.currentL = this.currentlayers.getLast();
@@ -361,7 +367,7 @@ public class GUIEditor extends Observable{
      * @param from 
      */
     public void move(Point2D to,GElement from){
-        if(from.getType().equals(""+Types.LAYER))
+        if(from instanceof GLayer)
             return;
         GElement ele = findElement(to);
         if(ele.equals(from))

@@ -20,7 +20,9 @@ import jada.ngeditor.listeners.actions.Action;
 import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.elements.GLayer;
 import jada.ngeditor.model.elements.GScreen;
+import jada.ngeditor.model.elements.GWindow;
 import jada.ngeditor.model.exception.IllegalDropException;
+import jada.ngeditor.model.visitor.Visitor;
 import java.awt.geom.Point2D;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -116,7 +118,7 @@ public class GUI extends Observable{
             GScreen screen = (GScreen) child;
             this.screens.add(screen);
             this.currentS = screen;
-        } else if (parent.getType().equals(Types.SCREEN)) {
+        } else if (parent instanceof GScreen) {
             GLayer temp = (GLayer) child;
             this.currentlayers.add(temp);
             if (this.currentS != null) {
@@ -146,7 +148,7 @@ public class GUI extends Observable{
     public void move(Point2D to,GElement toEle, GElement from){
         if(!toEle.equals(from)){
           de.lessvoid.nifty.elements.Element nTo ;
-           if(toEle.getType().equals(Types.WINDOW)){
+           if(toEle instanceof GWindow){
                 nTo = toEle.getNiftyElement().getNiftyControl(WindowControl.class).getContent();
            }else
                nTo = toEle.getNiftyElement();
@@ -170,11 +172,11 @@ public class GUI extends Observable{
 
    
     public void removeElement(GElement e){
-        if(e.getType().equals(Types.SCREEN)){
+        if(e instanceof GScreen){
             this.screens.remove(e);
             manager.removeScreen(e.getID());
         }
-        else if(e.getType().equals(Types.LAYER)){
+        else if(e instanceof GLayer){
             this.currentlayers.remove(e);
             manager.removeElement(manager.getCurrentScreen(), e.getNiftyElement());
         }
@@ -232,6 +234,18 @@ public class GUI extends Observable{
     
     public Collection<GLayer> getLayers(){
         return this.currentlayers;
+    }
+    
+    /**
+     * Simple method to visit the gui tree.
+     * NOTICE: this method iterate first level of the gui screens popup ecc.
+     * @param visit 
+     */
+    public void firstLevelVisit(Visitor visit){
+        for(GScreen screen : this.getScreens()){
+            screen.accept(visit);
+        }
+        
     }
 
     

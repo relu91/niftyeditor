@@ -18,6 +18,7 @@ package jada.ngeditor.model.elements;
 import de.lessvoid.nifty.builder.ImageBuilder;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
+import jada.ngeditor.model.visitor.Visitor;
 import java.util.Map;
 import org.w3c.dom.Element;
 
@@ -25,6 +26,7 @@ import org.w3c.dom.Element;
  *
  * @author cris
  */
+
 public class GImage extends GElement{
       static{
         GUIFactory.registerProduct(new GImage());
@@ -68,4 +70,9 @@ public class GImage extends GElement{
         element.setAttribute("height", "30%");
     }
     
+     @Override
+    public void accept(Visitor visitor) {
+        super.accept(visitor);
+        visitor.visit(this);
+    }
 }

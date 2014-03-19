@@ -20,6 +20,7 @@ import de.lessvoid.nifty.elements.Element;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
 import jada.ngeditor.model.exception.IllegalDropException;
+import jada.ngeditor.model.visitor.Visitor;
 /**
  *
  * @author cris
@@ -63,6 +64,10 @@ public class GRadioButton extends GElement {
         throw new IllegalDropException("You can not add elements to a radiobutton");
     }
 
-    
+     @Override
+    public void accept(Visitor visitor) {
+        super.accept(visitor);
+        visitor.visit(this);
+    }
     
 }

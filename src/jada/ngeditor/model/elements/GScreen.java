@@ -19,6 +19,7 @@ import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.screen.Screen;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
+import jada.ngeditor.model.visitor.Visitor;
 import java.util.Collection;
 import java.util.HashMap;
 import org.w3c.dom.Node;
@@ -100,5 +101,17 @@ public class GScreen extends GElement{
        
         return te;
     }
+
+    /**
+     *
+     * @param visitor
+     */
+    @Override
+    public void accept(Visitor visitor) {
+        super.accept(visitor);
+        visitor.visit(this);
+    }
+    
+    
     
 }

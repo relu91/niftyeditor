@@ -7,6 +7,7 @@ package jada.ngeditor.model.elements;
 import de.lessvoid.nifty.controls.dragndrop.builder.DraggableBuilder;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
+import jada.ngeditor.model.visitor.Visitor;
 import org.w3c.dom.Element;
 
 /**
@@ -46,4 +47,9 @@ public class GDraggable extends GElement{
        element.setAttribute("backgroundImage", "jada/ngeditor/resources/drag.png");
     }
     
+     @Override
+    public void accept(Visitor visitor) {
+        super.accept(visitor);
+        visitor.visit(this);
+    }
 }

@@ -19,6 +19,7 @@ import jada.ngeditor.guiviews.palettecomponents.NWidget;
 import jada.ngeditor.listeners.actions.Action;
 import jada.ngeditor.model.Types;
 import jada.ngeditor.model.elements.GElement;
+import jada.ngeditor.model.elements.GLayer;
 import java.awt.Rectangle;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -82,7 +83,7 @@ public class TrasferHandling extends TransferHandler implements Observer{
        else {
             try {
                GElement ele = (GElement) support.getTransferable().getTransferData(WidgetData.FLAVOR);
-               if(ele.getType().equals(""+Types.LAYER))
+               if(ele instanceof GLayer)
                         return false;
             } catch (UnsupportedFlavorException ex) {
                 Logger.getLogger(TrasferHandling.class.getName()).log(Level.SEVERE, null, ex);

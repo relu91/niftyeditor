@@ -30,6 +30,7 @@ import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.tools.SizeValue;
 import de.lessvoid.xml.xpp3.Attributes;
 import jada.ngeditor.model.Types;
+import jada.ngeditor.model.visitor.Visitor;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -344,6 +345,10 @@ public abstract class GElement {
          }
          nElement = builder.build(nifty, nifty.getCurrentScreen(), this.parent.getDropContext());
         
+    }
+    
+    public void accept(Visitor visitor){
+        visitor.visit(this);
     }
     public abstract GElement create(String id, org.w3c.dom.Element ele);
     public abstract void initDefault();

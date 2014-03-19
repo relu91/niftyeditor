@@ -17,6 +17,7 @@
 import de.lessvoid.nifty.builder.LayerBuilder;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
+import jada.ngeditor.model.visitor.Visitor;
 
 /**
  *
@@ -60,6 +61,10 @@ public class GLayer extends GElement{
        return new GLayer(id,ele);
     }
 
-   
+    @Override
+    public void accept(Visitor visitor) {
+        super.accept(visitor);
+        visitor.visit(this);
+    }
     
 }

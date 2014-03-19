@@ -18,6 +18,7 @@ import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.checkbox.builder.CheckboxBuilder;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
+import jada.ngeditor.model.visitor.Visitor;
 
 /**
  *
@@ -56,6 +57,11 @@ public class GCheckbox extends GElement{
         return new GCheckbox(id,ele);
     }
 
+     @Override
+    public void accept(Visitor visitor) {
+        super.accept(visitor);
+        visitor.visit(this);
+    }
    
     
 }

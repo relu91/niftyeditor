@@ -24,6 +24,7 @@ import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.listeners.GuiSelectionListener;
 import jada.ngeditor.listeners.actions.Action;
 import jada.ngeditor.model.Types;
+import jada.ngeditor.model.elements.GLayer;
 import jada.ngeditor.renderUtil.SoudDevicenull;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -127,7 +128,7 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
     }// </editor-fold>//GEN-END:initComponents
 
     private void HideButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HideButtonActionPerformed
-        this.manager.getElementEditor().setVisibile(false);
+        this.manager.getElementEditor().setVisibileSelected(false);
         this.selecting=false; //clear the screen from selection
     }//GEN-LAST:event_HideButtonActionPerformed
 
@@ -262,7 +263,7 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
     public void update(Observable o, Object arg) {
        
         Action act = (Action) arg;
-        if ((act.getType() == Action.SEL || act.getType() == Action.UPDATE) && !act.getGUIElement().getType().equals(Types.LAYER)) {
+        if ((act.getType() == Action.SEL || act.getType() == Action.UPDATE) && !(act.getGUIElement() instanceof GLayer)) {
             this.selected.setBounds(act.getGUIElement().getBounds());
             this.selecting = true;
         } else if (act.getType() == Action.NEW) {

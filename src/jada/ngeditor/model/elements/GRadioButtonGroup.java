@@ -7,6 +7,7 @@ package jada.ngeditor.model.elements;
 import de.lessvoid.nifty.controls.radiobutton.builder.RadioGroupBuilder;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
+import jada.ngeditor.model.visitor.Visitor;
 import org.w3c.dom.Element;
 
 /**
@@ -40,5 +41,9 @@ public class GRadioButtonGroup extends GElement {
         this.element.setAttribute("width", "0px");
         this.element.setAttribute("height", "0px");
     }
-    
+     @Override
+    public void accept(Visitor visitor) {
+        super.accept(visitor);
+        visitor.visit(this);
+    }
 }

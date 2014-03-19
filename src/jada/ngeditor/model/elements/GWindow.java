@@ -21,6 +21,7 @@ import de.lessvoid.nifty.controls.window.builder.WindowBuilder;
 import de.lessvoid.xml.xpp3.Attributes;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
+import jada.ngeditor.model.visitor.Visitor;
 import org.w3c.dom.Element;
 
 /**
@@ -82,5 +83,9 @@ public class GWindow extends GElement{
         
        
     }
-    
+     @Override
+    public void accept(Visitor visitor) {
+        super.accept(visitor);
+        visitor.visit(this);
+    }
 }

@@ -7,6 +7,7 @@ package jada.ngeditor.model.elements;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
 import jada.ngeditor.model.exception.IllegalDropException;
+import jada.ngeditor.model.visitor.Visitor;
 import org.w3c.dom.Element;
 
 /**
@@ -45,5 +46,9 @@ public class GHorizontalScrollbar extends GScrollbar{
     protected de.lessvoid.nifty.elements.Element getDropContext() {
         throw new IllegalDropException("You can not add elements to a scroolbar");
     }
-    
+     @Override
+    public void accept(Visitor visitor) {
+        super.accept(visitor);
+        visitor.visit(this);
+    }
 }

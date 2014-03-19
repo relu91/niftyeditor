@@ -17,6 +17,7 @@ package jada.ngeditor.model.elements;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
+import jada.ngeditor.model.visitor.Visitor;
 
 /**
  *
@@ -60,5 +61,9 @@ public class GPanel extends GElement{
     public GElement create(String id,org.w3c.dom.Element ele) {
         return new GPanel(id,ele);
     }
-    
+     @Override
+    public void accept(Visitor visitor) {
+        super.accept(visitor);
+        visitor.visit(this);
+    }
 }

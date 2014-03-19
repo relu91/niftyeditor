@@ -134,11 +134,11 @@ public class TreeGuiView extends javax.swing.JPanel implements Observer {
     }// </editor-fold>//GEN-END:initComponents
 
     private void HidePopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HidePopActionPerformed
-        this.currentGui.getElementEditor().setVisibile(false);
+        this.currentGui.getElementEditor().setVisibileSelected(false);
     }//GEN-LAST:event_HidePopActionPerformed
 
     private void ShowPopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShowPopActionPerformed
-        this.currentGui.getElementEditor().setVisibile(true);
+        this.currentGui.getElementEditor().setVisibileSelected(true);
     }//GEN-LAST:event_ShowPopActionPerformed
 
     private void DelPopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DelPopActionPerformed
@@ -158,7 +158,7 @@ public class TreeGuiView extends javax.swing.JPanel implements Observer {
     public void update(Observable o, Object arg) {
         Action act = (Action) arg;
         if (act.getType() == Action.ADD) {
-            if (!act.getGUIElement().getType().equals(Types.SCREEN)) {
+            if (!(act.getGUIElement() instanceof GScreen)) {
                 GElement e = act.getGUIElement().getParent();
                 DefaultMutableTreeNode parent = this.searchNode(e);
                 parent.add(new DefaultMutableTreeNode(act.getGUIElement()));
