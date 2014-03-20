@@ -54,8 +54,8 @@ public class GDropDown extends GElement{
 
     @Override
     public void initDefault() {
-      element.setAttribute("width", "100px");
-      element.setAttribute("name", ""+Types.DROPDOWN);
+      attributes.put("width", "100px");
+      
     }
     
      @Override

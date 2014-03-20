@@ -43,11 +43,10 @@ public class GDraggable extends GElement{
 
     @Override
     public void initDefault() {
-        element.setAttribute("name", ""+this.getType());
-       element.setAttribute("width", "100px");
-       element.setAttribute("height", "100px");
-       element.setAttribute("childLayout", "center");
-       element.setAttribute("backgroundImage", "jada/ngeditor/resources/drag.png");
+       attributes.put("width", "100px");
+       attributes.put("height", "100px");
+       attributes.put("childLayout", "center");
+       attributes.put("backgroundImage", "jada/ngeditor/resources/drag.png");
     }
     
      @Override

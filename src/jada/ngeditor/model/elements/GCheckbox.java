@@ -16,8 +16,10 @@ package jada.ngeditor.model.elements;
 
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.checkbox.builder.CheckboxBuilder;
+import de.lessvoid.nifty.elements.Element;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
+import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.visitor.Visitor;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -47,11 +49,9 @@ public class GCheckbox extends GElement{
         return Types.CHECKBOX;
     }
 
-    
-
     @Override
-    public void initDefault() {
-         element.setAttribute("name",Types.CHECKBOX.toString());
+    protected Element getDropContext() {
+        throw new IllegalDropException("You can't add elements to a checkbox");
     }
 
     @Override
@@ -63,6 +63,11 @@ public class GCheckbox extends GElement{
     public void accept(Visitor visitor) {
         super.accept(visitor);
         visitor.visit(this);
+    }
+
+    @Override
+    public void initDefault() {
+       
     }
    
     

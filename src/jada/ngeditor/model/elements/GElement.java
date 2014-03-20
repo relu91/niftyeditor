@@ -39,13 +39,10 @@ import java.util.Map;
 import javax.xml.XMLConstants;
 import javax.xml.bind.annotation.XmlAnyAttribute;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.namespace.QName;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 
 /**
  *
@@ -69,6 +66,7 @@ public abstract class GElement {
     protected String name;
     private String oldStyle;
     private ArrayList<String> toBeRemoved = new ArrayList<String>();
+    protected HashMap<String,String> attributes=new HashMap<String, String>();
     
     protected GElement(){
         element=null;
@@ -87,6 +85,7 @@ public abstract class GElement {
        this.children = new LinkedList<GElement>();
        this.UniID=UID;
        UID++;
+       attributes = new HashMap<String, String>();
        } else 
            throw new IllegalArgumentException("Element null");
     }
@@ -109,7 +108,7 @@ public abstract class GElement {
        this.UniID=UID;
        UID++; 
        this.element.setAttribute("id", id);
-       
+       attributes = new HashMap<String, String>();
             
        
     }
@@ -180,14 +179,10 @@ public abstract class GElement {
     @XmlAnyAttribute
     public Map<QName,String> getXmlAttributes(){
         Map<QName,String> res = new HashMap<QName, String>();
-        NamedNodeMap attr = this.element.getAttributes();
-        //Fixe me attributi temporanei copiati dal dom element
-        for(int i=0;i<attr.getLength();i++){
-            Node e = attr.item(i);
-            String name = e.getNodeName();
-            if(!name.equals("id") && !name.equals("name")){
-               QName qname = QName.valueOf(XMLConstants.NULL_NS_URI+name);
-                res.put(qname, e.getNodeValue()); 
+        for (String s : this.attributes.keySet()) {
+            if (!s.equals("id") && !s.equals("name")) {
+                QName qname = QName.valueOf(XMLConstants.NULL_NS_URI + s);
+                res.put(qname, this.attributes.get(s));
             }
         }
         return res;
@@ -217,6 +212,8 @@ public abstract class GElement {
     }
     
     public void removeAttribute(String key){
+        this.attributes.remove(key);
+        //Fix me : remove element
         this.element.removeAttribute(key);
         if(key.equals("style")){
             this.nElement.setStyle("");
@@ -249,7 +246,7 @@ public abstract class GElement {
         }else if(key.equals("style")) {
             this.oldStyle = att.get("style");
         }
-        
+        attributes.put(key, val);
         this.element.setAttribute(key, val);
         att.set(key, val);
     }
@@ -318,12 +315,6 @@ public abstract class GElement {
                 }
             }
         });
-         final HashMap<String,String> attributes = new HashMap<String,String>();
-        for(int i =0;i<element.getAttributes().getLength();i++){
-            Node n = element.getAttributes().item(i);
-            attributes.put(n.getNodeName(),n.getNodeValue());
-            
-        }
          for(String sel : attributes.keySet()){
                builder.set(sel, attributes.get(sel));
          }
@@ -362,12 +353,6 @@ public abstract class GElement {
     }
     public abstract Types getType();
     public void createNiftyElement(Nifty nifty){
-        final HashMap<String,String> attributes = new HashMap<String,String>();
-        for(int i =0;i<element.getAttributes().getLength();i++){
-            Node n = element.getAttributes().item(i);
-            attributes.put(n.getNodeName(),n.getNodeValue());
-            
-        }
          for(String sel : attributes.keySet()){
                builder.set(sel, attributes.get(sel));
          }

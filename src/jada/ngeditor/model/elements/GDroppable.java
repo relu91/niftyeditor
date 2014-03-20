@@ -44,11 +44,11 @@ static{
 
     @Override
     public void initDefault() {
-        element.setAttribute("name", ""+Types.DROPPABLE);
-       element.setAttribute("width", "100px");
-       element.setAttribute("height", "100px");
-       element.setAttribute("childLayout", "center");
-        element.setAttribute("backgroundImage", "jada/ngeditor/resources/drop.png");
+       
+       attributes.put("width", "100px");
+       attributes.put("height", "100px");
+       attributes.put("childLayout", "center");
+       attributes.put("backgroundImage", "jada/ngeditor/resources/drop.png");
     }
     
      @Override

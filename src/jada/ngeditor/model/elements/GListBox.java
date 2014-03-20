@@ -55,8 +55,8 @@ public class GListBox extends GElement{
 
     @Override
     public void initDefault() {
-        element.setAttribute("name", "listBox");
-        element.setAttribute("width", "50%");
+       attributes.put("name", "listBox");
+        attributes.put("width", "50%");
     }
     
      @Override

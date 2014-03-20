@@ -79,12 +79,9 @@ public class GWindow extends GElement{
 
     @Override
     public void initDefault() {
-        element.setAttribute("name", Types.WINDOW.toString());
-        element.setAttribute("width", "50%");
-        element.setAttribute("height", "30%");
-        element.setAttribute("title", "window");
-        
-       
+        attributes.put("width", "50%");
+        attributes.put("height", "30%");
+        attributes.put("title", "window");
     }
      @Override
     public void accept(Visitor visitor) {

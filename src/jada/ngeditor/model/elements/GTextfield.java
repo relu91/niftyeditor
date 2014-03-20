@@ -58,8 +58,8 @@ public class GTextfield extends GElement{
 
     @Override
     public void initDefault() {
-        element.setAttribute("name", ""+Types.TEXTFIELD);
-        element.setAttribute("width", "50%");
+        attributes.put("name", ""+Types.TEXTFIELD);
+        attributes.put("width", "50%");
        
     }
 

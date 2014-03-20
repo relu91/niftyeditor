@@ -53,10 +53,10 @@ public class GPanel extends GElement{
 
     @Override
     public void initDefault() {
-      element.setAttribute("width", "50%");
-      element.setAttribute("height", "30%");
-      element.setAttribute("childLayout", "absolute");
-      element.setAttribute("style", "nifty-panel-simple");
+      attributes.put("width", "50%");
+      attributes.put("height", "30%");
+      attributes.put("childLayout", "absolute");
+      attributes.put("style", "nifty-panel-simple");
     }
 
     @Override

@@ -51,9 +51,9 @@ public class GButton extends GElement{
     
     @Override
     public void initDefault() {
-        element.setAttribute("name", Types.BUTTON.toString());
-        element.setAttribute("childLayout", "center");
-        element.setAttribute("label", this.getID());
+       // attributes.put("name", Types.BUTTON.toString());
+        attributes.put("childLayout", "center");
+        attributes.put("label", this.getID());
         
     }
 

@@ -58,7 +58,7 @@ public class GRadioButton extends GElement {
 
     @Override
     public void initDefault() {
-        element.setAttribute("name", ""+Types.RADIOBUTTON);
+       
     }
     
      @Override

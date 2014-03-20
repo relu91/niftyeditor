@@ -55,11 +55,11 @@ public class GLabel extends GElement{
 
     @Override
     public void initDefault() {
-        element.setAttribute("name",""+Types.LABEL);
-	element.setAttribute("text", element.getAttribute("id"));
-	element.setAttribute("width", "100px");
-	element.setAttribute("height", "50px");
-        element.setAttribute("font","aurulent-sans-16.fnt");
+       
+	attributes.put("text", element.getAttribute("id"));
+	attributes.put("width", "100px");
+	attributes.put("height", "50px");
+        attributes.put("font","aurulent-sans-16.fnt");
     }
 
     @Override

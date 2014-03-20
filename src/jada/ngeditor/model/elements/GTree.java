@@ -43,10 +43,10 @@ static{
 
     @Override
     public void initDefault() {
-      element.setAttribute("name", Types.NIFTYTREEBOX.toString());
-      element.setAttribute("width", "30%");
-      element.setAttribute("height", "50%");
-      element.setAttribute("childLayout", "vertical");
+      
+      attributes.put("width", "30%");
+      attributes.put("height", "50%");
+      attributes.put("childLayout", "vertical");
     }
     
      @Override

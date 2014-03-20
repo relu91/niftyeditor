@@ -41,8 +41,7 @@ public class GVerticalScrollbar extends GScrollbar{
 
     @Override
     public void initDefault() {
-        element.setAttribute("name", ""+Types.VERTICALSCROLLBAR);
-        element.setAttribute("height", "50%");
+       attributes.put("height", "50%");
     }
     
      @Override

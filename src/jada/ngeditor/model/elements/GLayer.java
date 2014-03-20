@@ -54,7 +54,7 @@ public class GLayer extends GElement{
 
     @Override
     public void initDefault() {
-       element.setAttribute("childLayout", "absolute");
+      attributes.put("childLayout", "absolute");
        
     }
 

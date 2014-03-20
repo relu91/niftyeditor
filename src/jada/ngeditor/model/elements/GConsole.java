@@ -66,9 +66,7 @@ public class GConsole extends GElement{
 
     @Override
     public void initDefault() { 
-    element.setAttribute("name", ""+Types.NIFTYCONSOLE);
-     element.setAttribute("width", "50%");
-      
+        attributes.put("width", "50%");
     }
     @Override
     protected de.lessvoid.nifty.elements.Element getDropContext() {

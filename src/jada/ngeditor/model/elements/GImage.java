@@ -66,9 +66,9 @@ public class GImage extends GElement{
 
     @Override
     public void initDefault() {
-        element.setAttribute("filename", "jada/ngeditor/resources/noImage.png");
-        element.setAttribute("width", "31%");
-        element.setAttribute("height", "30%");
+        attributes.put("filename", "jada/ngeditor/resources/noImage.png");
+        attributes.put("width", "31%");
+        attributes.put("height", "30%");
     }
     
      @Override

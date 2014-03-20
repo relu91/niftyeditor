@@ -41,8 +41,7 @@ public class GHorizontalScrollbar extends GScrollbar{
 
     @Override
     public void initDefault() {
-         element.setAttribute("name", ""+Types.HORIZONTALSCROLLBAR);
-         element.setAttribute("width", "50%");
+         attributes.put("width", "50%");
     }
     
      @Override

@@ -43,9 +43,9 @@ public class GImageSelect extends GElement{
 
     @Override
     public void initDefault() {
-       element.setAttribute("name", Types.IMAGESELECT.toString());
-      element.setAttribute("width", "100px");
-      element.setAttribute("height", "100px");
+       attributes.put("name", Types.IMAGESELECT.toString());
+      attributes.put("width", "100px");
+      attributes.put("height", "100px");
     }
     
      @Override

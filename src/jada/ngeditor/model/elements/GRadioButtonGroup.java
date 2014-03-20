@@ -41,8 +41,8 @@ public class GRadioButtonGroup extends GElement {
 
     @Override
     public void initDefault() {
-        this.element.setAttribute("width", "0px");
-        this.element.setAttribute("height", "0px");
+       attributes.put("width", "0px");
+        attributes.put("height", "0px");
     }
      @Override
     public void accept(Visitor visitor) {
