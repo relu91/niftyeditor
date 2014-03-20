@@ -19,11 +19,13 @@ import de.lessvoid.nifty.controls.checkbox.builder.CheckboxBuilder;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
 import jada.ngeditor.model.visitor.Visitor;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author cris
  */
+@XmlRootElement(name="control")
 public class GCheckbox extends GElement{
      static{
         GUIFactory.registerProduct(new GCheckbox());
@@ -38,7 +40,7 @@ public class GCheckbox extends GElement{
          if(!docElement.getTagName().equals("control"))
           throw new IllegalArgumentException("Illegal tag name");
          super.builder = new CheckboxBuilder(id);
-        
+        this.name="checkbox";
     }
     @Override
     public Types getType() {

@@ -8,12 +8,14 @@ import de.lessvoid.nifty.controls.scrollpanel.builder.ScrollPanelBuilder;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
 import jada.ngeditor.model.visitor.Visitor;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.w3c.dom.Element;
 
 /**
  *
  * @author cris
  */
+@XmlRootElement(name="control")
 public class GScrollPanel extends GElement {
     
      static{
@@ -32,7 +34,7 @@ public class GScrollPanel extends GElement {
       if(!docElement.getTagName().equals("control"))
           throw new IllegalArgumentException("Illegal tag name");
       builder = new ScrollPanelBuilder(id);
-      
+      name="scrollPanel";
       
     }
     @Override

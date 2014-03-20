@@ -19,12 +19,14 @@ import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
 import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.visitor.Visitor;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.w3c.dom.Element;
 
 /**
  *
  * @author cris
  */
+@XmlRootElement(name="control")
 public class GListBox extends GElement{
      static{
          GUIFactory.registerProduct(new GListBox());
@@ -37,7 +39,7 @@ public class GListBox extends GElement{
       if(!docElement.getTagName().equals(Types.CONTROL_TAG))
           throw new IllegalArgumentException("Illegal tag name");
       builder = new ListBoxBuilder(id);
-      
+      name="listBox";
     }
     @Override
     public Types getType() {

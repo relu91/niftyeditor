@@ -94,13 +94,15 @@ public class GUI extends Observable{
     }
     
     protected GUI(Nifty nifty,Document doc){
-        this.manager = nifty;
+       this.manager = nifty;
        this.screens = new LinkedList<GScreen> ();
        this.currentlayers = new LinkedList<GLayer> ();
        this.currentS = null;  
        document = doc;
        root = (Element) document.getElementsByTagName("nifty").item(0);
        this.GUIID++;
+       this.useControls.setFilename("nifty-default-controls.xml");
+       this.useStyles.setFilename("nifty-default-styles.xml");
     }
     
     public DOMSource getSource(){

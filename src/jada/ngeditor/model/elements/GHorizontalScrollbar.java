@@ -8,12 +8,14 @@ import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
 import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.visitor.Visitor;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.w3c.dom.Element;
 
 /**
  *
  * @author cris
  */
+@XmlRootElement(name="control")
 public class GHorizontalScrollbar extends GScrollbar{
       static{
         GUIFactory.registerProduct(new GHorizontalScrollbar());
@@ -21,6 +23,7 @@ public class GHorizontalScrollbar extends GScrollbar{
     
     private GHorizontalScrollbar(String id,Element ele){
         super(id,ele,false);
+        this.name="horizontalScrollbar";
     }
 
     private GHorizontalScrollbar() {

@@ -9,12 +9,14 @@ import de.lessvoid.nifty.controls.dragndrop.builder.DroppableBuilder;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
 import jada.ngeditor.model.visitor.Visitor;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.w3c.dom.Element;
 
 /**
  *
  * @author cris
  */
+@XmlRootElement(name="control")
 public class GDroppable extends GElement {
 static{
         GUIFactory.registerProduct(new GDroppable());
@@ -24,6 +26,7 @@ static{
     public GDroppable(String id, Element docElement) throws IllegalArgumentException {
         super(id, docElement);
         this.builder = new DroppableBuilder(id);
+        this.name = "droppable";
     }
 
     private GDroppable() {

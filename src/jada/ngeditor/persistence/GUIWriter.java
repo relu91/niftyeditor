@@ -15,22 +15,21 @@
 package jada.ngeditor.persistence;
 
 import jada.ngeditor.model.GUI;
+import jada.ngeditor.model.utils.ClassUtils;
+import jada.ngeditor.model.elements.GButton;
 import jada.ngeditor.model.elements.GImage;
 import jada.ngeditor.model.elements.GLayer;
 import jada.ngeditor.model.elements.GPanel;
 import jada.ngeditor.model.elements.GScreen;
 import java.io.*;
+import java.lang.annotation.Annotation;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.PropertyException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -40,9 +39,10 @@ public class GUIWriter {
     private final GUI gui;
     private final Marshaller m;
     
-    public GUIWriter(GUI gui)throws JAXBException{
+    public GUIWriter(GUI gui)throws JAXBException, ClassNotFoundException, IOException{
         this.gui = gui;
-        JAXBContext jc = JAXBContext.newInstance(GUI.class,GScreen.class,GLayer.class,GPanel.class,GImage.class);
+        Class[] classes = ClassUtils.getClasses("jada.ngeditor.model", new XmlClassPredicate());
+        JAXBContext jc = JAXBContext.newInstance(classes);
         m = jc.createMarshaller();
         m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
     }
@@ -54,7 +54,18 @@ public class GUIWriter {
     }
      public InputStream getDocumentStream() throws Exception {
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        m.marshal(gui, System.out);
         m.marshal(gui, buffer);
         return new ByteArrayInputStream(buffer.toByteArray());
+    }
+     
+    private class XmlClassPredicate implements ClassUtils.Predicate<Class>{
+
+        @Override
+        public boolean apply(Class object) {
+            Annotation annotation = object.getAnnotation(XmlRootElement.class);
+            return annotation != null;
+        }
+        
     }
 }

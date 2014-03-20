@@ -15,7 +15,7 @@
 package jada.ngeditor.model;
 
 import de.lessvoid.nifty.Nifty;
-import jada.ngeditor.model.annotation.ClassUtils;
+import jada.ngeditor.model.utils.ClassUtils;
 import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.exception.NoProductException;
 import java.io.IOException;

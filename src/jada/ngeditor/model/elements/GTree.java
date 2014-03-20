@@ -9,12 +9,14 @@ import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
 import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.visitor.Visitor;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.w3c.dom.Element;
 
 /**
  *
  * @author cris
  */
+@XmlRootElement(name="control")
 public class GTree extends GElement{
 static{
          GUIFactory.registerProduct(new GTree());
@@ -23,6 +25,7 @@ static{
     public GTree(String id, Element docElement) throws IllegalArgumentException {
         super(id, docElement);
         this.builder = new TreeBoxBuilder(id);
+        this.name="nifty-tree-box";
     }
 
     public GTree() {

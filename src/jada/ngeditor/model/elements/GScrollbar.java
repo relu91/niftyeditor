@@ -5,11 +5,13 @@
 package jada.ngeditor.model.elements;
 
 import de.lessvoid.nifty.controls.scrollbar.builder.ScrollbarBuilder;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author cris
  */
+
 public abstract class GScrollbar extends GElement{
     
     protected GScrollbar(){

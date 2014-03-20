@@ -38,10 +38,13 @@ import java.util.LinkedList;
 import java.util.Map;
 import javax.xml.XMLConstants;
 import javax.xml.bind.annotation.XmlAnyAttribute;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.namespace.QName;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 /**
@@ -56,10 +59,14 @@ public abstract class GElement {
     private int UniID;
     @XmlTransient
     protected GElement parent;
+    @XmlID
+    @XmlAttribute(name="id")
     protected  String id;
     protected final org.w3c.dom.Element element;
     protected Element nElement;
     protected ElementBuilder builder;
+    @XmlAttribute
+    protected String name;
     private String oldStyle;
     private ArrayList<String> toBeRemoved = new ArrayList<String>();
     
@@ -136,8 +143,7 @@ public abstract class GElement {
             this.element.appendChild(toAdd.element);
         
     }
-    
-    
+    @XmlTransient
     public String getID(){
         return id;
     }
@@ -174,11 +180,14 @@ public abstract class GElement {
     @XmlAnyAttribute
     public Map<QName,String> getXmlAttributes(){
         Map<QName,String> res = new HashMap<QName, String>();
-        Map<String,String> attr = this.getAttributes();
-        for(String s : attr.keySet()){
-            if(!attr.get(s).equals("")){
-            QName name = QName.valueOf(XMLConstants.NULL_NS_URI+s);
-            res.put(name, attr.get(s));
+        NamedNodeMap attr = this.element.getAttributes();
+        //Fixe me attributi temporanei copiati dal dom element
+        for(int i=0;i<attr.getLength();i++){
+            Node e = attr.item(i);
+            String name = e.getNodeName();
+            if(!name.equals("id") && !name.equals("name")){
+               QName qname = QName.valueOf(XMLConstants.NULL_NS_URI+name);
+                res.put(qname, e.getNodeValue()); 
             }
         }
         return res;
@@ -329,7 +338,6 @@ public abstract class GElement {
         if(nElement != null)
             nif = nElement.getNifty();
         nElement = parent.nElement.findElementById(id);
-        System.out.println("nElement:"+nElement+" "+id);
     }
     @Override
     public String toString(){

@@ -19,12 +19,14 @@ import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
 import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.visitor.Visitor;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.w3c.dom.Element;
 
 /**
  *
  * @author cris
  */
+@XmlRootElement(name="control")
 public class GDropDown extends GElement{
     static{
         GUIFactory.registerProduct(new GDropDown());
@@ -37,6 +39,7 @@ public class GDropDown extends GElement{
     private GDropDown(String id,org.w3c.dom.Element docElement){
         super(id,docElement);
         super.builder = new DropDownBuilder(id);
+        this.name="dropDown";
     }
     
     @Override

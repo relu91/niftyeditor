@@ -16,17 +16,17 @@ package jada.ngeditor.model.elements;
 
 
 import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
-import de.lessvoid.nifty.elements.Element;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
-import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.visitor.Visitor;
+import javax.xml.bind.annotation.XmlRootElement;
 
 
 /**
  *
  * @author cris
  */
+@XmlRootElement(name="control")
 public class GButton extends GElement{
     static{
         GUIFactory.registerProduct(new GButton());
@@ -41,6 +41,7 @@ public class GButton extends GElement{
          if(!docElement.getTagName().equals(Types.CONTROL_TAG))
           throw new IllegalArgumentException("Illegal tag name");
          this.builder = new ButtonBuilder(this.getID());
+         this.name="button";
         
     }
     @Override

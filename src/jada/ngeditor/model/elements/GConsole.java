@@ -23,12 +23,14 @@ import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
 import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.visitor.Visitor;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.w3c.dom.Element;
 
 /**
  *
  * @author cris
  */
+@XmlRootElement(name="control")
 public class GConsole extends GElement{
     static{
         GUIFactory.registerProduct(new GConsole());
@@ -43,7 +45,7 @@ public class GConsole extends GElement{
       if(!docElement.getTagName().equals("control"))
           throw new IllegalArgumentException("Illegal tag name");
       super.builder = new de.lessvoid.nifty.controls.console.builder.ConsoleBuilder(id);
-    
+      this.name="nifty-console";
     }
     @Override
     public Types getType() {

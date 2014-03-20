@@ -8,12 +8,14 @@ import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
 import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.visitor.Visitor;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.w3c.dom.Element;
 
 /**
  *
  * @author cris
  */
+@XmlRootElement(name="control")
 public class GVerticalScrollbar extends GScrollbar{
     static{
          GUIFactory.registerProduct(new GVerticalScrollbar());
@@ -25,6 +27,7 @@ public class GVerticalScrollbar extends GScrollbar{
     
     public GVerticalScrollbar(String id, Element docElement) throws IllegalArgumentException {
         super(id, docElement, true);
+        name="verticalScrollbar";
     }
     @Override
     public Types getType() {

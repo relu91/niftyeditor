@@ -73,7 +73,7 @@ public class GUIEditor extends Observable{
      * @throws ParserConfigurationException if controller failed to create
      * a valid document instance
      */
-    public void createNewGui(Nifty nifty) throws ParserConfigurationException, JAXBException{
+    public void createNewGui(Nifty nifty) throws ParserConfigurationException, JAXBException, ClassNotFoundException, IOException{
         gui= GUIFactory.getInstance().createGUI(nifty);
         GScreen screen = (GScreen) GUIFactory.getInstance().newGElement(""+Types.SCREEN);
         getGui().addScreen(screen);
@@ -105,6 +105,7 @@ public class GUIEditor extends Observable{
        for(String sel : nifty.getAllScreensName()){
                     nifty.removeScreen(sel);
        }
+       writer = new GUIWriter(gui);
       nifty.scheduleEndOfFrameElementAction(new Reload(nifty, screen.getID()), new EndNotify() {
 
             @Override
@@ -466,6 +467,7 @@ public class GUIEditor extends Observable{
             try {
                 nifty.fromXml(""+getGui(),writer.getDocumentStream() ,
                              this.screen);
+                
                 reloadAfterFresh();
                 nifty.getCurrentScreen().getFocusHandler().resetFocusElements();
             } catch (Exception ex) {

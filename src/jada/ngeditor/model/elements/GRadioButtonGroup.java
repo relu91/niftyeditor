@@ -8,12 +8,14 @@ import de.lessvoid.nifty.controls.radiobutton.builder.RadioGroupBuilder;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
 import jada.ngeditor.model.visitor.Visitor;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.w3c.dom.Element;
 
 /**
  *
  * @author cris
  */
+@XmlRootElement(name="control")
 public class GRadioButtonGroup extends GElement {
     static{
          GUIFactory.registerProduct(new GRadioButtonGroup());
@@ -25,6 +27,7 @@ public class GRadioButtonGroup extends GElement {
     public GRadioButtonGroup(String id , Element ele){
         super(id,ele);
         this.builder = new RadioGroupBuilder(id);
+        name="radioButtonGroup";
     }
     @Override
     public Types getType() {

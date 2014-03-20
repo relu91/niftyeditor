@@ -8,12 +8,14 @@ import de.lessvoid.nifty.controls.dragndrop.builder.DraggableBuilder;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
 import jada.ngeditor.model.visitor.Visitor;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.w3c.dom.Element;
 
 /**
  *
  * @author cris
  */
+@XmlRootElement(name="control")
 public class GDraggable extends GElement{
     static{
         GUIFactory.registerProduct(new GDraggable());
@@ -23,6 +25,7 @@ public class GDraggable extends GElement{
     public GDraggable(String id, Element docElement) throws IllegalArgumentException {
         super(id, docElement);
         this.builder = new DraggableBuilder(id);
+        this.name="draggable";
     }
 
     public GDraggable() {

@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
@@ -251,6 +252,12 @@ public class MainView extends javax.swing.JFrame {
                editor.addObserver(proprietesView2);
                editor.createNewGui(cont.getNifty()); 
            }
+        } catch (IOException ex) {
+            Logger.getLogger(MainView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JAXBException ex) {
+            Logger.getLogger(MainView.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParserConfigurationException ex) {
             Logger.getLogger(MainView.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -290,7 +297,9 @@ public class MainView extends javax.swing.JFrame {
        }
        } catch (FileNotFoundException ex) {
           Logger.getLogger(MainView.class.getName()).log(Level.SEVERE, null, ex);
-       }
+       } catch (JAXBException ex) {
+            Logger.getLogger(MainView.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void CheckPaneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckPaneActionPerformed
