@@ -27,7 +27,7 @@ import jada.ngeditor.model.elements.GLayer;
 import jada.ngeditor.model.elements.GScreen;
 import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.exception.NoProductException;
-import jada.ngeditor.model.visitor.toXmlVisitor;
+import jada.ngeditor.model.visitor.VisitorAdapter;
 import jada.ngeditor.persistence.GUIReader;
 import jada.ngeditor.persistence.GUIWriter;
 import java.awt.Point;
@@ -41,6 +41,7 @@ import java.util.LinkedList;
 import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
@@ -72,7 +73,7 @@ public class GUIEditor extends Observable{
      * @throws ParserConfigurationException if controller failed to create
      * a valid document instance
      */
-    public void createNewGui(Nifty nifty) throws ParserConfigurationException{
+    public void createNewGui(Nifty nifty) throws ParserConfigurationException, JAXBException{
         gui= GUIFactory.getInstance().createGUI(nifty);
         GScreen screen = (GScreen) GUIFactory.getInstance().newGElement(""+Types.SCREEN);
         getGui().addScreen(screen);
@@ -121,12 +122,7 @@ public class GUIEditor extends Observable{
     }
     
     
-    public void saveGui(String filename) throws FileNotFoundException{
-        try {
-            gui.firstLevelVisit(new toXmlVisitor());
-        } catch (ParserConfigurationException ex) {
-            Logger.getLogger(GUIEditor.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public void saveGui(String filename) throws FileNotFoundException, JAXBException{
         writer.writeGUI(filename);
     }
     /**

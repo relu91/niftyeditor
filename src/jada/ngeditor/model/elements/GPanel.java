@@ -18,11 +18,13 @@ import de.lessvoid.nifty.builder.PanelBuilder;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
 import jada.ngeditor.model.visitor.Visitor;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author cris
  */
+@XmlRootElement(name="panel")
 public class GPanel extends GElement{
     static{
          GUIFactory.registerProduct(new GPanel());

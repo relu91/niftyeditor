@@ -36,6 +36,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import javax.xml.XMLConstants;
+import javax.xml.bind.annotation.XmlAnyAttribute;
+import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.namespace.QName;
 import org.w3c.dom.Node;
 
 /**
@@ -45,8 +51,10 @@ import org.w3c.dom.Node;
 public abstract class GElement {
     
     static private int UID = 0;
+    @XmlElementRef
     private LinkedList<GElement> children;
     private int UniID;
+    @XmlTransient
     protected GElement parent;
     protected  String id;
     protected final org.w3c.dom.Element element;
@@ -152,6 +160,7 @@ public abstract class GElement {
 	int eh = nElement.getHeight();
 	return new java.awt.Rectangle(ex, ey, ew, eh).contains(point.getX(), point.getY());
     }
+    @XmlTransient
     public GElement getParent(){
         return this.parent;
     }
@@ -162,7 +171,18 @@ public abstract class GElement {
         
         
     }
-    
+    @XmlAnyAttribute
+    public Map<QName,String> getXmlAttributes(){
+        Map<QName,String> res = new HashMap<QName, String>();
+        Map<String,String> attr = this.getAttributes();
+        for(String s : attr.keySet()){
+            if(!attr.get(s).equals("")){
+            QName name = QName.valueOf(XMLConstants.NULL_NS_URI+s);
+            res.put(name, attr.get(s));
+            }
+        }
+        return res;
+    }
     public Map<String,String> getAttributes(){
       Map<String,String> res = new HashMap<String,String>();
       Types type = getType();

@@ -37,24 +37,6 @@ import javax.swing.UnsupportedLookAndFeelException;
  * @author cris
  */
 public class NiftyEditor {
-    static {
-        try {
-            System.out.println("Loding all gui components");
-            String classPack = "jada.ngeditor.model.elements";
-            for(Types type : Types.values()){
-              if(!type.equals(Types.NIFTYCONSOLE) && !type.equals(Types.NIFTYTREEBOX) ){
-              String suffix = "G"+Character.toUpperCase(type.toString().charAt(0));
-              String name = suffix+type.toString().substring(1);
-              Class.forName(classPack+"."+name);
-              }
-            }
-            Class.forName(classPack+"."+"GConsole");
-            Class.forName(classPack+"."+"GTree");
-            System.out.println("Done");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(NiftyEditor.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
     private static java.awt.Color line = new java.awt.Color(17,229,229);
     /**
      * @param args the command line arguments
@@ -71,6 +53,8 @@ public class NiftyEditor {
               g.setComposite(AlphaComposite.Clear);
               g.setColor(line);
               g.setPaintMode();
+              g.setColor(Color.DARK_GRAY);
+              g.fillRect(10,205,280,5);
               g.fillRect(10,205,130,5);
               g.setColor(Color.black);
               g.drawRect(10,205,130,5);

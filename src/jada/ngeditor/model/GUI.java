@@ -21,12 +21,17 @@ import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.elements.GLayer;
 import jada.ngeditor.model.elements.GScreen;
 import jada.ngeditor.model.elements.GWindow;
+import jada.ngeditor.model.elements.specials.GUseControls;
+import jada.ngeditor.model.elements.specials.GUseStyle;
 import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.visitor.Visitor;
 import java.awt.geom.Point2D;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Observable;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.dom.DOMSource;
@@ -37,6 +42,7 @@ import org.w3c.dom.Element;
  * Main model class it is a container for all GUI elements
  * @author cris
  */
+@XmlRootElement(name="nifty")
 public class GUI extends Observable{
     private static int GUIID = 0;
     private final Nifty manager;
@@ -47,13 +53,19 @@ public class GUI extends Observable{
     private GScreen currentS;
     private static Document document;
     private  Element root;
+    @XmlElement
+    private GUseControls useControls = new GUseControls();
+    @XmlElement
+    private GUseStyle  useStyles = new GUseStyle();
     
     public static Element elementFactory(String tag){
         if(document!=null)
             return document.createElement(tag);
         return null;
     }
-    
+    public GUI(){
+        manager=null;
+    }
     /**
      * Creates a new gui
      * @param nifty 
@@ -75,6 +87,8 @@ public class GUI extends Observable{
        document.appendChild(root);
        root.appendChild(style);
        root.appendChild(controls);
+       this.useControls.setFilename("nifty-default-controls.xml");
+       this.useStyles.setFilename("nifty-default-styles.xml");
        this.GUIID++;
        
     }
@@ -109,7 +123,7 @@ public class GUI extends Observable{
         
     }
     
-   
+    @XmlElementRef
     public LinkedList<GScreen> getScreens(){
         return this.screens;
     }
@@ -236,16 +250,9 @@ public class GUI extends Observable{
         return this.currentlayers;
     }
     
-    /**
-     * Simple method to visit the gui tree.
-     * NOTICE: this method iterate first level of the gui screens popup ecc.
-     * @param visit 
-     */
-    public void firstLevelVisit(Visitor visit){
-        for(GScreen screen : this.getScreens()){
-            screen.accept(visit);
-        }
-        
+    
+    public void accept(Visitor visit){
+        visit.visit(this); 
     }
 
     

@@ -22,6 +22,7 @@ import jada.ngeditor.model.Types;
 import jada.ngeditor.model.visitor.Visitor;
 import java.util.Collection;
 import java.util.HashMap;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.w3c.dom.Node;
 
 
@@ -29,6 +30,7 @@ import org.w3c.dom.Node;
  *
  * @author cris
  */
+@XmlRootElement(name="screen")
 public class GScreen extends GElement{
     
     static {

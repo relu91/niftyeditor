@@ -18,7 +18,6 @@ import de.lessvoid.nifty.Nifty;
 import jada.ngeditor.model.GUI;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.IDgenerator;
-import jada.ngeditor.model.Types;
 import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.exception.NoProductException;
 import java.io.File;

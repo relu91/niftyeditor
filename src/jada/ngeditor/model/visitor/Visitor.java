@@ -4,6 +4,7 @@
  */
 package jada.ngeditor.model.visitor;
 
+import jada.ngeditor.model.GUI;
 import jada.ngeditor.model.elements.GButton;
 import jada.ngeditor.model.elements.GCheckbox;
 import jada.ngeditor.model.elements.GDraggable;
@@ -33,6 +34,7 @@ import jada.ngeditor.model.elements.GWindow;
  */
 public interface Visitor {
     
+    public void visit(GUI gui);
     public void visit(GScreen screen);
     public void visit(GLayer layer);
     public void visit(GPanel panel);

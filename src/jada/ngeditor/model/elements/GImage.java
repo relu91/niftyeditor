@@ -20,13 +20,14 @@ import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
 import jada.ngeditor.model.visitor.Visitor;
 import java.util.Map;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.w3c.dom.Element;
 
 /**
  *
  * @author cris
  */
-
+@XmlRootElement(name="image")
 public class GImage extends GElement{
       static{
         GUIFactory.registerProduct(new GImage());
