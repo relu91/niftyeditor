@@ -39,10 +39,8 @@ public class GLabel extends GElement{
     private GLabel(){
         super();
     }
-    public GLabel(String id,org.w3c.dom.Element docElement) throws IllegalArgumentException{
-      super(id,docElement);
-      if(!docElement.getTagName().equals("control"))
-          throw new IllegalArgumentException("Illegal tag name");
+    public GLabel(String id) throws IllegalArgumentException{
+      super(id);
       builder =  new LabelBuilder(id);
       name="label";
     }
@@ -56,15 +54,15 @@ public class GLabel extends GElement{
     @Override
     public void initDefault() {
        
-	attributes.put("text", element.getAttribute("id"));
+	attributes.put("text", this.attributes.get("id"));
 	attributes.put("width", "100px");
 	attributes.put("height", "50px");
         attributes.put("font","aurulent-sans-16.fnt");
     }
 
     @Override
-    public GElement create(String id,org.w3c.dom.Element ele) {
-        return new GLabel(id,ele);
+    public GElement create(String id) {
+        return new GLabel(id);
     }
     
      @Override

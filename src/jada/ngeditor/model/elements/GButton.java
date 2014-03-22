@@ -36,10 +36,8 @@ public class GButton extends GElement{
     private GButton(){
         super();
     }
-    public GButton(String id ,org.w3c.dom.Element docElement){
-        super(id,docElement);
-         if(!docElement.getTagName().equals(Types.CONTROL_TAG))
-          throw new IllegalArgumentException("Illegal tag name");
+    public GButton(String id ){
+        super(id);
          this.builder = new ButtonBuilder(this.getID());
          this.name="button";
         
@@ -58,8 +56,8 @@ public class GButton extends GElement{
     }
 
     @Override
-    public GElement create(String id, org.w3c.dom.Element ele) {
-        return new GButton(id,ele);
+    public GElement create(String id) {
+        return new GButton(id);
     }
     
      @Override

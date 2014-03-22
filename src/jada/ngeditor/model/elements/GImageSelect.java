@@ -25,8 +25,8 @@ public class GImageSelect extends GElement{
         super();
     }
 
-    public GImageSelect(String id, Element docElement) throws IllegalArgumentException {
-        super(id, docElement);
+    public GImageSelect(String id) throws IllegalArgumentException {
+        super(id);
         this.builder = new ImageSelectBuilder(id);
         this.name="imageSelect";
     }
@@ -37,8 +37,8 @@ public class GImageSelect extends GElement{
     }
 
     @Override
-    public GElement create(String id, Element ele) {
-        return new GImageSelect(id,ele);
+    public GElement create(String id) {
+        return new GImageSelect(id);
     }
 
     @Override

@@ -4,13 +4,11 @@
  */
 package jada.ngeditor.model.elements;
 
-import de.lessvoid.nifty.controls.dragndrop.builder.DraggableBuilder;
 import de.lessvoid.nifty.controls.dragndrop.builder.DroppableBuilder;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
 import jada.ngeditor.model.visitor.Visitor;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.w3c.dom.Element;
 
 /**
  *
@@ -23,8 +21,8 @@ static{
     }
     
 
-    public GDroppable(String id, Element docElement) throws IllegalArgumentException {
-        super(id, docElement);
+    public GDroppable(String id) throws IllegalArgumentException {
+        super(id);
         this.builder = new DroppableBuilder(id);
         this.name = "droppable";
     }
@@ -38,8 +36,8 @@ static{
     }
 
     @Override
-    public GElement create(String id, Element ele) {
-        return new GDroppable(id,ele);
+    public GElement create(String id) {
+        return new GDroppable(id);
     }
 
     @Override

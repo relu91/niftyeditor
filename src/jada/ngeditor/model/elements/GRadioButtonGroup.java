@@ -24,8 +24,8 @@ public class GRadioButtonGroup extends GElement {
         super();
     }
     
-    public GRadioButtonGroup(String id , Element ele){
-        super(id,ele);
+    public GRadioButtonGroup(String id ){
+        super(id);
         this.builder = new RadioGroupBuilder(id);
         name="radioButtonGroup";
     }
@@ -35,8 +35,8 @@ public class GRadioButtonGroup extends GElement {
     }
 
     @Override
-    public GElement create(String id, Element ele) {
-        return new GRadioButtonGroup(id,ele);
+    public GElement create(String id) {
+        return new GRadioButtonGroup(id);
     }
 
     @Override

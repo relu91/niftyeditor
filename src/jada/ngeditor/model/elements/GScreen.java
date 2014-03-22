@@ -21,9 +21,7 @@ import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
 import jada.ngeditor.model.visitor.Visitor;
 import java.util.Collection;
-import java.util.HashMap;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.w3c.dom.Node;
 
 
 /**
@@ -42,18 +40,11 @@ public class GScreen extends GElement{
     private GScreen() {
         super();
     }
-    public GScreen(String id,org.w3c.dom.Element docElement){
-      super(id,docElement);
-      if(!docElement.getTagName().equals("screen"))
-          throw new IllegalArgumentException("Illegal tag name");
+    public GScreen(String id){
+      super(id);
       ids++; 
     }
-    
    
-   
-    public org.w3c.dom.Element toXml() {
-        return element;
-    }
 
     @Override
     public Types getType() {
@@ -71,11 +62,6 @@ public class GScreen extends GElement{
 
     @Override
     public void createNiftyElement(Nifty nifty) {
-        final HashMap<String,String> attributes = new HashMap<String,String>();
-        for(int i =0;i<element.getAttributes().getLength();i++){
-            Node n = element.getAttributes().item(i);
-            attributes.put(n.getNodeName(),n.getNodeValue());
-        }
         Screen screen = new ScreenBuilder(id){{
              
         }}.build(nifty);
@@ -94,12 +80,15 @@ public class GScreen extends GElement{
         Collection<String> pe = nif.getAllScreensName();
         
         nElement = nif.getScreen(id).getRootElement();
+         for(String sel : attributes.keySet()){
+               nElement.getElementType().getAttributes().set(sel, attributes.get(sel));
+         }
     }
 
     @Override
-    public GElement create(String id,org.w3c.dom.Element ele) {
+    public GElement create(String id) {
         
-        GScreen te =new  GScreen(id,ele);
+        GScreen te =new  GScreen(id);
        
         return te;
     }

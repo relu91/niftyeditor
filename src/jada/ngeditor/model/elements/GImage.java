@@ -39,10 +39,8 @@ public class GImage extends GElement{
     private GImage(){
         super();
     }
-    public GImage(String id,org.w3c.dom.Element docElement) throws IllegalArgumentException{
-      super(id,docElement);
-      if(!docElement.getTagName().equals(Types.IMAGE.toString()))
-          throw new IllegalArgumentException("Illegal tag name");
+    public GImage(String id) throws IllegalArgumentException{
+      super(id);
        super.builder = new ImageBuilder(id);
       
     }
@@ -60,8 +58,8 @@ public class GImage extends GElement{
     }
 
     @Override
-    public GElement create(String id, Element ele) {
-        return new GImage(id,ele);
+    public GElement create(String id) {
+        return new GImage(id);
     }
 
     @Override

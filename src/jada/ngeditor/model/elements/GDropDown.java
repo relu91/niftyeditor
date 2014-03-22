@@ -20,7 +20,6 @@ import jada.ngeditor.model.Types;
 import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.visitor.Visitor;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.w3c.dom.Element;
 
 /**
  *
@@ -36,8 +35,8 @@ public class GDropDown extends GElement{
         super();
     }
     
-    private GDropDown(String id,org.w3c.dom.Element docElement){
-        super(id,docElement);
+    private GDropDown(String id){
+        super(id);
         super.builder = new DropDownBuilder(id);
         this.name="dropDown";
     }
@@ -48,8 +47,8 @@ public class GDropDown extends GElement{
     }
 
     @Override
-    public GElement create(String id, Element ele) {
-        return new GDropDown(id,ele);
+    public GElement create(String id) {
+        return new GDropDown(id);
     }
 
     @Override

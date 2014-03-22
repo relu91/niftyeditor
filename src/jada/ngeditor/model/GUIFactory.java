@@ -64,11 +64,6 @@ public class GUIFactory {
         return gui;
     }
     
-    public GUI createGUI(Nifty manager,Document doc){
-        gui = new GUI(manager,doc);
-        return gui;
-    }
-    
     public GElement newGElement(Types type){
         return this.newGElement(type.toString());
     }
@@ -76,16 +71,12 @@ public class GUIFactory {
     public GElement newGElement(String tag){
         if(!products.containsKey(tag))
             throw new IllegalArgumentException("No product for tag : "+tag);
-        
-        Element temp ;
+        //Fixme remove element
+        Element temp = null ;
         
         Types type = Types.valueOf(Types.convert(tag));
-        if(type.isControl())
-            temp = gui.elementFactory(Types.CONTROL_TAG);
-        else
-            temp = gui.elementFactory(tag);
         String id = IDgenerator.getInstance().generate(type);
-        GElement result = products.get(tag).create(id,temp);
+        GElement result = products.get(tag).create(id);
         result.initDefault();
         return result;
     }
@@ -106,10 +97,10 @@ public class GUIFactory {
         Types t = temp.getType();
         if(IDgenerator.getInstance().isUnique(t, id)) {
             IDgenerator.getInstance().addID(id, t);
-            return products.get(key).create(id,ele);
+            return products.get(key).create(id);
         }
         else {
-            return products.get(key).create(IDgenerator.getInstance().generate(t),ele);
+            return products.get(key).create(IDgenerator.getInstance().generate(t));
         }
     }
     

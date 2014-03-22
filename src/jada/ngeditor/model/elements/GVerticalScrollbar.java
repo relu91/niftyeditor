@@ -25,8 +25,8 @@ public class GVerticalScrollbar extends GScrollbar{
         super();
     }
     
-    public GVerticalScrollbar(String id, Element docElement) throws IllegalArgumentException {
-        super(id, docElement, true);
+    public GVerticalScrollbar(String id) throws IllegalArgumentException {
+        super(id,  true);
         name="verticalScrollbar";
     }
     @Override
@@ -35,8 +35,8 @@ public class GVerticalScrollbar extends GScrollbar{
     }
 
     @Override
-    public GElement create(String id, Element ele) {
-        return new GVerticalScrollbar(id,ele);
+    public GElement create(String id) {
+        return new GVerticalScrollbar(id);
     }
 
     @Override

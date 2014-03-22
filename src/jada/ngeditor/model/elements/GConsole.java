@@ -17,14 +17,11 @@ package jada.ngeditor.model.elements;
 
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.Console;
-import de.lessvoid.nifty.controls.console.ConsoleControl;
-import de.lessvoid.nifty.elements.Action;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.Types;
 import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.visitor.Visitor;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.w3c.dom.Element;
 
 /**
  *
@@ -40,10 +37,8 @@ public class GConsole extends GElement{
     private GConsole(){
         super();
     }
-    public GConsole(String id,org.w3c.dom.Element docElement) throws IllegalArgumentException{
-      super(id,docElement);
-      if(!docElement.getTagName().equals("control"))
-          throw new IllegalArgumentException("Illegal tag name");
+    public GConsole(String id) throws IllegalArgumentException{
+      super(id);
       super.builder = new de.lessvoid.nifty.controls.console.builder.ConsoleBuilder(id);
       this.name="nifty-console";
     }
@@ -60,8 +55,8 @@ public class GConsole extends GElement{
     }
     
     @Override
-    public GElement create(String id,Element ele) {
-       return new GConsole(id,ele);
+    public GElement create(String id) {
+       return new GConsole(id);
     }
 
     @Override

@@ -14,7 +14,7 @@
  */
 package jada.ngeditor.model.elements;
 
-import de.lessvoid.nifty.Nifty;
+
 import de.lessvoid.nifty.controls.checkbox.builder.CheckboxBuilder;
 import de.lessvoid.nifty.elements.Element;
 import jada.ngeditor.model.GUIFactory;
@@ -37,11 +37,9 @@ public class GCheckbox extends GElement{
     private GCheckbox(){
         super();
     }
-    public GCheckbox(String id,org.w3c.dom.Element docElement){
-        super(id,docElement);
-         if(!docElement.getTagName().equals("control"))
-          throw new IllegalArgumentException("Illegal tag name");
-         super.builder = new CheckboxBuilder(id);
+    public GCheckbox(String id){
+        super(id);
+        super.builder = new CheckboxBuilder(id);
         this.name="checkbox";
     }
     @Override
@@ -55,8 +53,8 @@ public class GCheckbox extends GElement{
     }
 
     @Override
-    public GElement create(String id,org.w3c.dom.Element ele) {
-        return new GCheckbox(id,ele);
+    public GElement create(String id) {
+        return new GCheckbox(id);
     }
 
      @Override

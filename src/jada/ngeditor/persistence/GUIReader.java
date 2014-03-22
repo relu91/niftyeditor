@@ -22,13 +22,16 @@ import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.exception.NoProductException;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -51,7 +54,7 @@ public class GUIReader {
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(f);
             document.getDocumentElement().normalize();
-            GUI result = GUIFactory.getInstance().createGUI(loader,document);
+            GUI result = GUIFactory.getInstance().createGUI(loader);
             IDgenerator.getInstance().invalidate();
             Element root = (Element) document.getElementsByTagName("nifty").item(0);
             NodeList screens = document.getElementsByTagName("screen");
@@ -72,11 +75,18 @@ public class GUIReader {
     
     
     private void addRecursiveChild(Element element,GElement parent,GUI gui) throws NoProductException{
-            String id = element.getAttribute("id");
-            System.out.print("before "+id);
+           
             GElement Gchild =GUIFactory.getInstance().createGElement(element);
-            id= element.getAttribute("id");
-            System.out.println(" after "+id);
+            //Fix-ME should not be used
+            HashMap<QName,String> temp = new HashMap<QName, String>();
+            NamedNodeMap attr = element.getAttributes();
+            for(int i = 0;i<attr.getLength();i++){
+                String key = attr.item(i).getNodeName();
+                String value = attr.item(i).getNodeValue();
+                temp.put(QName.valueOf(""+key), value);
+            }
+            Gchild.setXmlAttributes(temp);
+            
             gui.addElementToParent(Gchild, parent);
             NodeList child = element.getChildNodes();
             

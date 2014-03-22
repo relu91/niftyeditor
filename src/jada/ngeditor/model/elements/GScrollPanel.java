@@ -29,10 +29,8 @@ public class GScrollPanel extends GElement {
         super();
     }
     
-     public GScrollPanel(String id,org.w3c.dom.Element docElement) throws IllegalArgumentException{
-      super(id,docElement);
-      if(!docElement.getTagName().equals("control"))
-          throw new IllegalArgumentException("Illegal tag name");
+     public GScrollPanel(String id) throws IllegalArgumentException{
+      super(id);
       builder = new ScrollPanelBuilder(id);
       name="scrollPanel";
       
@@ -43,8 +41,8 @@ public class GScrollPanel extends GElement {
     }
 
     @Override
-    public GElement create(String id, Element ele) {
-       return new GScrollPanel(id,ele);
+    public GElement create(String id) {
+       return new GScrollPanel(id);
     }
 
     @Override

@@ -21,8 +21,8 @@ public class GHorizontalScrollbar extends GScrollbar{
         GUIFactory.registerProduct(new GHorizontalScrollbar());
     }
     
-    private GHorizontalScrollbar(String id,Element ele){
-        super(id,ele,false);
+    private GHorizontalScrollbar(String id){
+        super(id,false);
         this.name="horizontalScrollbar";
     }
 
@@ -35,8 +35,8 @@ public class GHorizontalScrollbar extends GScrollbar{
     }
 
     @Override
-    public GElement create(String id, Element ele) {
-        return new GHorizontalScrollbar(id, ele);
+    public GElement create(String id) {
+        return new GHorizontalScrollbar(id);
     }
 
     @Override

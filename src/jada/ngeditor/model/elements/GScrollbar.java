@@ -17,8 +17,8 @@ public abstract class GScrollbar extends GElement{
     protected GScrollbar(){
         super();
     }
-    protected GScrollbar(String id,org.w3c.dom.Element docElement,boolean vertical) throws IllegalArgumentException{
-      super(id,docElement);
+    protected GScrollbar(String id,boolean vertical) throws IllegalArgumentException{
+      super(id);
       builder = new ScrollbarBuilder(id, vertical);
     }
     

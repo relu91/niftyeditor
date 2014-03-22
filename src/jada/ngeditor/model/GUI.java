@@ -32,11 +32,7 @@ import java.util.Observable;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.dom.DOMSource;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * Main model class it is a container for all GUI elements
@@ -51,18 +47,11 @@ public class GUI extends Observable{
     private LinkedList<GLayer> currentlayers;
     
     private GScreen currentS;
-    private static Document document;
-    private  Element root;
     @XmlElement
     private GUseControls useControls = new GUseControls();
     @XmlElement
     private GUseStyle  useStyles = new GUseStyle();
     
-    public static Element elementFactory(String tag){
-        if(document!=null)
-            return document.createElement(tag);
-        return null;
-    }
     public GUI(){
         manager=null;
     }
@@ -74,44 +63,15 @@ public class GUI extends Observable{
        this.manager = nifty;
        this.screens = new LinkedList<GScreen> ();
        this.currentlayers = new LinkedList<GLayer> ();
-       
        this.currentS = null;  
-       document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-       root = document.createElement("nifty");
-       Element style = document.createElement("useStyles");
-       Element controls = document.createElement("useControls");
-       
-       style.setAttribute("filename", "nifty-default-styles.xml");
-       controls.setAttribute("filename", "nifty-default-controls.xml");
-       
-       document.appendChild(root);
-       root.appendChild(style);
-       root.appendChild(controls);
        this.useControls.setFilename("nifty-default-controls.xml");
        this.useStyles.setFilename("nifty-default-styles.xml");
        this.GUIID++;
        
-    }
-    
-    protected GUI(Nifty nifty,Document doc){
-       this.manager = nifty;
-       this.screens = new LinkedList<GScreen> ();
-       this.currentlayers = new LinkedList<GLayer> ();
-       this.currentS = null;  
-       document = doc;
-       root = (Element) document.getElementsByTagName("nifty").item(0);
-       this.GUIID++;
-       this.useControls.setFilename("nifty-default-controls.xml");
-       this.useStyles.setFilename("nifty-default-styles.xml");
-    }
-    
-    public DOMSource getSource(){
-        return new DOMSource(document);
     }
     
     public void addScreen(GScreen screen){
        this.screens.add(screen);
-       root.appendChild(screen.toXml());
        screen.createNiftyElement(manager);
        manager.gotoScreen(screen.getID());
     }

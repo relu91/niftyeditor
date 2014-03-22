@@ -22,8 +22,8 @@ public class GDraggable extends GElement{
     }
     
 
-    public GDraggable(String id, Element docElement) throws IllegalArgumentException {
-        super(id, docElement);
+    public GDraggable(String id) throws IllegalArgumentException {
+        super(id);
         this.builder = new DraggableBuilder(id);
         this.name="draggable";
     }
@@ -37,8 +37,8 @@ public class GDraggable extends GElement{
     }
 
     @Override
-    public GElement create(String id, Element ele) {
-        return new GDraggable(id,ele);
+    public GElement create(String id) {
+        return new GDraggable(id);
     }
 
     @Override

@@ -10,7 +10,6 @@ import jada.ngeditor.model.Types;
 import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.visitor.Visitor;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.w3c.dom.Element;
 
 /**
  *
@@ -22,8 +21,8 @@ static{
          GUIFactory.registerProduct(new GTree());
     }
 
-    public GTree(String id, Element docElement) throws IllegalArgumentException {
-        super(id, docElement);
+    public GTree(String id) throws IllegalArgumentException {
+        super(id);
         this.builder = new TreeBoxBuilder(id);
         this.name="nifty-tree-box";
     }
@@ -37,8 +36,8 @@ static{
     }
 
     @Override
-    public GElement create(String id, Element ele) {
-        return new GTree(id,ele);
+    public GElement create(String id) {
+        return new GTree(id);
     }
 
     @Override

@@ -36,10 +36,8 @@ public class GLayer extends GElement{
     private GLayer(){
         super();
     }
-    public GLayer(String id,org.w3c.dom.Element docElement) throws IllegalArgumentException{
-      super(id,docElement);
-      if(!docElement.getTagName().equals(Types.LAYER.toString()))
-          throw new IllegalArgumentException("Illegal tag name");
+    public GLayer(String id) throws IllegalArgumentException{
+      super(id);
       builder= new LayerBuilder(id);
       
     }
@@ -59,8 +57,8 @@ public class GLayer extends GElement{
     }
 
     @Override
-    public GElement create(String id,org.w3c.dom.Element ele) {
-       return new GLayer(id,ele);
+    public GElement create(String id) {
+       return new GLayer(id);
     }
 
     @Override

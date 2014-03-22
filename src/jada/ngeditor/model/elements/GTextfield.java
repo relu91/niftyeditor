@@ -38,10 +38,8 @@ public class GTextfield extends GElement{
     private GTextfield() {
         super();
     }
-    public GTextfield(String id,org.w3c.dom.Element docElement){
-        super(id,docElement);
-         if(!docElement.getTagName().equals("control"))
-          throw new IllegalArgumentException("Illegal tag name");
+    public GTextfield(String id){
+        super(id);
         builder = new TextFieldBuilder(id);
         name="textfield";
     }
@@ -64,8 +62,8 @@ public class GTextfield extends GElement{
     }
 
     @Override
-    public GElement create(String id,org.w3c.dom.Element ele) {
-        return new GTextfield(id,ele);
+    public GElement create(String id) {
+        return new GTextfield(id);
     }
     
      @Override

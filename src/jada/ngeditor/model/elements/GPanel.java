@@ -34,10 +34,8 @@ public class GPanel extends GElement{
     private GPanel(){
         super();
     }
-    public GPanel(String id,org.w3c.dom.Element docElement){
-      super(id,docElement);
-      if(!docElement.getTagName().equals("panel"))
-          throw new IllegalArgumentException("Illegal tag name");
+    public GPanel(String id){
+      super(id);
       builder = new PanelBuilder(id);
      
     }
@@ -60,8 +58,8 @@ public class GPanel extends GElement{
     }
 
     @Override
-    public GElement create(String id,org.w3c.dom.Element ele) {
-        return new GPanel(id,ele);
+    public GElement create(String id) {
+        return new GPanel(id);
     }
      @Override
     public void accept(Visitor visitor) {

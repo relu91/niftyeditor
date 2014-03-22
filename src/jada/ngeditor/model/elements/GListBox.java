@@ -20,7 +20,6 @@ import jada.ngeditor.model.Types;
 import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.visitor.Visitor;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.w3c.dom.Element;
 
 /**
  *
@@ -34,10 +33,8 @@ public class GListBox extends GElement{
     public GListBox(){
         super();
     }
-    public GListBox(String id,org.w3c.dom.Element docElement){
-      super(id,docElement);
-      if(!docElement.getTagName().equals(Types.CONTROL_TAG))
-          throw new IllegalArgumentException("Illegal tag name");
+    public GListBox(String id){
+      super(id);
       builder = new ListBoxBuilder(id);
       name="listBox";
     }
@@ -49,8 +46,8 @@ public class GListBox extends GElement{
    
 
     @Override
-    public GElement create(String id, Element ele) {
-        return new GListBox(id,ele);
+    public GElement create(String id) {
+        return new GListBox(id);
     }
 
     @Override

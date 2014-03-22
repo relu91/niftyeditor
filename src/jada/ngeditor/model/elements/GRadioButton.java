@@ -34,10 +34,8 @@ public class GRadioButton extends GElement {
      private GRadioButton(){
           super();
       }
-      public GRadioButton(String id,org.w3c.dom.Element docElement) throws IllegalArgumentException{
-      super(id,docElement);
-      if(!docElement.getTagName().equals("control"))
-          throw new IllegalArgumentException("Illegal tag name");
+      public GRadioButton(String id) throws IllegalArgumentException{
+      super(id);
       builder = new RadioButtonBuilder();
       name="radioButton";
       
@@ -52,8 +50,8 @@ public class GRadioButton extends GElement {
     
 
     @Override
-    public GElement create(String id, org.w3c.dom.Element ele) {
-        return new GRadioButton(id,ele);
+    public GElement create(String id) {
+        return new GRadioButton(id);
     }
 
     @Override
