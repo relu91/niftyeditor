@@ -21,7 +21,7 @@ import jada.ngeditor.guiviews.J2DNiftyView;
 import jada.ngeditor.listeners.actions.Action;
 import jada.ngeditor.model.GUI;
 import jada.ngeditor.model.exception.IllegalDropException;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.elements.GScreen;
 import java.awt.datatransfer.UnsupportedFlavorException;

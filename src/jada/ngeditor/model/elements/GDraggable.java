@@ -5,21 +5,19 @@
 package jada.ngeditor.model.elements;
 
 import de.lessvoid.nifty.controls.dragndrop.builder.DraggableBuilder;
-import jada.ngeditor.model.GUIFactory;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.visitor.Visitor;
-import javax.xml.bind.annotation.XmlRootElement;
-import org.w3c.dom.Element;
+import jada.ngeditor.persistence.ControlBinding;
 
 /**
  *
  * @author cris
  */
-@XmlRootElement(name="control")
-public class GDraggable extends GElement{
-    static{
-        GUIFactory.registerProduct(new GDraggable());
-    }
+@ControlBinding(name= XmlTags.DRAGGABLE)
+public class GDraggable extends GControl{
+
+   
+  
     
 
     public GDraggable(String id) throws IllegalArgumentException {
@@ -31,10 +29,7 @@ public class GDraggable extends GElement{
     public GDraggable() {
         super();
     }
-    @Override
-    public Types getType() {
-        return Types.DRAGGABLE;
-    }
+    
 
     @Override
     public GElement create(String id) {

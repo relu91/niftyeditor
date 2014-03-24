@@ -17,7 +17,7 @@ package jada.ngeditor.guiviews.DND;
 import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.guiviews.palettecomponents.NWidget;
 import jada.ngeditor.listeners.actions.Action;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.elements.GLayer;
 import java.awt.Rectangle;

@@ -42,7 +42,7 @@ import javax.xml.parsers.ParserConfigurationException;
 public class GUI extends Observable{
     private static int GUIID = 0;
     private final Nifty manager;
-    
+    @XmlElementRef
     private LinkedList<GScreen> screens;
     private LinkedList<GLayer> currentlayers;
     
@@ -59,7 +59,7 @@ public class GUI extends Observable{
      * Creates a new gui
      * @param nifty 
      */
-    protected GUI(Nifty nifty) throws ParserConfigurationException{
+    protected GUI(Nifty nifty) {
        this.manager = nifty;
        this.screens = new LinkedList<GScreen> ();
        this.currentlayers = new LinkedList<GLayer> ();
@@ -75,17 +75,7 @@ public class GUI extends Observable{
        screen.createNiftyElement(manager);
        manager.gotoScreen(screen.getID());
     }
-    /**
-     * Creates a new gui from a specific file
-     * @param nifty
-     * @param res 
-     */
-    public GUI(Nifty nifty, String res){
-        this.manager=nifty;
-        
-    }
-    
-    @XmlElementRef
+ 
     public LinkedList<GScreen> getScreens(){
         return this.screens;
     }
@@ -209,6 +199,7 @@ public class GUI extends Observable{
     }
     
     public Collection<GLayer> getLayers(){
+     
         return this.currentlayers;
     }
     

@@ -17,24 +17,23 @@ package jada.ngeditor.model.elements;
 
 import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
 import jada.ngeditor.model.GUIFactory;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.visitor.Visitor;
-import javax.xml.bind.annotation.XmlRootElement;
+import jada.ngeditor.persistence.ControlBinding;
 
 
 /**
  *
  * @author cris
  */
-@XmlRootElement(name="control")
-public class GButton extends GElement{
-    static{
-        GUIFactory.registerProduct(new GButton());
-    }
+@ControlBinding(name= XmlTags.BUTTON)
+public class GButton extends GControl{
+
    
     
     private GButton(){
         super();
+        this.builder = new ButtonBuilder(this.getID());
     }
     public GButton(String id ){
         super(id);
@@ -42,14 +41,11 @@ public class GButton extends GElement{
          this.name="button";
         
     }
-    @Override
-    public Types getType() {
-        return Types.BUTTON;
-    }
+    
     
     @Override
     public void initDefault() {
-       // attributes.put("name", Types.BUTTON.toString());
+       // attributes.put("name", XmlTags.BUTTON.toString());
         attributes.put("childLayout", "center");
         attributes.put("label", this.getID());
         

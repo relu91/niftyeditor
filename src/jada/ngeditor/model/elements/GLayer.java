@@ -16,7 +16,7 @@
 
 import de.lessvoid.nifty.builder.LayerBuilder;
 import jada.ngeditor.model.GUIFactory;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.visitor.Visitor;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -26,10 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
  @XmlRootElement(name="layer")
 public class GLayer extends GElement{
-    static{
-         GUIFactory.registerProduct(new GLayer());
-    }
-    
+  
     
    
     
@@ -42,11 +39,7 @@ public class GLayer extends GElement{
       
     }
     
-    @Override
-    public Types getType() {
-        return Types.LAYER;
-    }
-
+   
 
     
 

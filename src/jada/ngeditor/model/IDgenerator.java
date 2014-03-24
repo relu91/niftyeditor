@@ -14,15 +14,17 @@
  */
 package jada.ngeditor.model;
 
+import jada.ngeditor.persistence.XmlTags;
+import jada.ngeditor.model.elements.GElement;
 import java.util.ArrayList;
-import java.util.EnumMap;
+import java.util.HashMap;
 
 /**
  * Id util generator
  * @author Cris
  */
 public class IDgenerator {
-    private static EnumMap<Types,ArrayList<String>> ids ;
+    private static HashMap<Class<? extends GElement>,ArrayList<String>> ids ;
     private int [] counter;
     private static IDgenerator instance=null ;
     
@@ -40,23 +42,24 @@ public class IDgenerator {
     }
     
     
-    public boolean isUnique(Types t,String id){
+    public boolean isUnique(java.lang.Class<? extends GElement> t,String id){
         if(ids.containsKey(t))
             return !ids.get(t).contains(id);
         else
             return true;
     }
     
-    public String generate(Types t){
-        int i = t.ordinal();
-        String res=""+t+""+counter[i]++;
-        while(!isUnique(t,res))
-            res=""+t+""+counter[i]++;
+    public String generate(java.lang.Class<? extends GElement> t){
+        int i = 0;
+        if(this.ids.get(t) != null){
+            i= this.ids.get(t).size();
+        }     
+        String res = t.getSimpleName()+i;
         this.addID(res, t);
         return res;
     }
     
-    public void addID(String id, Types t){
+    public void addID(String id, java.lang.Class<? extends GElement> t){
         if(!isUnique(t,id))
             throw new IllegalArgumentException("The ID is not unique");
         
@@ -71,8 +74,8 @@ public class IDgenerator {
     }
 
     public final void invalidate() {
-        ids= new EnumMap<Types,ArrayList<String>>(Types.class);
-        counter = new int [Types.values().length];
+        ids= new HashMap<Class<? extends GElement>,ArrayList<String>>();
+        counter = new int [XmlTags.values().length];
         for(int i=0;i<counter.length;i++)
             counter[i]=0;
     }

@@ -18,35 +18,27 @@ import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.textfield.builder.TextFieldBuilder;
 import de.lessvoid.nifty.elements.Element;
 import jada.ngeditor.model.GUIFactory;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.visitor.Visitor;
-import javax.xml.bind.annotation.XmlRootElement;
+import jada.ngeditor.persistence.ControlBinding;
 
 /**
  *
  * @author cris
  */
-@XmlRootElement(name="control")
-public class GTextfield extends GElement{
-    static{
-         GUIFactory.registerProduct(new GTextfield());
-    }
+ @ControlBinding(name= XmlTags.TEXTFIELD)
+public class GTextfield extends GControl {
 
-    
-    
-    private GTextfield() {
-        super();
+    public GTextfield() {
     }
+   
     public GTextfield(String id){
         super(id);
         builder = new TextFieldBuilder(id);
         name="textfield";
     }
-    @Override
-    public Types getType() {
-        return Types.TEXTFIELD;
-    }
+   
 
     @Override
     public void createNiftyElement(Nifty nifty) {
@@ -56,7 +48,7 @@ public class GTextfield extends GElement{
 
     @Override
     public void initDefault() {
-        attributes.put("name", ""+Types.TEXTFIELD);
+        attributes.put("name", ""+XmlTags.TEXTFIELD);
         attributes.put("width", "50%");
        
     }

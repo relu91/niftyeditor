@@ -17,7 +17,7 @@ package jada.ngeditor;
 import com.jtattoo.plaf.hifi.HiFiLookAndFeel;
 import jada.ngeditor.guiviews.MainView;
 import jada.ngeditor.listeners.ClosingListener;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.persistence.XmlTags;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;

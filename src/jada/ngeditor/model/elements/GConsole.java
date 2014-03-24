@@ -18,20 +18,18 @@ package jada.ngeditor.model.elements;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.Console;
 import jada.ngeditor.model.GUIFactory;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.visitor.Visitor;
-import javax.xml.bind.annotation.XmlRootElement;
+import jada.ngeditor.persistence.ControlBinding;
 
 /**
  *
  * @author cris
  */
-@XmlRootElement(name="control")
-public class GConsole extends GElement{
-    static{
-        GUIFactory.registerProduct(new GConsole());
-    }
+@ControlBinding(name=XmlTags.NIFTYCONSOLE)
+public class GConsole extends GControl {
+   
     
     
     private GConsole(){
@@ -42,10 +40,7 @@ public class GConsole extends GElement{
       super.builder = new de.lessvoid.nifty.controls.console.builder.ConsoleBuilder(id);
       this.name="nifty-console";
     }
-    @Override
-    public Types getType() {
-        return Types.NIFTYCONSOLE;
-    }
+   
 
     @Override
     public void createNiftyElement(Nifty nifty) {

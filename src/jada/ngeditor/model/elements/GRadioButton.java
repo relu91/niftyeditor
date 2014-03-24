@@ -18,36 +18,27 @@ package jada.ngeditor.model.elements;
 import de.lessvoid.nifty.controls.radiobutton.builder.RadioButtonBuilder;
 import de.lessvoid.nifty.elements.Element;
 import jada.ngeditor.model.GUIFactory;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.visitor.Visitor;
-import javax.xml.bind.annotation.XmlRootElement;
+import jada.ngeditor.persistence.ControlBinding;
 /**
  *
  * @author cris
  */
-@XmlRootElement(name="control")
-public class GRadioButton extends GElement {
-    static{
-         GUIFactory.registerProduct(new GRadioButton());
+ @ControlBinding(name= XmlTags.RADIOBUTTON)
+public class GRadioButton extends GControl  {
+
+    public GRadioButton() {
     }
-     private GRadioButton(){
-          super();
-      }
+  
       public GRadioButton(String id) throws IllegalArgumentException{
       super(id);
       builder = new RadioButtonBuilder();
       name="radioButton";
       
     }
-    @Override
-    public Types getType() {
-        return Types.RADIOBUTTON;
-    }
 
-   
-        
-    
 
     @Override
     public GElement create(String id) {

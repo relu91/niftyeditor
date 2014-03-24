@@ -6,38 +6,27 @@ package jada.ngeditor.model.elements;
 
 import de.lessvoid.nifty.controls.scrollpanel.builder.ScrollPanelBuilder;
 import jada.ngeditor.model.GUIFactory;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.visitor.Visitor;
-import javax.xml.bind.annotation.XmlRootElement;
-import org.w3c.dom.Element;
+import jada.ngeditor.persistence.ControlBinding;
 
 /**
  *
  * @author cris
  */
-@XmlRootElement(name="control")
-public class GScrollPanel extends GElement {
-    
-     static{
-        GUIFactory.registerProduct(new GScrollPanel());
+ @ControlBinding(name= XmlTags.SCROLLPANEL)
+public class GScrollPanel extends GControl  {
+
+    public GScrollPanel() {
     }
     
-    /**
-     * only for Factory use
-     */
-    private GScrollPanel(){
-        super();
-    }
+   
     
      public GScrollPanel(String id) throws IllegalArgumentException{
       super(id);
       builder = new ScrollPanelBuilder(id);
       name="scrollPanel";
       
-    }
-    @Override
-    public Types getType() {
-        return Types.SCROLLPANEL;
     }
 
     @Override

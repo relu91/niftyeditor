@@ -19,11 +19,12 @@ import jada.ngeditor.model.utils.ClassUtils;
 import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.exception.NoProductException;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
@@ -32,25 +33,9 @@ import org.w3c.dom.Element;
  */
 public class GUIFactory {
     
-    private static HashMap<String,GElement> products;
     private static GUIFactory instance = null;
     private GUI gui;
 
-    public GUIFactory(){
-        try {
-            Class [] res = ClassUtils.getClasses("jada.ngeditor.model.elements");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(GUIFactory.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(GUIFactory.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    public static void registerProduct(GElement ele){
-        if(products == null) {
-            products = new HashMap<String,GElement>();
-        }
-        products.put(ele.getType().toString(), ele);
-    }
     
     public static GUIFactory getInstance(){
         if(instance == null) {
@@ -64,44 +49,17 @@ public class GUIFactory {
         return gui;
     }
     
-    public GElement newGElement(Types type){
-        return this.newGElement(type.toString());
-    }
-    
-    public GElement newGElement(String tag){
-        if(!products.containsKey(tag))
-            throw new IllegalArgumentException("No product for tag : "+tag);
-        //Fixme remove element
-        Element temp = null ;
-        
-        Types type = Types.valueOf(Types.convert(tag));
-        String id = IDgenerator.getInstance().generate(type);
-        GElement result = products.get(tag).create(id);
-        result.initDefault();
-        return result;
-    }
-    
-    public GElement createGElement(Element ele) throws NoProductException{
-        String key;
-        String tag = ele.getTagName();
-        key=tag;
-        if(tag.equals(Types.CONTROL_TAG)) {
-            key = ele.getAttribute("name");
+    public GElement newGElement(java.lang.Class<? extends GElement> elementClass) throws NoProductException {
+        try {
+            Constructor<? extends GElement> constructor = elementClass.getConstructor(String.class);
+            String id = IDgenerator.getInstance().generate(elementClass);
+            GElement result = constructor.newInstance(id);
+            result.initDefault();
+            return result;
+        } catch (Exception ex) {
+              ex.printStackTrace();
+              throw new NoProductException(elementClass.getName());
         }
-        if(!products.containsKey(key)) {
-            throw new NoProductException(tag);
-        }
-        String id = ele.getAttribute("id");
-        GElement temp = products.get(key);
-        
-        Types t = temp.getType();
-        if(IDgenerator.getInstance().isUnique(t, id)) {
-            IDgenerator.getInstance().addID(id, t);
-            return products.get(key).create(id);
-        }
-        else {
-            return products.get(key).create(IDgenerator.getInstance().generate(t));
-        }
-    }
-    
+          
+    }   
 }

@@ -18,7 +18,7 @@ import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.screen.Screen;
 import jada.ngeditor.model.GUIFactory;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.visitor.Visitor;
 import java.util.Collection;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -30,29 +30,15 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name="screen")
 public class GScreen extends GElement{
-    
-    static {
-        
-         GUIFactory.registerProduct(new GScreen());
+
+    public GScreen() {
     }
-    private static int ids=0;
     
-    private GScreen() {
-        super();
-    }
+   
     public GScreen(String id){
-      super(id);
-      ids++; 
+      super(id); 
     }
    
-
-    @Override
-    public Types getType() {
-        return Types.SCREEN;
-    }
-
-  
-
     @Override
     public void initDefault() {
         

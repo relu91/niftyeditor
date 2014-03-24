@@ -19,23 +19,20 @@ import de.lessvoid.nifty.controls.window.WindowControl;
 import de.lessvoid.nifty.controls.window.builder.WindowBuilder;
 import de.lessvoid.xml.xpp3.Attributes;
 import jada.ngeditor.model.GUIFactory;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.visitor.Visitor;
-import javax.xml.bind.annotation.XmlRootElement;
+import jada.ngeditor.persistence.ControlBinding;
 
 /**
  * 
  * @author cris
  */
-@XmlRootElement(name="control")
-public class GWindow extends GElement{
-      static{
-         GUIFactory.registerProduct(new GWindow());
+@ControlBinding(name= XmlTags.WINDOW)
+public class GWindow extends GControl {
+
+    public GWindow() {
     }
-      
-      private GWindow(){
-          super();
-      }
+    
       public GWindow(String id) throws IllegalArgumentException{
       super(id);
       builder = new WindowBuilder();
@@ -43,11 +40,7 @@ public class GWindow extends GElement{
       
       
     }
-    @Override
-    public Types getType() {
-        return Types.WINDOW;
-    }
-        
+
      @Override
      protected de.lessvoid.nifty.elements.Element getDropContext(){
          return nElement.getControl(WindowControl.class).getContent();

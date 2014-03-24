@@ -6,21 +6,18 @@ package jada.ngeditor.model.elements;
 
 import de.lessvoid.nifty.controls.imageselect.builder.ImageSelectBuilder;
 import jada.ngeditor.model.GUIFactory;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.visitor.Visitor;
-import javax.xml.bind.annotation.XmlRootElement;
-import org.w3c.dom.Element;
+import jada.ngeditor.persistence.ControlBinding;
 
 /**
  *
  * @author cris
  */
-@XmlRootElement(name="control")
-public class GImageSelect extends GElement{
-    static{
-         GUIFactory.registerProduct(new GImageSelect());
-    }
+@ControlBinding(name= XmlTags.IMAGESELECT)
+public class GImageSelect extends GControl {
+ 
     public GImageSelect() {
         super();
     }
@@ -31,10 +28,7 @@ public class GImageSelect extends GElement{
         this.name="imageSelect";
     }
 
-    @Override
-    public Types getType() {
-        return Types.IMAGESELECT;
-    }
+  
 
     @Override
     public GElement create(String id) {
@@ -43,7 +37,7 @@ public class GImageSelect extends GElement{
 
     @Override
     public void initDefault() {
-       attributes.put("name", Types.IMAGESELECT.toString());
+       attributes.put("name", XmlTags.IMAGESELECT.toString());
       attributes.put("width", "100px");
       attributes.put("height", "100px");
     }

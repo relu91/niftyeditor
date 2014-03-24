@@ -59,7 +59,7 @@ public class GUIWriter {
         return new ByteArrayInputStream(buffer.toByteArray());
     }
      
-    private class XmlClassPredicate implements ClassUtils.Predicate<Class>{
+    public static class XmlClassPredicate implements ClassUtils.Predicate<Class>{
 
         @Override
         public boolean apply(Class object) {

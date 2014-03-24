@@ -23,7 +23,7 @@ import de.lessvoid.nifty.tools.TimeProvider;
 import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.listeners.GuiSelectionListener;
 import jada.ngeditor.listeners.actions.Action;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.elements.GLayer;
 import jada.ngeditor.renderUtil.SoudDevicenull;
 import java.awt.BasicStroke;

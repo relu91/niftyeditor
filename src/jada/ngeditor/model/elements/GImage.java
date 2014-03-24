@@ -17,11 +17,10 @@ package jada.ngeditor.model.elements;
 
 import de.lessvoid.nifty.builder.ImageBuilder;
 import jada.ngeditor.model.GUIFactory;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.visitor.Visitor;
 import java.util.Map;
 import javax.xml.bind.annotation.XmlRootElement;
-import org.w3c.dom.Element;
 
 /**
  *
@@ -29,9 +28,7 @@ import org.w3c.dom.Element;
  */
 @XmlRootElement(name="image")
 public class GImage extends GElement{
-      static{
-        GUIFactory.registerProduct(new GImage());
-    }
+  
     
     /**
      * only for Factory use
@@ -44,10 +41,7 @@ public class GImage extends GElement{
        super.builder = new ImageBuilder(id);
       
     }
-    @Override
-    public Types getType() {
-        return Types.IMAGE;
-    }
+    
     public Map<String,String> getAttributes(){
        Map<String,String> res = super.getAttributes();
       for(String prop : jada.ngeditor.model.PropretiesResolver.inst.resolve("imageType")){

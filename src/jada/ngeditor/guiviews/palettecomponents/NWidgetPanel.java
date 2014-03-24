@@ -16,8 +16,11 @@ package jada.ngeditor.guiviews.palettecomponents;
 
 import jada.ngeditor.guiviews.DND.WidgetData;
 import jada.ngeditor.model.GUIFactory;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.persistence.XmlTags;
+import jada.ngeditor.model.elements.GConsole;
 import jada.ngeditor.model.elements.GElement;
+import jada.ngeditor.model.elements.GPanel;
+import jada.ngeditor.model.exception.NoProductException;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -37,7 +40,12 @@ public class NWidgetPanel extends NWidget {
 
     @Override
     public WidgetData getData() {
-       GElement e = GUIFactory.getInstance().newGElement(Types.PANEL.toString());
-        return new WidgetData(e);
+        try {
+            GElement e = GUIFactory.getInstance().newGElement(GPanel.class);
+            return new WidgetData(e);
+        } catch (NoProductException ex) {
+            ex.printStackTrace();
+           return new WidgetData(null);
+        }
     }
 }

@@ -5,23 +5,20 @@
 package jada.ngeditor.model.elements;
 
 import jada.ngeditor.model.GUIFactory;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.visitor.Visitor;
-import javax.xml.bind.annotation.XmlRootElement;
-import org.w3c.dom.Element;
+import jada.ngeditor.persistence.ControlBinding;
 
 /**
  *
  * @author cris
  */
-@XmlRootElement(name="control")
+@ControlBinding(name= XmlTags.HORIZONTALSCROLLBAR)
 public class GHorizontalScrollbar extends GScrollbar{
-      static{
-        GUIFactory.registerProduct(new GHorizontalScrollbar());
-    }
+
     
-    private GHorizontalScrollbar(String id){
+    public GHorizontalScrollbar(String id){
         super(id,false);
         this.name="horizontalScrollbar";
     }
@@ -29,10 +26,7 @@ public class GHorizontalScrollbar extends GScrollbar{
     private GHorizontalScrollbar() {
         super();
     }
-    @Override
-    public Types getType() {
-        return Types.HORIZONTALSCROLLBAR;
-    }
+  
 
     @Override
     public GElement create(String id) {

@@ -16,33 +16,29 @@ package jada.ngeditor.model.elements;
 
 import de.lessvoid.nifty.controls.listbox.builder.ListBoxBuilder;
 import jada.ngeditor.model.GUIFactory;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.visitor.Visitor;
-import javax.xml.bind.annotation.XmlRootElement;
+import jada.ngeditor.persistence.ControlBinding;
+
 
 /**
  *
  * @author cris
  */
-@XmlRootElement(name="control")
-public class GListBox extends GElement{
-     static{
-         GUIFactory.registerProduct(new GListBox());
-     }
-    public GListBox(){
-        super();
+ @ControlBinding(name= XmlTags.LISTBOX)
+public class GListBox extends GControl {
+
+    public GListBox() {
     }
+  
+ 
     public GListBox(String id){
       super(id);
       builder = new ListBoxBuilder(id);
       name="listBox";
     }
-    @Override
-    public Types getType() {
-       return Types.LISTBOX;
-    }
-
+  
    
 
     @Override

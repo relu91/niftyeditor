@@ -16,8 +16,9 @@ package jada.ngeditor.guiviews.palettecomponents;
 
 import jada.ngeditor.guiviews.DND.WidgetData;
 import jada.ngeditor.model.GUIFactory;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.model.elements.GButton;
 import jada.ngeditor.model.elements.GElement;
+import jada.ngeditor.model.exception.NoProductException;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -38,8 +39,13 @@ public class NWidgetButton extends NWidget {
 
     @Override
     public WidgetData getData() {
-        GElement e = GUIFactory.getInstance().newGElement(Types.BUTTON.toString());
-        return new WidgetData(e);
+        try {
+            GElement e = GUIFactory.getInstance().newGElement(GButton.class);
+            return new WidgetData(e);
+        } catch (NoProductException ex) {
+            ex.printStackTrace();
+           return new WidgetData(null);
+        }
     }
 
  

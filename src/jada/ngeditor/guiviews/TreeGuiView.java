@@ -18,7 +18,7 @@ import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.listeners.ElementSelectionListener;
 import jada.ngeditor.listeners.PopUpShowListener;
 import jada.ngeditor.listeners.actions.Action;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.elements.GScreen;
 import jada.ngeditor.renderUtil.NiftyTreeRender;

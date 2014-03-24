@@ -21,7 +21,7 @@ import de.lessvoid.nifty.elements.Element;
 import jada.ngeditor.listeners.actions.Action;
 import jada.ngeditor.model.GUI;
 import jada.ngeditor.model.GUIFactory;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.elements.GLayer;
 import jada.ngeditor.model.elements.GScreen;
@@ -73,9 +73,9 @@ public class GUIEditor extends Observable{
      * @throws ParserConfigurationException if controller failed to create
      * a valid document instance
      */
-    public void createNewGui(Nifty nifty) throws ParserConfigurationException, JAXBException, ClassNotFoundException, IOException{
+    public void createNewGui(Nifty nifty) throws ParserConfigurationException, JAXBException, ClassNotFoundException, IOException, NoProductException{
         gui= GUIFactory.getInstance().createGUI(nifty);
-        GScreen screen = (GScreen) GUIFactory.getInstance().newGElement(""+Types.SCREEN);
+        GScreen screen = (GScreen) GUIFactory.getInstance().newGElement(GScreen.class);
         getGui().addScreen(screen);
         this.currentS = screen;
         this.currentL = null;

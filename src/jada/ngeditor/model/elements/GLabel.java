@@ -18,24 +18,20 @@ package jada.ngeditor.model.elements;
 import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
 import de.lessvoid.nifty.elements.Element;
 import jada.ngeditor.model.GUIFactory;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.visitor.Visitor;
-import javax.xml.bind.annotation.XmlRootElement;
+import jada.ngeditor.persistence.ControlBinding;
 
 /**
  *
  * @author cris
  */
-@XmlRootElement(name="control")
-public class GLabel extends GElement{
-    static{
-        GUIFactory.registerProduct(new GLabel());
-    }
+ @ControlBinding(name= XmlTags.LABEL)
+public class GLabel extends GControl {
+ 
     
-    /**
-     * only for Factory use
-     */
+  
     private GLabel(){
         super();
     }
@@ -44,10 +40,7 @@ public class GLabel extends GElement{
       builder =  new LabelBuilder(id);
       name="label";
     }
-    @Override
-    public Types getType() {
-        return Types.LABEL;
-    }
+   
 
     
 

@@ -6,19 +6,17 @@ package jada.ngeditor.model.elements;
 
 import de.lessvoid.nifty.controls.dragndrop.builder.DroppableBuilder;
 import jada.ngeditor.model.GUIFactory;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.visitor.Visitor;
-import javax.xml.bind.annotation.XmlRootElement;
+import jada.ngeditor.persistence.ControlBinding;
 
 /**
  *
  * @author cris
  */
-@XmlRootElement(name="control")
-public class GDroppable extends GElement {
-static{
-        GUIFactory.registerProduct(new GDroppable());
-    }
+@ControlBinding(name= XmlTags.DROPPABLE)
+public class GDroppable extends GControl  {
+
     
 
     public GDroppable(String id) throws IllegalArgumentException {
@@ -30,10 +28,7 @@ static{
     private GDroppable() {
         super();
     }
-    @Override
-    public Types getType() {
-        return Types.DROPPABLE;
-    }
+   
 
     @Override
     public GElement create(String id) {

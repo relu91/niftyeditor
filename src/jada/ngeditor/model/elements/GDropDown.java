@@ -16,35 +16,30 @@ package jada.ngeditor.model.elements;
 
 import de.lessvoid.nifty.controls.dropdown.builder.DropDownBuilder;
 import jada.ngeditor.model.GUIFactory;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.visitor.Visitor;
-import javax.xml.bind.annotation.XmlRootElement;
+import jada.ngeditor.persistence.ControlBinding;
 
 /**
  *
  * @author cris
  */
-@XmlRootElement(name="control")
-public class GDropDown extends GElement{
-    static{
-        GUIFactory.registerProduct(new GDropDown());
-    }
+@ControlBinding(name= XmlTags.DROPDOWN)
+public class GDropDown extends GControl {
+ 
     
     public GDropDown(){
         super();
     }
     
-    private GDropDown(String id){
+    public GDropDown(String id){
         super(id);
         super.builder = new DropDownBuilder(id);
         this.name="dropDown";
     }
     
-    @Override
-    public Types getType() {
-        return Types.DROPDOWN;
-    }
+   
 
     @Override
     public GElement create(String id) {

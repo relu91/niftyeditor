@@ -21,7 +21,7 @@ import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.ImageRenderer;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.xml.xpp3.Attributes;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.visitor.Visitor;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -53,13 +53,12 @@ public abstract class GElement {
     protected String id;
     protected Element nElement;
     protected ElementBuilder builder;
-    @XmlAttribute
-    protected String name;
     private String oldStyle;
     private ArrayList<String> toBeRemoved = new ArrayList<String>();
     protected HashMap<String, String> attributes = new HashMap<String, String>();
 
     protected GElement() {
+    
     }
 
     protected GElement(String id) throws IllegalArgumentException {
@@ -168,17 +167,9 @@ public abstract class GElement {
 
     public Map<String, String> getAttributes() {
         Map<String, String> res = new HashMap<String, String>();
-        Types type = getType();
-        if (!type.isControl()) {
-            for (String prop : jada.ngeditor.model.PropretiesResolver.inst.resolve(this.getType() + "Type")) {
+        for (String prop : jada.ngeditor.model.PropretiesResolver.inst.resolve("elementType")) {
                 String defvalue = getAttribute(prop);
                 res.put(prop, defvalue);
-            }
-        } else {
-            for (String prop : jada.ngeditor.model.PropretiesResolver.inst.resolve(this.getType() + "Type")) {
-                String defvalue = getAttribute(prop);
-                res.put(prop, defvalue);
-            }
         }
         return res;
     }
@@ -253,11 +244,12 @@ public abstract class GElement {
             nElement.setRenderOrder(renderorder);
         }
         nElement.setId(id);
-        if (getType().isControl()) {
+        //Fixme use inerithance 
+       
             this.heavyRefresh(temp, attcopy);
-        } else {
+       
             this.lightRefresh(attcopy);
-        }
+        
         this.processRemoved();
     }
     /*
@@ -332,7 +324,6 @@ public abstract class GElement {
         return nElement;
     }
     
-    public abstract Types getType();
 
     public void createNiftyElement(Nifty nifty) {
         for (String sel : attributes.keySet()) {

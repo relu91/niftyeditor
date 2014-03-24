@@ -16,7 +16,7 @@ package jada.ngeditor.controller;
 
 import de.lessvoid.nifty.elements.Element;
 import jada.ngeditor.model.IDgenerator;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.elements.GScreen;
 
@@ -42,7 +42,7 @@ public class ElementEditor {
         if(selected==null)
             return this;
         if(key.equals("id")){
-            boolean unique = IDgenerator.getInstance().isUnique(selected.getType(), value);
+            boolean unique = IDgenerator.getInstance().isUnique(selected.getClass(), value);
             if(!unique)
                 throw new RuntimeException("The id is invalid");
         }

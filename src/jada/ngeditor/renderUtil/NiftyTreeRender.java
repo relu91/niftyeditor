@@ -58,7 +58,7 @@ public class NiftyTreeRender implements TreeCellRenderer{
             GElement element = (GElement)node.getUserObject();
              Image image =null;
              try {
-                    BufferedImage tempimage = ImageIO.read(getClass().getResourceAsStream("/jada/ngeditor/resources/"+element.getType()+".png"));
+                    BufferedImage tempimage = ImageIO.read(getClass().getResourceAsStream("/jada/ngeditor/resources/"+element.getClass().getSimpleName()+".png"));
                     image = tempimage.getScaledInstance(16, 16, Image.SCALE_FAST);
                  } catch (Exception ex) {
                      

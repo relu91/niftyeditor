@@ -16,7 +16,7 @@ package jada.ngeditor.model.elements;
 
 import de.lessvoid.nifty.builder.PanelBuilder;
 import jada.ngeditor.model.GUIFactory;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.visitor.Visitor;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -26,25 +26,16 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name="panel")
 public class GPanel extends GElement{
-    static{
-         GUIFactory.registerProduct(new GPanel());
+
+    public GPanel() {
     }
-  
-    
-    private GPanel(){
-        super();
-    }
+
     public GPanel(String id){
       super(id);
       builder = new PanelBuilder(id);
      
     }
-    
-    @Override
-    public Types getType() {
-        return Types.PANEL;
-    }
-
+ 
     
 
     

@@ -18,20 +18,19 @@ package jada.ngeditor.model.elements;
 import de.lessvoid.nifty.controls.checkbox.builder.CheckboxBuilder;
 import de.lessvoid.nifty.elements.Element;
 import jada.ngeditor.model.GUIFactory;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.visitor.Visitor;
+import jada.ngeditor.persistence.ControlBinding;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author cris
  */
-@XmlRootElement(name="control")
-public class GCheckbox extends GElement{
-     static{
-        GUIFactory.registerProduct(new GCheckbox());
-    }
+@ControlBinding(name= XmlTags.CHECKBOX)
+public class GCheckbox extends GControl {
+  
     
     
     private GCheckbox(){
@@ -42,10 +41,7 @@ public class GCheckbox extends GElement{
         super.builder = new CheckboxBuilder(id);
         this.name="checkbox";
     }
-    @Override
-    public Types getType() {
-        return Types.CHECKBOX;
-    }
+   
 
     @Override
     protected Element getDropContext() {

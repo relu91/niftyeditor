@@ -6,8 +6,9 @@ package jada.ngeditor.guiviews.palettecomponents;
 
 import jada.ngeditor.guiviews.DND.WidgetData;
 import jada.ngeditor.model.GUIFactory;
-import jada.ngeditor.model.Types;
 import jada.ngeditor.model.elements.GElement;
+import jada.ngeditor.model.elements.GScrollPanel;
+import jada.ngeditor.model.exception.NoProductException;
 
 /**
  *
@@ -21,8 +22,13 @@ public class NWidgetScroolPanel extends NWidget {
     }
     @Override
     public WidgetData getData() {
-        GElement e = GUIFactory.getInstance().newGElement(Types.SCROLLPANEL.toString());
-        return new WidgetData(e);
+        try {
+            GElement e = GUIFactory.getInstance().newGElement(GScrollPanel.class);
+            return new WidgetData(e);
+        } catch (NoProductException ex) {
+            ex.printStackTrace();
+           return new WidgetData(null);
+        }
     }
     
 }

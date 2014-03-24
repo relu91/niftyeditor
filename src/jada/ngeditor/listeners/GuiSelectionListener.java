@@ -21,8 +21,9 @@ import de.lessvoid.nifty.tools.SizeValue;
 import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.guiviews.J2DNiftyView;
 import jada.ngeditor.listeners.actions.Action;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.elements.GElement;
+import jada.ngeditor.model.elements.GLayer;
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -294,7 +295,7 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
     @Override
     public void update(Observable o, Object arg) {
         Action act = (Action) arg;
-        if(act.getType()== Action.SEL && !Types.LAYER.equals(act.getGUIElement().getType())){
+        if(act.getType()== Action.SEL && !(act.getGUIElement() instanceof GLayer)){
             this.selected.setBounds( act.getGUIElement().getBounds());
             this.selecting=true;
         }else if(act.getType()== Action.NEW){

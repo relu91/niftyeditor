@@ -6,33 +6,27 @@ package jada.ngeditor.model.elements;
 
 import de.lessvoid.nifty.controls.radiobutton.builder.RadioGroupBuilder;
 import jada.ngeditor.model.GUIFactory;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.visitor.Visitor;
-import javax.xml.bind.annotation.XmlRootElement;
-import org.w3c.dom.Element;
+import jada.ngeditor.persistence.ControlBinding;
 
 /**
  *
  * @author cris
  */
-@XmlRootElement(name="control")
-public class GRadioButtonGroup extends GElement {
-    static{
-         GUIFactory.registerProduct(new GRadioButtonGroup());
+ @ControlBinding(name= XmlTags.RADIOBUTTONGROUP)
+public class GRadioButtonGroup extends GControl  {
+
+    public GRadioButtonGroup() {
     }
-    public GRadioButtonGroup(){
-        super();
-    }
+  
     
     public GRadioButtonGroup(String id ){
         super(id);
         this.builder = new RadioGroupBuilder(id);
         name="radioButtonGroup";
     }
-    @Override
-    public Types getType() {
-        return Types.RADIOBUTTONGROUP;
-    }
+    
 
     @Override
     public GElement create(String id) {

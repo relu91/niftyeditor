@@ -6,20 +6,19 @@ package jada.ngeditor.model.elements;
 
 import de.lessvoid.nifty.controls.treebox.builder.TreeBoxBuilder;
 import jada.ngeditor.model.GUIFactory;
-import jada.ngeditor.model.Types;
+import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.visitor.Visitor;
-import javax.xml.bind.annotation.XmlRootElement;
+import jada.ngeditor.persistence.ControlBinding;
 
 /**
  *
  * @author cris
  */
-@XmlRootElement(name="control")
-public class GTree extends GElement{
-static{
-         GUIFactory.registerProduct(new GTree());
-    }
+@ControlBinding(name= XmlTags.NIFTYTREEBOX)
+public class GTree extends GControl {
+
+   
 
     public GTree(String id) throws IllegalArgumentException {
         super(id);
@@ -29,10 +28,6 @@ static{
 
     public GTree() {
         super();
-    }
-    @Override
-    public Types getType() {
-        return Types.NIFTYTREEBOX;
     }
 
     @Override
