@@ -16,8 +16,6 @@ package jada.ngeditor;
 
 import com.jtattoo.plaf.hifi.HiFiLookAndFeel;
 import jada.ngeditor.guiviews.MainView;
-import jada.ngeditor.listeners.ClosingListener;
-import jada.ngeditor.persistence.XmlTags;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -26,8 +24,6 @@ import java.awt.Toolkit;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
-import javax.swing.JPopupMenu;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -55,6 +51,7 @@ public class NiftyEditor {
               g.setPaintMode();
               g.setColor(Color.DARK_GRAY);
               g.fillRect(10,205,280,5);
+              g.setColor(line);
               g.fillRect(10,205,130,5);
               g.setColor(Color.black);
               g.drawRect(10,205,130,5);
