@@ -4,6 +4,9 @@
  */
 package jada.ngeditor.model.elements;
 
+import de.lessvoid.nifty.EndNotify;
+import de.lessvoid.nifty.Nifty;
+import de.lessvoid.xml.xpp3.Attributes;
 import jada.ngeditor.persistence.XmlTags;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -32,12 +35,35 @@ public abstract class GControl extends GElement{
     public GControl(String id) throws IllegalArgumentException {
         super(id);
     }
+    
+    
 
     @Override
-    public GElement create(String id) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+    protected void internalRefresh(Nifty nifty, Attributes att) {
+         int index = parent.getNiftyElement().getChildren().indexOf(nElement);
+        final GElement telement = this;
 
+        nElement.markForRemoval(new EndNotify() {
+            @Override
+            public void perform() {
+                this.buildChild(telement);
+            }
+
+            private void buildChild(GElement ele) {
+                for (GElement e : ele.getElements()) {
+                    ele.getDropContext().addChild(e.getNiftyElement());
+                    e.refresh();
+                    this.buildChild(e);
+                }
+            }
+        });
+        for (String sel : attributes.keySet()) {
+            builder.set(sel, attributes.get(sel));
+        }
+
+        nElement = builder.build(nifty, nifty.getCurrentScreen(), this.parent.getDropContext(), index);
+        nifty.getCurrentScreen().layoutLayers();
+    }
     @Override
     public void initDefault() {
         

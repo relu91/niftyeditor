@@ -244,9 +244,7 @@ public abstract class GElement {
             nElement.setRenderOrder(renderorder);
         }
         nElement.setId(id);
-        //Fixme use inerithance 
-        this.heavyRefresh(temp, attcopy);
-        this.lightRefresh(attcopy);
+        this.internalRefresh(temp, att);
         this.processRemoved();
     }
     /*
@@ -267,7 +265,12 @@ public abstract class GElement {
         nElement.initializeFromAttributes(currentScreen, att, temp.getRenderEngine());
         currentScreen.layoutLayers();
     }
-
+    
+    protected void internalRefresh(Nifty nifty,Attributes att){
+        Screen currentScreen = nifty.getCurrentScreen();
+        nElement.initializeFromAttributes(currentScreen, att, nifty.getRenderEngine());
+        currentScreen.layoutLayers();
+    }
     protected void heavyRefresh(Nifty nifty, Attributes att) {
         int index = parent.getNiftyElement().getChildren().indexOf(nElement);
         final GElement telement = this;

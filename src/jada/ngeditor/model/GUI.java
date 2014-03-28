@@ -121,7 +121,6 @@ public class GUI extends Observable {
             if (toEle.getAttribute("childLayout").equals("absolute")) {
                 int parentX = toEle.getNiftyElement().getX();
                 int parentY = toEle.getNiftyElement().getY();
-
                 from.addAttribute("x", "" + (int) (to.getX() - parentX));
                 from.addAttribute("y", "" + (int) (to.getY() - parentY));
                 this.manager.moveElement(this.manager.getCurrentScreen(), from.getNiftyElement(), nTo, null);
