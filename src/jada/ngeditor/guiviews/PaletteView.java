@@ -27,6 +27,7 @@ public class PaletteView extends javax.swing.JPanel {
      */
     public PaletteView() {
         initComponents();
+        
     }
 
     /**
@@ -107,6 +108,7 @@ public class PaletteView extends javax.swing.JPanel {
    jPanel1.add(imgs);
    jPanel1.add(drag);
    jPanel1.add(drop);
+ 
     }catch (Exception e){}
     }
 }

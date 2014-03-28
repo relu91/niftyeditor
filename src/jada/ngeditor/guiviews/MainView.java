@@ -20,6 +20,7 @@ import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.guiviews.DND.PaletteDropTarget;
 import jada.ngeditor.guiviews.DND.TrasferHandling;
 import jada.ngeditor.listeners.ClosingListener;
+import jada.ngeditor.model.exception.NoProductException;
 import jada.ngeditor.persistence.XmlFileFilter;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -252,6 +253,8 @@ public class MainView extends javax.swing.JFrame {
                editor.addObserver(proprietesView2);
                editor.createNewGui(cont.getNifty()); 
            }
+        } catch (NoProductException ex) {
+            Logger.getLogger(MainView.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(MainView.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {

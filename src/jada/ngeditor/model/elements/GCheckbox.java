@@ -44,7 +44,7 @@ public class GCheckbox extends GControl {
    
 
     @Override
-    protected Element getDropContext() {
+    public Element getDropContext() {
         throw new IllegalDropException("You can't add elements to a checkbox");
     }
 

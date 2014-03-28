@@ -59,7 +59,7 @@ public class GLabel extends GControl {
     }
     
      @Override
-    protected Element getDropContext() {
+    public Element getDropContext() {
         throw new IllegalDropException("You can not add elements to a label");
     }
     

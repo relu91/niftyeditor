@@ -21,7 +21,6 @@ import de.lessvoid.nifty.tools.SizeValue;
 import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.guiviews.J2DNiftyView;
 import jada.ngeditor.listeners.actions.Action;
-import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.elements.GLayer;
 import java.awt.Cursor;
@@ -84,7 +83,7 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
             JPanel c = (JPanel) e.getComponent();
             TransferHandler handler = c.getTransferHandler();
             handler.exportAsDrag(c, e, TransferHandler.MOVE);
-        
+            this.gui.getDragDropSupport().startDrag(this.getSelected());
         }
       
     }

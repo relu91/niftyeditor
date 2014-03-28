@@ -44,7 +44,7 @@ public class GScrollPanel extends GControl  {
     }
     
      @Override
-     protected de.lessvoid.nifty.elements.Element getDropContext(){
+     public de.lessvoid.nifty.elements.Element getDropContext(){
          
          return nElement.findElementById("#nifty-scrollpanel-child-root");
      }

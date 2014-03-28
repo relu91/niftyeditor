@@ -51,7 +51,7 @@ public class GRadioButton extends GControl  {
     }
     
      @Override
-    protected Element getDropContext() {
+    public Element getDropContext() {
         throw new IllegalDropException("You can not add elements to a radiobutton");
     }
 

@@ -245,11 +245,8 @@ public abstract class GElement {
         }
         nElement.setId(id);
         //Fixme use inerithance 
-       
-            this.heavyRefresh(temp, attcopy);
-       
-            this.lightRefresh(attcopy);
-        
+        this.heavyRefresh(temp, attcopy);
+        this.lightRefresh(attcopy);
         this.processRemoved();
     }
     /*
@@ -320,7 +317,7 @@ public abstract class GElement {
         }
     }
 
-    protected Element getDropContext() {
+    public Element getDropContext() {
         return nElement;
     }
     

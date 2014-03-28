@@ -53,7 +53,7 @@ public class GListBox extends GControl {
     }
     
      @Override
-    protected de.lessvoid.nifty.elements.Element getDropContext() {
+    public de.lessvoid.nifty.elements.Element getDropContext() {
         throw new IllegalDropException("You can not add elements to a list use your code");
     }
     

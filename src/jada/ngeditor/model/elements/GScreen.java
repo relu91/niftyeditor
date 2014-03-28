@@ -17,8 +17,6 @@ package jada.ngeditor.model.elements;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.screen.Screen;
-import jada.ngeditor.model.GUIFactory;
-import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.visitor.Visitor;
 import java.util.Collection;
 import javax.xml.bind.annotation.XmlRootElement;

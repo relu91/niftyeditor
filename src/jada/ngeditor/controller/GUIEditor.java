@@ -16,23 +16,22 @@ package jada.ngeditor.controller;
 
 import de.lessvoid.nifty.EndNotify;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.builder.PopupBuilder;
 import de.lessvoid.nifty.controls.NiftyControl;
 import de.lessvoid.nifty.elements.Element;
 import jada.ngeditor.listeners.actions.Action;
 import jada.ngeditor.model.GUI;
 import jada.ngeditor.model.GUIFactory;
-import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.elements.GLayer;
 import jada.ngeditor.model.elements.GScreen;
 import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.exception.NoProductException;
-import jada.ngeditor.model.visitor.VisitorAdapter;
+import jada.ngeditor.model.utils.NiftyDDManager;
 import jada.ngeditor.persistence.GUIReader;
 import jada.ngeditor.persistence.GUIWriter;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -61,6 +60,7 @@ public class GUIEditor extends Observable{
     private GLayer  currentL;
     private GUIWriter writer ;
     private final ElementEditor eEditor;
+    private NiftyDDManager dragDropManager;
     
     
     public GUIEditor(){
@@ -84,6 +84,7 @@ public class GUIEditor extends Observable{
         this.notifyObservers(new Action(Action.NEW,screen));
         this.clearChanged();
         writer = new GUIWriter(gui);
+        dragDropManager = new NiftyDDManager(nifty);
     }
     /**
      * Create a new gui from a file
@@ -134,10 +135,6 @@ public class GUIEditor extends Observable{
     public void refresh(Nifty nifty) throws Exception{
         if(getGui() != null){
             String screenID =this.currentS.getID();
-              /* for(String sel : nifty.getAllScreensName()){
-                    nifty.removeScreen(sel);
-                *  seems that is not needed !
-               }*/
                 nifty.scheduleEndOfFrameElementAction(new Reload(nifty, screenID), null);
                 
                 
@@ -366,11 +363,14 @@ public class GUIEditor extends Observable{
     public void move(Point2D to,GElement from){
         if(from instanceof GLayer)
             return;
-        GElement ele = findElement(to);
-        if(ele.equals(from))
-           getGui().move(to,ele.getParent(), from);
-        else
-          getGui().move(to,ele,from);
+        LinkedList<GElement> elements = findAllElements(to);
+        GElement ele = elements.pollLast();
+        if(ele.equals(from)) {
+            getGui().move(to,elements.pollLast(), from);
+        }
+        else {
+            getGui().move(to,ele,from);
+        }
         this.setChanged();
         this.notifyObservers(new Action(Action.MOV,from));
         this.clearChanged();
@@ -388,29 +388,29 @@ public class GUIEditor extends Observable{
      * @return the upper element or if there's no one the upper layer visible
      */
     public GElement findElement(Point2D point) {
-        //Fixme : there's a little mess .. this was done to salve issue #3
         GElement result = null;
         if (currentL == null) {
             result = currentS;
         } else {
-            LinkedList<GElement> res = new LinkedList<GElement>();
+            LinkedList<GElement> res = this.findAllElements(point);
+            result = res.getLast();
+        }
+        return result;
+    }
+    
+    public LinkedList<GElement> findAllElements(Point2D point){
+        LinkedList<GElement> res = new LinkedList<GElement>();
+        if (currentL == null) {
+            res.add(currentS);
+        } else {
+            res.add(currentL);
             for (GElement ele : this.gui.getAllChild(currentL)) {
                 if (ele.contains(point)) {
                     res.add(ele);
                 }
             }
-            result = currentL;
-            Rectangle minArea = currentS.getBounds();
-            while (!res.isEmpty()) {
-                GElement temp = res.pop();
-                Rectangle area = temp.getBounds();
-                if (area.width <= minArea.width && area.height <= minArea.height) {
-                    result = temp;
-                    minArea = area;
-                }
-            }
         }
-        return result;
+        return res;
     }
     /**
      * 
@@ -446,6 +446,10 @@ public class GUIEditor extends Observable{
     
     public GLayer getCurrentLayer(){
         return this.currentL;
+    }
+    
+    public NiftyDDManager getDragDropSupport(){
+        return this.dragDropManager;
     }
     @Override
     public String toString(){

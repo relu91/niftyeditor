@@ -42,7 +42,7 @@ public class GWindow extends GControl {
     }
 
      @Override
-     protected de.lessvoid.nifty.elements.Element getDropContext(){
+     public de.lessvoid.nifty.elements.Element getDropContext(){
          return nElement.getControl(WindowControl.class).getContent();
      }
      

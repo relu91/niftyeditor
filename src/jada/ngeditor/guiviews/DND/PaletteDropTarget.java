@@ -14,20 +14,14 @@
  */
 package jada.ngeditor.guiviews.DND;
 
-import de.lessvoid.nifty.elements.Element;
-import de.lessvoid.nifty.tools.SizeValue;
 import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.guiviews.J2DNiftyView;
 import jada.ngeditor.listeners.actions.Action;
-import jada.ngeditor.model.GUI;
 import jada.ngeditor.model.exception.IllegalDropException;
-import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.elements.GElement;
-import jada.ngeditor.model.elements.GScreen;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
-import java.awt.dnd.DropTargetAdapter;
 import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.geom.Point2D;
@@ -56,17 +50,7 @@ public class PaletteDropTarget extends DropTarget implements Observer {
         J2DNiftyView comp = (J2DNiftyView) this.getComponent();
         if(dtde.getDropAction() == DnDConstants.ACTION_MOVE ){
             comp.moveRect(dtde.getLocation().x, dtde.getLocation().y);
-            Element ele = obj.getSelected().getNiftyElement();
-            Element parent = ele.getParent();
-            float hp = parent.getHeight();
-            float wp = parent.getWidth();
-            int totalPaddingHorz = parent.getPaddingLeft().getValueAsInt(wp);
-            int totalPaddingVert = parent.getPaddingTop().getValueAsInt(hp);
-            int x  = dtde.getLocation().x - ele.getParent().getX() - ele.getWidth()/2 - totalPaddingHorz ;
-            int y = dtde.getLocation().y - ele.getParent().getY() - ele.getHeight()/2 - totalPaddingVert;
-            ele.setConstraintX(SizeValue.px(x));
-            ele.setConstraintY(SizeValue.px(y));
-            ele.getParent().layoutElements();
+            this.obj.getDragDropSupport().dragAround(dtde.getLocation().x, dtde.getLocation().y);
         }
         
     }
@@ -90,23 +74,29 @@ public class PaletteDropTarget extends DropTarget implements Observer {
                     dtde.getLocation().y= (int) (dtde.getLocation().y - point.getY());
                 }
                obj.move(dtde.getLocation(), from);
+               obj.getDragDropSupport().endDrag();
                dtde.dropComplete(true);
           }
         }catch (IllegalDropException ex){
             JOptionPane.showMessageDialog(dtde.getDropTargetContext().getComponent(), ex.getMessage());
+            obj.getDragDropSupport().reverDrag();
         } catch (UnsupportedFlavorException ex) {
+             obj.getDragDropSupport().reverDrag();
             Logger.getLogger(PaletteDropTarget.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
+             obj.getDragDropSupport().reverDrag();
             Logger.getLogger(PaletteDropTarget.class.getName()).log(Level.SEVERE, null, ex);
         }   
-        } else
+        } else {
             dtde.rejectDrop();
+        }
         
     }
  @Override
     public void update(Observable o, Object arg) {
-        if(((Action)arg).getType() == Action.NEW)
+        if(((Action)arg).getType() == Action.NEW) {
             this.obj = ((GUIEditor)o);
+        }
     }
     
     

@@ -13,10 +13,10 @@ import de.lessvoid.nifty.controls.scrollbar.builder.ScrollbarBuilder;
 
 public abstract class GScrollbar extends GControl {
     
-    protected GScrollbar(){
+    public GScrollbar(){
         super();
     }
-    protected GScrollbar(String id,boolean vertical) throws IllegalArgumentException{
+    public GScrollbar(String id,boolean vertical) throws IllegalArgumentException{
       super(id);
       builder = new ScrollbarBuilder(id, vertical);
     }
