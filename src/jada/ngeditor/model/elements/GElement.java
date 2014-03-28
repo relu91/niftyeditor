@@ -21,7 +21,6 @@ import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.ImageRenderer;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.xml.xpp3.Attributes;
-import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.visitor.Visitor;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -124,8 +123,7 @@ public abstract class GElement {
         int eh = nElement.getHeight();
         return new java.awt.Rectangle(ex, ey, ew, eh);
     }
-    //GUI editor Vecchio
-
+    
     public boolean contains(Point2D point) {
         int ex = nElement.getX();
         int ey = nElement.getY();
@@ -174,9 +172,6 @@ public abstract class GElement {
         return res;
     }
 
-    public org.w3c.dom.Element toXml() {
-        return null;
-    }
 
     public LinkedList<GElement> getElements() {
         return this.children;
@@ -244,7 +239,7 @@ public abstract class GElement {
             nElement.setRenderOrder(renderorder);
         }
         nElement.setId(id);
-        this.internalRefresh(temp, att);
+        this.internalRefresh(temp, attcopy);
         this.processRemoved();
     }
     /*
