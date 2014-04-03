@@ -154,10 +154,10 @@ public class GUIEditor extends Observable{
      * @param y 
      */
     public void selectElement(int x,int y){
-        this.selected = findElement(new Point(x,y));
-        this.setChanged();
+        this.selectElement(findElement(new Point(x,y)));
+       /* this.setChanged();
         this.notifyObservers(new Action(Action.SEL,this.selected));
-        this.clearChanged();
+        this.clearChanged();*/
     }
     
     /**

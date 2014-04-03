@@ -125,11 +125,7 @@ public abstract class GElement {
     }
     
     public boolean contains(Point2D point) {
-        int ex = nElement.getX();
-        int ey = nElement.getY();
-        int ew = nElement.getWidth();
-        int eh = nElement.getHeight();
-        return new java.awt.Rectangle(ex, ey, ew, eh).contains(point.getX(), point.getY());
+        return this.getBounds().contains(point.getX(), point.getY());
     }
 
     @XmlTransient

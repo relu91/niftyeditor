@@ -100,8 +100,10 @@ public class ElementEditor {
         if(!(this.selected instanceof GScreen)){
         if(vis){
             this.selected.getNiftyElement().showWithoutEffects();
+            this.setAttribute("visible", "true");
         } else
             this.selected.getNiftyElement().hideWithoutEffect();
+            this.setAttribute("visible", "false");
         }
     }
     public Element getNiftyElement(){
