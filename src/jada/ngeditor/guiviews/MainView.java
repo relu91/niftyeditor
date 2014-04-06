@@ -105,6 +105,7 @@ public class MainView extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        assetFolderMenu = new javax.swing.JMenuItem();
         refresh = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         CheckPane = new javax.swing.JCheckBoxMenuItem();
@@ -195,6 +196,15 @@ public class MainView extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
+
+        assetFolderMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
+        assetFolderMenu.setText("Asset folder");
+        assetFolderMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                assetFolderMenuActionPerformed(evt);
+            }
+        });
+        jMenu2.add(assetFolderMenu);
 
         refresh.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
         refresh.setText("Refresh");
@@ -362,9 +372,19 @@ public class MainView extends javax.swing.JFrame {
         new AboutForm().setVisible(true);
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
+    private void assetFolderMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assetFolderMenuActionPerformed
+        this.IOmanager.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int result = this.IOmanager.showOpenDialog(this);
+        if(result == JFileChooser.APPROVE_OPTION){
+            this.editor.getGui().setAssetFolder(this.IOmanager.getSelectedFile());
+        }
+        this.IOmanager.setFileSelectionMode(JFileChooser.FILES_ONLY);
+    }//GEN-LAST:event_assetFolderMenuActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem CheckPane;
+    private javax.swing.JMenuItem assetFolderMenu;
     private javax.swing.JPanel guiView;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;

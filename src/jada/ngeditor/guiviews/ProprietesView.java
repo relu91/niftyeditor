@@ -101,7 +101,7 @@ public class ProprietesView extends javax.swing.JPanel implements Observer{
         }else{
             GUIEditor editor = (GUIEditor) o;
             GElement ele = act.getGUIElement();
-           
+            this.jTable1.setEditor(editor);
             Map<String,String> attribut = ele.getAttributes();
             model.setNumRows(attribut.keySet().size());
             int line =0;

@@ -15,6 +15,8 @@
 package jada.ngeditor.model;
 
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.tools.resourceloader.FileSystemLocation;
+import de.lessvoid.nifty.tools.resourceloader.ResourceLocation;
 import jada.ngeditor.listeners.actions.Action;
 import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.elements.GLayer;
@@ -24,12 +26,14 @@ import jada.ngeditor.model.elements.specials.GUseStyle;
 import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.visitor.Visitor;
 import java.awt.geom.Point2D;
+import java.io.File;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Observable;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlRootElement;
+import sun.management.FileSystem;
 
 /**
  * Main model class it is a container for all GUI elements
@@ -41,6 +45,8 @@ public class GUI extends Observable {
 
     private static int GUIID = 0;
     private final Nifty manager;
+    private FileSystemLocation assets;
+    private File assetsFile;
 
     public Nifty getNifty() {
         return manager;
@@ -202,5 +208,21 @@ public class GUI extends Observable {
 
     public void accept(Visitor visit) {
         visit.visit(this);
+    }
+    /**
+     * Set asset folder for this gui . All the resources of this gui should be inside
+     * this particular folder.
+     * @param f 
+     */
+    public void setAssetFolder(File f){
+        //remove previous assets
+        manager.getResourceLoader().removeResourceLocation(assets);
+        assets = new FileSystemLocation(f);
+        this.assetsFile = f;
+        manager.getResourceLoader().addResourceLocation(assets);
+    }
+    
+    public File getAssetFolder(){
+        return assetsFile;
     }
 }

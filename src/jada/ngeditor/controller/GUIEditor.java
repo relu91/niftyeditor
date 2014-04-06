@@ -85,6 +85,7 @@ public class GUIEditor extends Observable{
         this.clearChanged();
         writer = new GUIWriter(gui);
         dragDropManager = new NiftyDDManager(nifty);
+        System.gc();
     }
     /**
      * Create a new gui from a file

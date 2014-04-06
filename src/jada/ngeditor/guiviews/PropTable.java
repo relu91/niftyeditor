@@ -14,13 +14,12 @@
  */
 package jada.ngeditor.guiviews;
 
+import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.guiviews.editors.FileChooserEditor;
 import jada.ngeditor.guiviews.editors.HexColorCellEditor;
 import jada.ngeditor.guiviews.editors.JComboEditor;
 import jada.ngeditor.guiviews.editors.SizeEditor;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 
 /**
@@ -29,6 +28,7 @@ import javax.swing.table.TableCellEditor;
  */
 public class PropTable extends JTable{
     private static final JComboEditor layoutEditor = new JComboEditor("absolute","center", "vertical", "horizontal","overlay");
+    private GUIEditor editor;
     public PropTable() {
 	super();
         this.setModel(new javax.swing.table.DefaultTableModel(
@@ -79,13 +79,17 @@ public class PropTable extends JTable{
                 editor = new HexColorCellEditor();
             }else if(pname.equalsIgnoreCase("filename") 
                     || pname.equalsIgnoreCase("backgroundImage")){
-                editor = new FileChooserEditor(JOptionPane.getFrameForComponent(this));
+                editor = new FileChooserEditor(this.editor.getGui().getAssetFolder());
             }else if( pname.equalsIgnoreCase("height")){
                 editor = new SizeEditor();
             }
 	return editor;
     }
        return editor;
+    }
+    
+    public void setEditor(GUIEditor editor){
+        this.editor = editor;
     }
     
 }

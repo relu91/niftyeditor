@@ -31,7 +31,7 @@ import javax.swing.ImageIcon;
 public class NWidgetButton extends NWidget {
     
      public NWidgetButton() throws IOException{
-        BufferedImage image = ImageIO.read(getIcon("button.png"));
+        BufferedImage image = ImageIO.read(getIcon("GButton.png"));
         this.icon.setIcon(new ImageIcon(image));
         this.text.setText("Button");
         
