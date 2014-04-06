@@ -17,6 +17,16 @@ package jada.ngeditor.guiviews.palettecomponents;
 import jada.ngeditor.guiviews.DND.DragHandler;
 import jada.ngeditor.guiviews.DND.TrasferHandling;
 import jada.ngeditor.guiviews.DND.WidgetData;
+import jada.ngeditor.model.GUIFactory;
+import jada.ngeditor.model.elements.GButton;
+import jada.ngeditor.model.elements.GElement;
+import jada.ngeditor.model.exception.NoProductException;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 
@@ -24,21 +34,36 @@ import javax.swing.JLabel;
  *
  * @author cris
  */
-public abstract class NWidget extends javax.swing.JPanel {
+public class NWidget extends javax.swing.JPanel {
+    private final Class<? extends GElement> dataClass;
 
     /**
      * Creates new form NWidget
      */
-    public NWidget() {
-        initComponents();
-        this.addMouseListener(new DragHandler());
-        this.setTransferHandler(new TrasferHandling());
-    }
-    public JLabel getIcon(){
-        return this.icon;
+    public NWidget(Class<? extends GElement> wrappedClass) {
+        this.dataClass = wrappedClass;
+        try {
+            initComponents();
+            this.addMouseListener(new DragHandler());
+            this.setTransferHandler(new TrasferHandling());
+            String name = wrappedClass.getSimpleName();
+            this.text.setText(name);
+            BufferedImage image = ImageIO.read(getIcon(name+".png"));
+            this.icon.setIcon(new ImageIcon(image));
+        } catch (Exception ex) {
+            Logger.getLogger(NWidget.class.getName()).log(Level.SEVERE,"No Image for "+wrappedClass);
+        }
     }
     
-    public abstract WidgetData getData();
+    public WidgetData getData() {
+        try {
+            GElement e = GUIFactory.getInstance().newGElement(dataClass);
+            return new WidgetData(e);
+        } catch (NoProductException ex) {
+            ex.printStackTrace();
+           return new WidgetData(null);
+        }
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.

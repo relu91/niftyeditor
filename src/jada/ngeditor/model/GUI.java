@@ -77,6 +77,7 @@ public class GUI extends Observable {
         this.useControls.setFilename("nifty-default-controls.xml");
         this.useStyles.setFilename("nifty-default-styles.xml");
         this.GUIID++;
+        this.assetsFile = new File(".");
 
     }
 

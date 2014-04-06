@@ -32,9 +32,6 @@ public class DragHandler extends MouseAdapter{
        
             NWidget c = (NWidget) e.getSource();
             TransferHandler handler = c.getTransferHandler();
-            Image prova = ((ImageIcon) c.getIcon().getIcon()).getImage();
-            prova = prova.getScaledInstance(32,32, Image.SCALE_FAST);
-           // handler.setDragImage(prova);
             handler.exportAsDrag(c, e, TransferHandler.COPY); 
            
     }

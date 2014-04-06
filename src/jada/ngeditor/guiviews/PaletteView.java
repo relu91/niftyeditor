@@ -15,6 +15,10 @@
 package jada.ngeditor.guiviews;
 
 import jada.ngeditor.guiviews.palettecomponents.*;
+import jada.ngeditor.model.elements.GElement;
+import jada.ngeditor.model.elements.GLayer;
+import jada.ngeditor.model.utils.ClassUtils;
+import java.lang.reflect.Modifier;
 
 /**
  *
@@ -66,49 +70,21 @@ public class PaletteView extends javax.swing.JPanel {
 
     private void addPaletteComponents(){
         try{
-        NWidgetLayer layer    = new NWidgetLayer();
-        NWidgetScreen screen  = new NWidgetScreen();
-        NWidgetPanel panel    = new NWidgetPanel();
-        NWidgetButton button  = new NWidgetButton();
-        NWidgetTextField text = new NWidgetTextField();
-   NWidgetCheck chek     = new NWidgetCheck();
-   NWidgetLabel label    = new NWidgetLabel();
-   NWidgetConsole cons   = new NWidgetConsole();
-   NWidgetWindow  wind   = new NWidgetWindow();
-   NWidgetRadioButton rbut = new NWidgetRadioButton();
-   NWidgetImage     image = new NWidgetImage();
-   NWidgetListBox   list = new NWidgetListBox();
-   NWidgetScroolPanel scrool = new NWidgetScroolPanel();
-   NWidgetDropDown down = new NWidgetDropDown();
-   NWidgetScrollbar scrolB = new NWidgetScrollbar();
-   NWidgetRadioButtonGroup radioG = new NWidgetRadioButtonGroup();
-   NWidgetScrollbarV vscrol = new NWidgetScrollbarV();
-   NWidgetTree tree = new NWidgetTree();
-   NWidgetImageSelect imgs = new NWidgetImageSelect();
-   NWidgetDraggable drag = new NWidgetDraggable();
-   NWidgetDroppable drop = new NWidgetDroppable();
-   jPanel1.add(screen);
-   jPanel1.add(layer);
-   jPanel1.add(image);
-   jPanel1.add(panel);
-   jPanel1.add(label);
-   jPanel1.add(button);
-   jPanel1.add(text);
-   jPanel1.add(chek);
-   jPanel1.add(cons);
-   jPanel1.add(wind);
-   jPanel1.add(rbut);
-   jPanel1.add(list);
-   jPanel1.add(scrool);
-   jPanel1.add(down);
-   jPanel1.add(scrolB);
-   jPanel1.add(radioG);
-   jPanel1.add(vscrol);
-   jPanel1.add(tree);
-   jPanel1.add(imgs);
-   jPanel1.add(drag);
-   jPanel1.add(drop);
+            Class[] classes = ClassUtils.getClasses("jada.ngeditor.model.elements",new ClassUtils.Predicate<Class>() {
+
+                @Override
+                public boolean apply(Class object) {
+                   boolean abs = Modifier.isAbstract( object.getModifiers() );
+                   return !abs && !object.isAnonymousClass() && GElement.class.isAssignableFrom(object);
+                }
+            });
+            for(Class c : classes){
+                NWidget widget = new NWidget(c);
+                jPanel1.add(widget);
+            }
  
-    }catch (Exception e){}
+    }catch (Exception e){
+        e.printStackTrace();
+    }
     }
 }
