@@ -180,21 +180,10 @@ public class SizeEditorComponent {
 	dialog = new JDialog(owner, true);
 	dialog.add(panel);
 	dialog.pack();
-	if(delay != 0) {
-	    Timer timer = new Timer(0, new ActionListener() {
-
-		public void actionPerformed(ActionEvent e) {
-		    dialog.setVisible(true);
-		    closeNotifiable.run();
-		}
-	    });
-	    timer.setInitialDelay(delay);
-	    timer.setRepeats(false);
-	    timer.start();
-	} else {
-	    dialog.setVisible(true);
-	    closeNotifiable.run();
-	}
+	JOptionPane.showMessageDialog(owner, panel, "Size editor", JOptionPane.PLAIN_MESSAGE);
+	dialog.setVisible(true);
+	closeNotifiable.run();
+	
     }
 
     public String getValueAsString() {

@@ -15,7 +15,7 @@ public class SizeEditor extends AbstractCellEditor implements TableCellEditor, R
     }
 
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-	editor.showDialog(table, asInteger(value), 100, this);
+	editor.showDialog(table, asInteger(value), 0, this);
 	label.setText(String.valueOf(value));
 	return label;
     }
