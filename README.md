@@ -1,7 +1,7 @@
 Nifty-editor
 ===========
 
-An editor to build gui for you game engine! Powered by the powerfull [nifty-gui](http://nifty-gui.lessvoid.com/) , you could create immersive gui for your games in few steps! 
+An editor to build GUIs for your game engine! Powered by the powerfull [nifty-gui](http://nifty-gui.lessvoid.com/) , you could create immersive GUIs for your games in few steps! 
 Nifty-gui has rederer support for the follow engines :
 
 * LWJGL
@@ -19,7 +19,7 @@ Download and news at [home page](http://niftyeditor.it/). Also here is a video a
 
 ## How to Contribute
 
-Simply fork my repo and send pull requests . This is a Netbeans project so if you want to compile it you need a Netbeans installation on you desktop. In feature it maybe will become a gradle project so you would use it in you prefered java IDE.
+Simply fork my repo and send pull requests . This is a Netbeans project so if you want to compile it you need a Netbeans installation on you desktop. In feature it maybe will become a gradle project so you would use it in your prefered java IDE.
 
 ## Issues or suggestion
 
