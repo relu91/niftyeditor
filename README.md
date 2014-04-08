@@ -1,12 +1,26 @@
 Nifty-editor
 ===========
 
-an editor to edit nifty-gui files. Download and news at : http://niftyeditor.it/
+An editor to build gui for you game engine! Powered by the powerfull [nifty-gui](http://nifty-gui.lessvoid.com/) , you could create immersive gui for your games in few steps! 
+Nifty-gui has rederer support for the follow engines :
 
-## How to Run
+* LWJGL
+* JMonkeyEngine
+* JOGL
+* Slick2d
+* Java2d
+* Libgdx (1.4 version)
 
-Simply download the zip of this repo and open it in your Netbeans installation
+So if you use one of them you should try Nifty-Editor and Nifty-gui! 
 
-## Issues 
+Download and news at [home page](http://niftyeditor.it/). Also here is a video about the latest version , notice that this software is still in beta :
 
-Please use Github issue tracker . 
+[![IMAGE ALT TEXT HERE](http://img.youtube.com/vi/B3Y3UdEbIRQ/0.jpg)](http://www.youtube.com/watch?v=B3Y3UdEbIRQ)
+
+## How to Contribute
+
+Simply fork my repo and send pull requests . This is a Netbeans project so if you want to compile it you need a Netbeans installation on you desktop. In feature it maybe will become a gradle project so you would use it in you prefered java IDE.
+
+## Issues or suggestion
+
+Please use Github issue tracker and every suggestion is appreciate! . 
