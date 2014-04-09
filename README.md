@@ -19,7 +19,7 @@ Download and news at [home page](http://niftyeditor.it/). Also here is a video a
 
 ## How to Contribute
 
-Simply fork my repo and send pull requests . This is a Netbeans project so if you want to compile it you need a Netbeans installation on you desktop. In feature it maybe will become a gradle project so you would use it in your prefered java IDE.
+Simply fork my repo and send pull requests . This is a Netbeans project so if you want to compile it you need a Netbeans installation on you desktop. In the future it maybe will become a gradle project so you would use it in your prefered java IDE.
 
 ## Issues or suggestion
 
