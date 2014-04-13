@@ -22,15 +22,23 @@ import jada.ngeditor.guiviews.DND.TrasferHandling;
 import jada.ngeditor.listeners.ClosingListener;
 import jada.ngeditor.model.exception.NoProductException;
 import jada.ngeditor.persistence.XmlFileFilter;
+import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
@@ -108,6 +116,7 @@ public class MainView extends javax.swing.JFrame {
         assetFolderMenu = new javax.swing.JMenuItem();
         refresh = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
         CheckPane = new javax.swing.JCheckBoxMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
@@ -145,20 +154,20 @@ public class MainView extends javax.swing.JFrame {
         guiView.setLayout(new javax.swing.BoxLayout(guiView, javax.swing.BoxLayout.LINE_AXIS));
         guiView.add(jTabbedPane2);
 
-        javax.swing.JPanel welcome = new javax.swing.JPanel();
+        //javax.swing.JPanel welcome = new javax.swing.JPanel();
         javax.swing.JPanel working = new javax.swing.JPanel();
-        welcome.setLayout(new javax.swing.BoxLayout(welcome,javax.swing.BoxLayout.LINE_AXIS));
         wel = new J2DNiftyView(800,600);
-        welcome.add(wel);
-
-        wel.init();
-        working.setLayout(new javax.swing.BoxLayout(working,javax.swing.BoxLayout.LINE_AXIS));
         cont=  new J2DNiftyView(800,600);
-
-        working.add(cont);
-        jTabbedPane2.addTab("WorkGUI", working);
-        jTabbedPane2.addTab("Welcome", welcome);
         cont.init();
+        wel.init();
+        JScrollPane scroll = new JScrollPane();
+        scroll.setViewportView(cont);
+        JScrollPane welcome = new JScrollPane();
+        welcome.setViewportView(wel);
+        scroll.getViewport().addChangeListener(cont);
+        welcome.getViewport().addChangeListener(wel);
+        jTabbedPane2.addTab("WorkGUI", scroll);
+        jTabbedPane2.addTab("Welcome", welcome);
 
         getContentPane().add(guiView, java.awt.BorderLayout.CENTER);
 
@@ -219,6 +228,15 @@ public class MainView extends javax.swing.JFrame {
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Option");
+
+        jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.ALT_MASK));
+        jMenuItem4.setText("Change Resolution");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem4);
 
         CheckPane.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
         CheckPane.setText("Show Panels");
@@ -381,6 +399,16 @@ public class MainView extends javax.swing.JFrame {
         this.IOmanager.setFileSelectionMode(JFileChooser.FILES_ONLY);
     }//GEN-LAST:event_assetFolderMenuActionPerformed
 
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        String res = JOptionPane.showInputDialog("Input the new resolution", "es: 800x600");
+        String [] resolutions = res.split("x");
+        int w = Integer.parseInt(resolutions[0]);
+        int h = Integer.parseInt(resolutions[1]);
+        this.cont.setResoltion(w, h);
+        
+        
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem CheckPane;
@@ -394,6 +422,7 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

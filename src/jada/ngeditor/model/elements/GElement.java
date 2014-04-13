@@ -195,11 +195,14 @@ public abstract class GElement {
     }
 
     public String getAttribute(String key) {
-        Attributes att = this.nElement.getElementType().getAttributes();
-        if (att.get(key) == null) {
-            return "";
+        String res = "";
+        if(nElement != null){
+         Attributes att = this.nElement.getElementType().getAttributes();
+        if (att.get(key) != null) {
+            res= att.get(key);
         }
-        return att.get(key);
+        }
+        return res;
     }
 
     public void addAttribute(String key, String val) {
@@ -327,7 +330,7 @@ public abstract class GElement {
     public void accept(Visitor visitor) {
         visitor.visit(this);
     }
-
+    //FIXME : remove this method 
     public abstract GElement create(String id);
 
     public abstract void initDefault();

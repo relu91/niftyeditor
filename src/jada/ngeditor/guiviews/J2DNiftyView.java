@@ -19,11 +19,11 @@ import de.lessvoid.nifty.java2d.input.InputSystemAwtImpl;
 import de.lessvoid.nifty.java2d.renderer.FontProviderJava2dImpl;
 import de.lessvoid.nifty.java2d.renderer.GraphicsWrapper;
 import de.lessvoid.nifty.java2d.renderer.RenderDeviceJava2dImpl;
+import de.lessvoid.nifty.render.NiftyRenderEngineImpl;
 import de.lessvoid.nifty.tools.TimeProvider;
 import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.listeners.GuiSelectionListener;
 import jada.ngeditor.listeners.actions.Action;
-import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.elements.GLayer;
 import jada.ngeditor.renderUtil.SoudDevicenull;
 import java.awt.BasicStroke;
@@ -36,19 +36,26 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
 import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JScrollPane;
+import javax.swing.JViewport;
 import javax.swing.Timer;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  *
  * @author cris
  */
-public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,Observer,ActionListener{
+public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,Observer,ActionListener,ChangeListener{
     private static final BasicStroke BASIC_STROKE = new BasicStroke();
     protected Nifty nifty;
     private boolean selecting;
@@ -64,18 +71,24 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
     private final static Font fpsFont = new Font("arial",Font.BOLD, 14);
     private final static BasicStroke stroke = new BasicStroke(1.5f,BasicStroke.CAP_SQUARE,BasicStroke.JOIN_ROUND,30,new float[] { 10.0f, 4.0f },0);;
     private Timer timer;
+    private final GraphicsWrappImpl graphWrap;
+    /**
+     * Used if this panel is within a JScrollPanel
+     */
+    private Rectangle clipView = new Rectangle();
     /**
      * Creates new form J2DNiftyView
      */
       
     public J2DNiftyView(int width , int height) {
         initComponents();
-        this.setSize(new Dimension(width,height));
+        this.setPreferredSize(new Dimension(width,height));
+        this.graphWrap = new GraphicsWrappImpl(width, height);
+        this.setOpaque(true);
         previous=null;
-        
         selecting=false;
         this.selected= new Rectangle();
-        
+        this.clipView.setSize(width, height);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -168,7 +181,7 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
         InputSystemAwtImpl inputSystem = new InputSystemAwtImpl();
         FontProviderJava2dImpl fontProvider = new FontProviderJava2dImpl();
 	registerFonts(fontProvider);
-        RenderDeviceJava2dImpl renderDevice = new RenderDeviceJava2dImpl(this);
+        RenderDeviceJava2dImpl renderDevice = new RenderDeviceJava2dImpl(graphWrap);
 	renderDevice.setFontProvider(fontProvider);
 	nifty = new Nifty(renderDevice,  new SoudDevicenull(), inputSystem,new TimeProvider());
        
@@ -182,6 +195,8 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
         }
         timer = new Timer(30,this); 
         timer.start();
+        this.setIgnoreRepaint(true);
+        nifty.resolutionChanged();
     }
    private final static java.awt.Color line = new java.awt.Color(17,229,229);
     @Override
@@ -190,15 +205,13 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
         boolean done = false;
         diff += System.currentTimeMillis() - time;
         time = System.currentTimeMillis();
-        int h = this.getSize().height > 600 ? 600 : this.getSize().height;
-        int w = this.getSize().width > 800 ? 800 : this.getSize().width;
-        nifty.getRenderEngine().getRenderDevice().enableClip(0, 0, w, h);
         graphics2D = (Graphics2D) g;
         graphics2D.setBackground(this.getBackground());
         done = nifty.update();
-        nifty.render(true);
-        graphics2D.setClip(0, 0, w, h); //need to set again caused to renderText
+        nifty.setAbsoluteClip(clipView.x,clipView.y,clipView.x+clipView.width,clipView.height+clipView.y);
+         nifty.render(true);
         graphics2D.setPaintMode();
+        graphics2D.setClip(clipView.x,clipView.y,clipView.x+clipView.width,clipView.height+clipView.y);
         if (nifty.isDebugOptionPanelColors()) {
             graphics2D.setColor(java.awt.Color.red);
             graphics2D.setFont(fpsFont);
@@ -221,10 +234,8 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
         }
         graphics2D.setColor(Color.BLACK);
         graphics2D.setStroke(BASIC_STROKE);
-        graphics2D.drawRect(0, 0, 799, 599);
+        graphics2D.drawRect(0, 0, this.graphWrap.w-1, this.graphWrap.h-1);
         Toolkit.getDefaultToolkit().sync();
-
-        graphics2D.dispose();
         frames++;
         if (diff >= 1000) {
             diff = 0;
@@ -284,7 +295,6 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
     
     public void displayRect(int x,int y,int h,int w){
         this.selected.setBounds(x, y, w, h);
-     
         this.selecting=true;
     }
     
@@ -297,5 +307,46 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
         this.repaint();
     }
     
-    
+    public void setResoltion(int width,int height){
+        this.setPreferredSize(new Dimension(width, height));
+        this.graphWrap.w = width;
+        this.graphWrap.h = height;
+        this.revalidate();
+        this.nifty.resolutionChanged();
+        
+    }
+    @Override
+    public void stateChanged(ChangeEvent e) {
+       JViewport temp = (JViewport) e.getSource();
+       int h = temp.getExtentSize().height > this.graphWrap.h ? this.graphWrap.h : temp.getExtentSize().height; 
+       int w = temp.getExtentSize().width > this.graphWrap.w ? this.graphWrap.w : temp.getExtentSize().width;
+       this.clipView.setBounds(temp.getViewPosition().x, temp.getViewPosition().y, w, h);
+    }
+
+    private class GraphicsWrappImpl implements GraphicsWrapper{
+        private int w;
+        private  int h;
+        
+        
+        public GraphicsWrappImpl(int width, int height){
+            this.h = height;
+            this.w = width;
+        }
+        @Override
+        public Graphics2D getGraphics2d() {
+            return graphics2D;
+        }
+
+        @Override
+        public int getHeight() {
+            return h;
+        }
+
+        @Override
+        public int getWidth() {
+           return w;
+        }
+        
+        
+    } 
 }

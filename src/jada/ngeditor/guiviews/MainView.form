@@ -84,6 +84,17 @@
             <Property name="text" type="java.lang.String" value="Option"/>
           </Properties>
           <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem4">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Alt+R"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Change Resolution"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem4ActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="CheckPane">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
@@ -246,7 +257,7 @@
       <SubComponents>
         <Container class="javax.swing.JTabbedPane" name="jTabbedPane2">
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="&#xd;&#xa;javax.swing.JPanel welcome = new javax.swing.JPanel();&#xd;&#xa;javax.swing.JPanel working = new javax.swing.JPanel();&#xd;&#xa;welcome.setLayout(new javax.swing.BoxLayout(welcome,javax.swing.BoxLayout.LINE_AXIS));&#xd;&#xa;wel = new J2DNiftyView(800,600);&#xd;&#xa;welcome.add(wel);&#xd;&#xa;&#xd;&#xa;wel.init();&#xd;&#xa;working.setLayout(new javax.swing.BoxLayout(working,javax.swing.BoxLayout.LINE_AXIS));&#xd;&#xa;cont=  new J2DNiftyView(800,600);&#xd;&#xa;&#xd;&#xa;working.add(cont);&#xd;&#xa;jTabbedPane2.addTab(&quot;WorkGUI&quot;, working);&#xd;&#xa;jTabbedPane2.addTab(&quot;Welcome&quot;, welcome);&#xd;&#xa;cont.init();"/>
+            <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="&#xd;&#xa;//javax.swing.JPanel welcome = new javax.swing.JPanel();&#xd;&#xa;javax.swing.JPanel working = new javax.swing.JPanel();&#xd;&#xa;wel = new J2DNiftyView(800,600);&#xd;&#xa;cont=  new J2DNiftyView(800,600);&#xd;&#xa;cont.init();&#xd;&#xa;wel.init();&#xd;&#xa;JScrollPane scroll = new JScrollPane();&#xd;&#xa;scroll.setViewportView(cont);&#xd;&#xa;JScrollPane welcome = new JScrollPane();&#xd;&#xa;welcome.setViewportView(wel);&#xd;&#xa;scroll.getViewport().addChangeListener(cont);&#xd;&#xa;welcome.getViewport().addChangeListener(wel);&#xd;&#xa;jTabbedPane2.addTab(&quot;WorkGUI&quot;, scroll);&#xd;&#xa;jTabbedPane2.addTab(&quot;Welcome&quot;, welcome);"/>
           </AuxValues>
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>

@@ -10,6 +10,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -23,7 +25,9 @@ import javax.swing.AbstractCellEditor;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -113,6 +117,7 @@ public class FileChooserEditor extends AbstractCellEditor implements TableCellEd
         group.add(copy);
         group.add(relative);
         group.add(absolute);
+        result.add(new ImagePreview(jFileChooser1));
         result.add(absolute);
         result.add(relative);
         result.add(copy);
@@ -132,4 +137,80 @@ public class FileChooserEditor extends AbstractCellEditor implements TableCellEd
     public void propertyChange(PropertyChangeEvent evt) {
         copyText.setText(this.assets.getPath()+File.separator+this.jFileChooser1.getSelectedFile().getName());
     }
+    
+    private class ImagePreview extends JComponent
+                          implements PropertyChangeListener {
+    ImageIcon thumbnail = null;
+    File file = null;
+
+    public ImagePreview(JFileChooser fc) {
+        setPreferredSize(new Dimension(100, 50));
+        fc.addPropertyChangeListener(this);
+    }
+
+    public void loadImage() {
+        if (file == null) {
+            thumbnail = null;
+            return;
+        }
+
+        //Don't use createImageIcon (which is a wrapper for getResource)
+        //because the image we're trying to load is probably not one
+        //of this program's own resources.
+        ImageIcon tmpIcon = new ImageIcon(file.getPath());
+        if (tmpIcon != null) {
+            if (tmpIcon.getIconWidth() > 90) {
+                thumbnail = new ImageIcon(tmpIcon.getImage().
+                                          getScaledInstance(90, -1,
+                                                      Image.SCALE_DEFAULT));
+            } else { //no need to miniaturize
+                thumbnail = tmpIcon;
+            }
+        }
+    }
+
+    public void propertyChange(PropertyChangeEvent e) {
+        boolean update = false;
+        String prop = e.getPropertyName();
+
+        //If the directory changed, don't show an image.
+        if (JFileChooser.DIRECTORY_CHANGED_PROPERTY.equals(prop)) {
+            file = null;
+            update = true;
+
+        //If a file became selected, find out which one.
+        } else if (JFileChooser.SELECTED_FILE_CHANGED_PROPERTY.equals(prop)) {
+            file = (File) e.getNewValue();
+            update = true;
+        }
+
+        //Update the preview accordingly.
+        if (update) {
+            thumbnail = null;
+            if (isShowing()) {
+                loadImage();
+                repaint();
+            }
+        }
+    }
+
+    protected void paintComponent(Graphics g) {
+        if (thumbnail == null) {
+            loadImage();
+        }
+        if (thumbnail != null) {
+            int x = getWidth()/2 - thumbnail.getIconWidth()/2;
+            int y = getHeight()/2 - thumbnail.getIconHeight()/2;
+
+            if (y < 0) {
+                y = 0;
+            }
+
+            if (x < 5) {
+                x = 5;
+            }
+            thumbnail.paintIcon(this, g, x, y);
+        }
+    }
+}
 }
