@@ -22,22 +22,14 @@ import jada.ngeditor.guiviews.DND.TrasferHandling;
 import jada.ngeditor.listeners.ClosingListener;
 import jada.ngeditor.model.exception.NoProductException;
 import jada.ngeditor.persistence.XmlFileFilter;
-import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
@@ -113,10 +105,10 @@ public class MainView extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        changeResMenu = new javax.swing.JMenuItem();
         assetFolderMenu = new javax.swing.JMenuItem();
         refresh = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
         CheckPane = new javax.swing.JCheckBoxMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
@@ -206,6 +198,15 @@ public class MainView extends javax.swing.JFrame {
 
         jMenu2.setText("Edit");
 
+        changeResMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.ALT_MASK));
+        changeResMenu.setText("Change Resolution");
+        changeResMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changeResMenuActionPerformed(evt);
+            }
+        });
+        jMenu2.add(changeResMenu);
+
         assetFolderMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
         assetFolderMenu.setText("Asset folder");
         assetFolderMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -228,15 +229,6 @@ public class MainView extends javax.swing.JFrame {
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Option");
-
-        jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.ALT_MASK));
-        jMenuItem4.setText("Change Resolution");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem4);
 
         CheckPane.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
         CheckPane.setText("Show Panels");
@@ -399,20 +391,29 @@ public class MainView extends javax.swing.JFrame {
         this.IOmanager.setFileSelectionMode(JFileChooser.FILES_ONLY);
     }//GEN-LAST:event_assetFolderMenuActionPerformed
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+    private void changeResMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeResMenuActionPerformed
         String res = JOptionPane.showInputDialog("Input the new resolution", "es: 800x600");
-        String [] resolutions = res.split("x");
-        int w = Integer.parseInt(resolutions[0]);
-        int h = Integer.parseInt(resolutions[1]);
-        this.cont.setResoltion(w, h);
-        
-        
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+        if (res != null) {
+            String[] resolutions = res.split("x");
+            if (resolutions.length != 2) {
+                JOptionPane.showMessageDialog(this, "Wrong string format: " + res);
+                return;
+            }
+            try {
+                int w = Integer.parseInt(resolutions[0]);
+                int h = Integer.parseInt(resolutions[1]);
+                this.cont.setResoltion(w, h);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Wrong string format: " + res);
+            }
+        }
+    }//GEN-LAST:event_changeResMenuActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem CheckPane;
     private javax.swing.JMenuItem assetFolderMenu;
+    private javax.swing.JMenuItem changeResMenu;
     private javax.swing.JPanel guiView;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -422,7 +423,6 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

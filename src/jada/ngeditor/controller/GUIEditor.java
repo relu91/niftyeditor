@@ -16,7 +16,6 @@ package jada.ngeditor.controller;
 
 import de.lessvoid.nifty.EndNotify;
 import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.builder.PopupBuilder;
 import de.lessvoid.nifty.controls.NiftyControl;
 import de.lessvoid.nifty.elements.Element;
 import jada.ngeditor.listeners.actions.Action;
@@ -31,7 +30,6 @@ import jada.ngeditor.model.utils.NiftyDDManager;
 import jada.ngeditor.persistence.GUIReader;
 import jada.ngeditor.persistence.GUIWriter;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileNotFoundException;
