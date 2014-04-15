@@ -5,12 +5,10 @@
 package jada.ngeditor.guiviews.editors;
 
 import jada.ngeditor.model.utils.FileUtils;
-import java.awt.Checkbox;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Frame;
 import java.awt.Graphics;
+import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,7 +16,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.EventObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractCellEditor;
@@ -26,17 +23,15 @@ import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
 import javax.swing.ImageIcon;
-import javax.swing.JCheckBox;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.event.CellEditorListener;
 import javax.swing.table.TableCellEditor;
 
 /**
@@ -52,6 +47,8 @@ public class FileChooserEditor extends AbstractCellEditor implements TableCellEd
     private JTextField copyText;
     private ButtonGroup group;
     private JRadioButton copy;
+    private JRadioButton absolute;
+    private JRadioButton relative;
     /**
      * Creates new form FileChooserEditor
      */
@@ -75,10 +72,11 @@ public class FileChooserEditor extends AbstractCellEditor implements TableCellEd
                      int res = jFileChooser1.showOpenDialog(null);
              if(res == JFileChooser.APPROVE_OPTION){
                  ButtonModel selection = group.getSelection(); 
-                 if(!selection.equals(copy))
-                    editedValue= jFileChooser1.getSelectedFile().getAbsolutePath();
-                 else{
-                     File selected = jFileChooser1.getSelectedFile();
+                 File selected = jFileChooser1.getSelectedFile();
+                 if(selection.equals(absolute.getModel())){
+                    editedValue= selected.getAbsolutePath();
+                 }else if (selection.equals(copy.getModel())){
+                     
                      try { 
                          File dest = new File(assets.getAbsolutePath()+"//"+selected.getName());
                          FileUtils.copyFile(selected, dest);
@@ -87,6 +85,8 @@ public class FileChooserEditor extends AbstractCellEditor implements TableCellEd
                          Logger.getLogger(FileChooserEditor.class.getName()).log(Level.SEVERE, null, ex);
                      }
                      
+                 }else{
+                       editedValue= createReletive(selected);
                  }
              }
            fireEditingStopped();
@@ -97,13 +97,32 @@ public class FileChooserEditor extends AbstractCellEditor implements TableCellEd
 	return new JLabel(String.valueOf(editedValue));
     }
 
-   
+   private String createReletive(File selected) {
+       String res = editedValue;
+       String parentPath = selected.getParent();
+       String absAssets = assets.getAbsolutePath();
+       if (!parentPath.contains(absAssets)) {
+           try {
+               absAssets = assets.getCanonicalPath();
+               if (!parentPath.contains(absAssets)) {
+                   JOptionPane.showMessageDialog(null, "Sorry you can't relativize this file. Tip : the file must be inside the assets folder");
+               } else {
+                   res = assets.toURI().relativize(selected.toURI()).getPath();
+               }
+           } catch (IOException ex) {
+               JOptionPane.showMessageDialog(null, "Sorry you can't relativize this file");
+           }
+       } else {
+           res = assets.toURI().relativize(selected.toURI()).getPath();
+       }
+       return res;      
+    }
     private JPanel createAccessor(){
         JPanel result = new JPanel();
         BoxLayout layout = new BoxLayout(result, BoxLayout.Y_AXIS);
         result.setLayout(layout);
-        JRadioButton absolute = new JRadioButton("Absolute path");
-        JRadioButton relative = new JRadioButton("Relative to Assets folder");
+        absolute = new JRadioButton("Absolute path");
+        relative = new JRadioButton("Relative to Assets folder");
         copy = new JRadioButton("Copy file in Assets folder");
         copy.addActionListener(this);
         JTextField absText = new JTextField();
@@ -135,9 +154,11 @@ public class FileChooserEditor extends AbstractCellEditor implements TableCellEd
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        copyText.setText(this.assets.getPath()+File.separator+this.jFileChooser1.getSelectedFile().getName());
+        File selectedFile = this.jFileChooser1.getSelectedFile();
+        if (selectedFile != null) {
+            copyText.setText(this.assets.getPath() + File.separator + selectedFile.getName());
+        }
     }
-    
     private class ImagePreview extends JComponent
                           implements PropertyChangeListener {
     ImageIcon thumbnail = null;

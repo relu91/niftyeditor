@@ -16,13 +16,9 @@ package jada.ngeditor.listeners;
 
 
 import jada.ngeditor.controller.ElementEditor;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 
@@ -52,6 +48,7 @@ public class ProprietiesListener implements TableModelListener{
                     editor.setAttribute(proName, proVal);
                 }
                 }catch(Exception ex){
+                    ex.printStackTrace();
                     JOptionPane.showMessageDialog(null,"Can't set the attribute. " + ex.getMessage());
                 }
             }
