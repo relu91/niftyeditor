@@ -16,7 +16,6 @@ package jada.ngeditor.model;
 
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.tools.resourceloader.FileSystemLocation;
-import de.lessvoid.nifty.tools.resourceloader.ResourceLocation;
 import jada.ngeditor.listeners.actions.Action;
 import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.elements.GLayer;
@@ -33,7 +32,7 @@ import java.util.Observable;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlRootElement;
-import sun.management.FileSystem;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Main model class it is a container for all GUI elements
@@ -46,19 +45,21 @@ public class GUI extends Observable {
     private static int GUIID = 0;
     private final Nifty manager;
     private FileSystemLocation assets;
+    @XmlTransient
     private File assetsFile;
 
     public Nifty getNifty() {
         return manager;
     }
-    @XmlElementRef
-    private LinkedList<GScreen> screens;
-    private LinkedList<GLayer> currentlayers;
-    private GScreen currentS;
     @XmlElement
     private GUseControls useControls = new GUseControls();
     @XmlElement
     private GUseStyle useStyles = new GUseStyle();
+    @XmlElementRef
+    private LinkedList<GScreen> screens;
+    private LinkedList<GLayer> currentlayers;
+    private GScreen currentS;
+   
 
     public GUI() {
         manager = null;
@@ -222,7 +223,7 @@ public class GUI extends Observable {
         this.assetsFile = f;
         manager.getResourceLoader().addResourceLocation(assets);
     }
-    
+    @XmlTransient
     public File getAssetFolder(){
         return assetsFile;
     }

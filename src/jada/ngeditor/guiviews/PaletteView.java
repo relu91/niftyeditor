@@ -16,7 +16,6 @@ package jada.ngeditor.guiviews;
 
 import jada.ngeditor.guiviews.palettecomponents.*;
 import jada.ngeditor.model.elements.GElement;
-import jada.ngeditor.model.elements.GLayer;
 import jada.ngeditor.model.utils.ClassUtils;
 import java.lang.reflect.Modifier;
 
@@ -31,6 +30,7 @@ public class PaletteView extends javax.swing.JPanel {
      */
     public PaletteView() {
         initComponents();
+        this.addPaletteComponents();
         
     }
 
@@ -43,29 +43,9 @@ public class PaletteView extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jPanel1 = new javax.swing.JPanel();
-
-        jPanel1.setLayout(new java.awt.GridLayout(0, 1));
-        jScrollPane1.setViewportView(jPanel1);
-        addPaletteComponents();
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
-        );
+        setLayout(new java.awt.GridLayout(0, 2, 1, 2));
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 
     private void addPaletteComponents(){
@@ -80,7 +60,7 @@ public class PaletteView extends javax.swing.JPanel {
             });
             for(Class c : classes){
                 NWidget widget = new NWidget(c);
-                jPanel1.add(widget);
+                this.add(widget);
             }
  
     }catch (Exception e){

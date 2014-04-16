@@ -95,7 +95,7 @@ public class MainView extends javax.swing.JFrame {
         jSplitPane1 = new javax.swing.JSplitPane();
         proprietesView2 = new jada.ngeditor.guiviews.ProprietesView();
         jScrollPane1 = new javax.swing.JScrollPane();
-        paletteView1 = new jada.ngeditor.guiviews.PaletteView();
+        paletteView2 = new jada.ngeditor.guiviews.PaletteView();
         treeGuiView1 = new jada.ngeditor.guiviews.TreeGuiView();
         guiView = new javax.swing.JPanel();
         jTabbedPane2 = new javax.swing.JTabbedPane();
@@ -116,20 +116,21 @@ public class MainView extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Nifty-Editor v. 0.5.9");
         setBackground(new java.awt.Color(51, 51, 51));
+        getContentPane().setLayout(new java.awt.BorderLayout(3, 3));
 
+        jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel1.setMinimumSize(new java.awt.Dimension(50, 50));
-        jPanel1.setPreferredSize(new java.awt.Dimension(200, 100));
+        jPanel1.setPreferredSize(new java.awt.Dimension(285, 100));
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.PAGE_AXIS));
 
         jSplitPane1.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
-        jSplitPane1.setDividerLocation(400);
+        jSplitPane1.setDividerLocation(255);
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
         proprietesView2.setBorder(javax.swing.BorderFactory.createTitledBorder("Proprities"));
         jSplitPane1.setBottomComponent(proprietesView2);
 
-        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        jScrollPane1.setViewportView(paletteView1);
+        jScrollPane1.setViewportView(paletteView2);
 
         jSplitPane1.setLeftComponent(jScrollPane1);
 
@@ -138,12 +139,14 @@ public class MainView extends javax.swing.JFrame {
         getContentPane().add(jPanel1, java.awt.BorderLayout.LINE_END);
 
         treeGuiView1.setBorder(javax.swing.BorderFactory.createTitledBorder("Navigator"));
-        treeGuiView1.setPreferredSize(new java.awt.Dimension(200, 200));
+        treeGuiView1.setPreferredSize(new java.awt.Dimension(220, 200));
         getContentPane().add(treeGuiView1, java.awt.BorderLayout.LINE_START);
 
         guiView.setMaximumSize(new java.awt.Dimension(200, 200));
         guiView.setPreferredSize(new java.awt.Dimension(800, 600));
         guiView.setLayout(new javax.swing.BoxLayout(guiView, javax.swing.BoxLayout.LINE_AXIS));
+
+        jTabbedPane2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         guiView.add(jTabbedPane2);
 
         //javax.swing.JPanel welcome = new javax.swing.JPanel();
@@ -428,7 +431,7 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
-    private jada.ngeditor.guiviews.PaletteView paletteView1;
+    private jada.ngeditor.guiviews.PaletteView paletteView2;
     private jada.ngeditor.guiviews.ProprietesView proprietesView2;
     private javax.swing.JMenuItem refresh;
     private jada.ngeditor.guiviews.TreeGuiView treeGuiView1;

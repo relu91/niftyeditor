@@ -11,7 +11,7 @@ import jada.ngeditor.model.elements.GDraggable;
 import jada.ngeditor.model.elements.GDropDown;
 import jada.ngeditor.model.elements.GDroppable;
 import jada.ngeditor.model.elements.GElement;
-import jada.ngeditor.model.elements.GHorizontalScrollbar;
+import jada.ngeditor.model.elements.GHScrollbar;
 import jada.ngeditor.model.elements.GImage;
 import jada.ngeditor.model.elements.GImageSelect;
 import jada.ngeditor.model.elements.GLabel;
@@ -19,13 +19,13 @@ import jada.ngeditor.model.elements.GLayer;
 import jada.ngeditor.model.elements.GListBox;
 import jada.ngeditor.model.elements.GPanel;
 import jada.ngeditor.model.elements.GRadioButton;
-import jada.ngeditor.model.elements.GRadioButtonGroup;
+import jada.ngeditor.model.elements.GRadioGroup;
 import jada.ngeditor.model.elements.GScreen;
 import jada.ngeditor.model.elements.GScrollPanel;
 import jada.ngeditor.model.elements.GScrollbar;
 import jada.ngeditor.model.elements.GTextfield;
 import jada.ngeditor.model.elements.GTree;
-import jada.ngeditor.model.elements.GVerticalScrollbar;
+import jada.ngeditor.model.elements.GVScrollbar;
 import jada.ngeditor.model.elements.GWindow;
 
 /**
@@ -84,7 +84,7 @@ public abstract class VisitorAdapter implements Visitor{
     }
 
     @Override
-    public void visit(GHorizontalScrollbar bar) {
+    public void visit(GHScrollbar bar) {
        
     }
 
@@ -109,7 +109,7 @@ public abstract class VisitorAdapter implements Visitor{
     }
 
     @Override
-    public void visit(GRadioButtonGroup group) {
+    public void visit(GRadioGroup group) {
         
     }
 
@@ -129,7 +129,7 @@ public abstract class VisitorAdapter implements Visitor{
     }
 
     @Override
-    public void visit(GVerticalScrollbar vbar) {
+    public void visit(GVScrollbar vbar) {
         
     }
 

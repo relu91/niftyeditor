@@ -21,6 +21,7 @@ import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.elements.GButton;
 import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.exception.NoProductException;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -44,13 +45,23 @@ public class NWidget extends javax.swing.JPanel {
         this.dataClass = wrappedClass;
         try {
             initComponents();
+            
             this.addMouseListener(new DragHandler());
             this.setTransferHandler(new TrasferHandling());
             String name = wrappedClass.getSimpleName();
             this.text.setText(name);
             BufferedImage image = ImageIO.read(getIcon(name+".png"));
-            this.icon.setIcon(new ImageIcon(image));
+            Image scaledInstance = image.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            this.text.setIcon(new ImageIcon(scaledInstance ));
         } catch (Exception ex) {
+            BufferedImage image;
+            try {
+                image = ImageIO.read(getIcon("NoElement.png"));
+                Image scaledInstance = image.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+                this.text.setIcon(new ImageIcon(scaledInstance ));
+            } catch (IOException ex1) {
+                Logger.getLogger(NWidget.class.getName()).log(Level.SEVERE, "No default image", ex1);
+            }
             Logger.getLogger(NWidget.class.getName()).log(Level.SEVERE,"No Image for "+wrappedClass);
         }
     }
@@ -74,7 +85,6 @@ public class NWidget extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        icon = new javax.swing.JLabel();
         text = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(51, 51, 51));
@@ -82,30 +92,25 @@ public class NWidget extends javax.swing.JPanel {
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setMaximumSize(new java.awt.Dimension(194, 70));
 
-        icon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jada/ngeditor/resources/NoElement.png"))); // NOI18N
-        icon.setPreferredSize(new java.awt.Dimension(20, 14));
-
-        text.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        text.setFont(new java.awt.Font("Simplified Arabic", 1, 14)); // NOI18N
+        text.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jada/ngeditor/resources/NoElement.png"))); // NOI18N
         text.setText("Screen");
+        text.setIconTextGap(10);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(icon, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(text, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(2, 2, 2)
+                .addComponent(text, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(icon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(text, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
+            .addComponent(text, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    protected javax.swing.JLabel icon;
     protected javax.swing.JLabel text;
     // End of variables declaration//GEN-END:variables
     

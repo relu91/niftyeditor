@@ -4,6 +4,7 @@
  */
 package jada.ngeditor.model.elements;
 
+import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.visitor.Visitor;
@@ -13,35 +14,35 @@ import jada.ngeditor.persistence.ControlBinding;
  *
  * @author cris
  */
-@ControlBinding(name= XmlTags.VERTICALSCROLLBAR)
-public class GVerticalScrollbar extends GScrollbar{
+@ControlBinding(name= XmlTags.HORIZONTALSCROLLBAR)
+public class GHScrollbar extends GScrollbar{
 
-    public GVerticalScrollbar() {
-    }
-  
-  
     
-    public GVerticalScrollbar(String id) throws IllegalArgumentException {
-        super(id,  true);
-        name="verticalScrollbar";
+    public GHScrollbar(String id){
+        super(id,false);
+        this.name="horizontalScrollbar";
     }
- 
+
+    private GHScrollbar() {
+        super();
+    }
+  
+
     @Override
     public GElement create(String id) {
-        return new GVerticalScrollbar(id);
+        return new GHScrollbar(id);
     }
 
     @Override
     public void initDefault() {
-       attributes.put("height", "50%");
+         attributes.put("width", "50%");
     }
     
      @Override
     public de.lessvoid.nifty.elements.Element getDropContext() {
-        throw new IllegalDropException("You can not add elements to a scrollbar");
+        throw new IllegalDropException("You can not add elements to a scroolbar");
     }
-    
-      @Override
+     @Override
     public void accept(Visitor visitor) {
         super.accept(visitor);
         visitor.visit(this);

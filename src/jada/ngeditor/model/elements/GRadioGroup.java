@@ -15,13 +15,13 @@ import jada.ngeditor.persistence.ControlBinding;
  * @author cris
  */
  @ControlBinding(name= XmlTags.RADIOBUTTONGROUP)
-public class GRadioButtonGroup extends GControl  {
+public class GRadioGroup extends GControl  {
 
-    public GRadioButtonGroup() {
+    public GRadioGroup() {
     }
   
     
-    public GRadioButtonGroup(String id ){
+    public GRadioGroup(String id ){
         super(id);
         this.builder = new RadioGroupBuilder(id);
         name="radioButtonGroup";
@@ -30,7 +30,7 @@ public class GRadioButtonGroup extends GControl  {
 
     @Override
     public GElement create(String id) {
-        return new GRadioButtonGroup(id);
+        return new GRadioGroup(id);
     }
 
     @Override
