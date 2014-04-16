@@ -50,7 +50,6 @@ public class TrasferHandling extends TransferHandler implements Observer{
              int a = (int)rec.getCenterX() - gui.getSelected().getNiftyElement().getX();
              int b = (int)rec.getCenterY() - gui.getSelected().getNiftyElement().getY();
              return new WidgetData(gui.getSelected(),a,b);
-         
         }
         
     }

@@ -23,6 +23,7 @@ import jada.ngeditor.guiviews.J2DNiftyView;
 import jada.ngeditor.listeners.actions.Action;
 import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.elements.GLayer;
+import jada.ngeditor.model.elements.GScreen;
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -36,6 +37,7 @@ import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.TransferHandler;
 
@@ -80,10 +82,12 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
    
     public final void startDrag(MouseEvent e) {
         if(enable){
-            JPanel c = (JPanel) e.getComponent();
-            TransferHandler handler = c.getTransferHandler();
-            handler.exportAsDrag(c, e, TransferHandler.MOVE);
-            this.gui.getDragDropSupport().startDrag(this.getSelected());
+            if (!(this.getSelected() instanceof GScreen) && !(this.getSelected() instanceof GLayer)) {
+                JPanel c = (JPanel) e.getComponent();
+                TransferHandler handler = c.getTransferHandler();
+                handler.exportAsDrag(c, e, TransferHandler.MOVE);
+                this.gui.getDragDropSupport().startDrag(this.getSelected());
+            }
         }
       
     }
@@ -99,11 +103,11 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
            hold.setRepeats(false);
            hold.start();
          }
-          if(e.isPopupTrigger()){
-              this.gui.selectElement(e.getX(), e.getY());
+         this.gui.selectElement(e.getX(), e.getY());
+         if(e.isPopupTrigger()){
               this.p.show(e.getComponent(), e.getX(), e.getY());
-          }
-        
+         }
+         
      }
 
         public void mouseReleased(MouseEvent e) {
@@ -130,7 +134,7 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
         }
      @Override
      public void mouseClicked(MouseEvent e) {
-           this.gui.selectElement(e.getX(), e.getY());
+           
            e.getComponent().requestFocus();
      }
 

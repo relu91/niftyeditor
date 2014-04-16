@@ -322,6 +322,9 @@ public class GUIEditor extends Observable{
         return this.selected;
     }
     
+    public boolean isSelectionEmpy(){
+        return this.selected == null;
+    }
     
     
      public void removeSelected(){
