@@ -71,6 +71,7 @@ public class MainView extends javax.swing.JFrame {
         this.editor.addObserver(proprietesView2);
         this.newGui();
         jTabbedPane2.setSelectedIndex(1);
+        jScrollPane1.getVerticalScrollBar().setUnitIncrement(10);
        
     }
 
