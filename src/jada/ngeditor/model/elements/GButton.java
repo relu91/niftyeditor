@@ -20,6 +20,7 @@ import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.visitor.Visitor;
 import jada.ngeditor.persistence.ControlBinding;
+import java.util.Map;
 
 
 /**
@@ -41,7 +42,15 @@ public class GButton extends GControl{
          this.name="button";
         
     }
-    
+    @Override
+    public Map<String,String> listAttributes(){
+       Map<String,String> res = super.listAttributes();
+      for(String prop : jada.ngeditor.model.PropretiesResolver.inst.resolve("buttonType")){
+          String defvalue = getAttribute(prop);
+          res.put(prop, defvalue);
+      }
+       return res;
+    }
     
     @Override
     public void initDefault() {

@@ -19,6 +19,7 @@ import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.screen.Screen;
 import jada.ngeditor.model.visitor.Visitor;
 import java.util.Collection;
+import java.util.Map;
 import javax.xml.bind.annotation.XmlRootElement;
 
 
@@ -42,7 +43,15 @@ public class GScreen extends GElement{
         
     }
 
-    
+    @Override
+    public Map<String,String> listAttributes(){
+       Map<String,String> res = super.listAttributes();
+      for(String prop : jada.ngeditor.model.PropretiesResolver.inst.resolve("screenType")){
+          String defvalue = getAttribute(prop);
+          res.put(prop, defvalue);
+      }
+       return res;
+    }
 
     @Override
     public void createNiftyElement(Nifty nifty) {

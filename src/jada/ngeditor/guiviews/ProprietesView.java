@@ -18,11 +18,9 @@ import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.listeners.ProprietiesListener;
 import jada.ngeditor.listeners.actions.Action;
 import jada.ngeditor.model.elements.GElement;
-import java.awt.Color;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
-import javax.swing.CellRendererPane;
 import javax.swing.table.DefaultTableModel;
 
 
@@ -102,7 +100,7 @@ public class ProprietesView extends javax.swing.JPanel implements Observer{
             GUIEditor editor = (GUIEditor) o;
             GElement ele = act.getGUIElement();
             this.jTable1.setEditor(editor);
-            Map<String,String> attribut = ele.getAttributes();
+            Map<String,String> attribut = ele.listAttributes();
             model.setNumRows(attribut.keySet().size());
             int line =0;
             for(String sel : attribut.keySet()){

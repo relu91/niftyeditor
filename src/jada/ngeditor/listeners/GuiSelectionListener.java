@@ -37,7 +37,6 @@ import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.TransferHandler;
 
@@ -103,7 +102,6 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
            hold.setRepeats(false);
            hold.start();
          }
-         this.gui.selectElement(e.getX(), e.getY());
          if(e.isPopupTrigger()){
               this.p.show(e.getComponent(), e.getX(), e.getY());
          }
@@ -123,7 +121,7 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
                 this.p.show(e.getComponent(), e.getX(), e.getY()); 
              }
         if(dragging){
-            GElement sel = this.gui.getSelected();
+           GElement sel = this.gui.getSelected();
          if(sel!=null && this.selected!=null){
             sel.lightRefresh();
             this.selected.setRect(sel.getBounds());
@@ -134,7 +132,7 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
         }
      @Override
      public void mouseClicked(MouseEvent e) {
-           
+           this.gui.selectElement(e.getX(), e.getY());
            e.getComponent().requestFocus();
      }
 

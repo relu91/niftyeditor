@@ -8,6 +8,7 @@ import de.lessvoid.nifty.EndNotify;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.xml.xpp3.Attributes;
 import jada.ngeditor.persistence.XmlTags;
+import java.util.Map;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -36,7 +37,15 @@ public abstract class GControl extends GElement{
         super(id);
     }
     
-    
+    @Override
+    public Map<String,String> listAttributes(){
+       Map<String,String> res = super.listAttributes();
+      for(String prop : jada.ngeditor.model.PropretiesResolver.inst.resolve("controlType")){
+          String defvalue = getAttribute(prop);
+          res.put(prop, defvalue);
+      }
+       return res;
+    }
 
     @Override
     protected void internalRefresh(Nifty nifty, Attributes att) {

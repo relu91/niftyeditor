@@ -159,7 +159,7 @@ public abstract class GElement {
         return res;
     }
 
-    public Map<String, String> getAttributes() {
+    public Map<String, String> listAttributes() {
         Map<String, String> res = new HashMap<String, String>();
         for (String prop : jada.ngeditor.model.PropretiesResolver.inst.resolve("elementType")) {
                 String defvalue = getAttribute(prop);
@@ -264,31 +264,6 @@ public abstract class GElement {
         Screen currentScreen = nifty.getCurrentScreen();
         nElement.initializeFromAttributes(currentScreen, att, nifty.getRenderEngine());
         currentScreen.layoutLayers();
-    }
-    protected void heavyRefresh(Nifty nifty, Attributes att) {
-        int index = parent.getNiftyElement().getChildren().indexOf(nElement);
-        final GElement telement = this;
-
-        nElement.markForRemoval(new EndNotify() {
-            @Override
-            public void perform() {
-                this.buildChild(telement);
-            }
-
-            private void buildChild(GElement ele) {
-                for (GElement e : ele.getElements()) {
-                    ele.getDropContext().addChild(e.getNiftyElement());
-                    e.refresh();
-                    this.buildChild(e);
-                }
-            }
-        });
-        for (String sel : attributes.keySet()) {
-            builder.set(sel, attributes.get(sel));
-        }
-
-        nElement = builder.build(nifty, nifty.getCurrentScreen(), this.parent.getDropContext(), index);
-        nifty.getCurrentScreen().layoutLayers();
     }
 
     public void reloadElement(Nifty manager) {

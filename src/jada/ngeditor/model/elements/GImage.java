@@ -16,8 +16,6 @@ package jada.ngeditor.model.elements;
 
 
 import de.lessvoid.nifty.builder.ImageBuilder;
-import jada.ngeditor.model.GUIFactory;
-import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.visitor.Visitor;
 import java.util.Map;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -41,9 +39,9 @@ public class GImage extends GElement{
        super.builder = new ImageBuilder(id);
       
     }
-    
-    public Map<String,String> getAttributes(){
-       Map<String,String> res = super.getAttributes();
+    @Override
+    public Map<String,String> listAttributes(){
+       Map<String,String> res = super.listAttributes();
       for(String prop : jada.ngeditor.model.PropretiesResolver.inst.resolve("imageType")){
           String defvalue = getAttribute(prop);
           res.put(prop, defvalue);
