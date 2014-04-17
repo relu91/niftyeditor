@@ -92,7 +92,8 @@ public class NWidget extends javax.swing.JPanel {
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setMaximumSize(new java.awt.Dimension(194, 70));
 
-        text.setFont(new java.awt.Font("Simplified Arabic", 1, 14)); // NOI18N
+        text.setFont(new java.awt.Font("Simplified Arabic", 0, 14)); // NOI18N
+        text.setForeground(new java.awt.Color(0, 153, 204));
         text.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jada/ngeditor/resources/NoElement.png"))); // NOI18N
         text.setText("Screen");
         text.setIconTextGap(10);

@@ -15,6 +15,7 @@
 package jada.ngeditor.guiviews;
 
 import jada.ngeditor.guiviews.palettecomponents.*;
+import jada.ngeditor.model.elements.GControl;
 import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.utils.ClassUtils;
 import java.lang.reflect.Modifier;
@@ -43,9 +44,47 @@ public class PaletteView extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setLayout(new java.awt.GridLayout(0, 2, 1, 2));
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        elementsPane = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        controlsPane = new javax.swing.JPanel();
+
+        setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.PAGE_AXIS));
+
+        jPanel2.setMinimumSize(new java.awt.Dimension(66, 20));
+        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jLabel1.setBackground(new java.awt.Color(51, 51, 51));
+        jLabel1.setFont(new java.awt.Font("Simplified Arabic", 0, 14)); // NOI18N
+        jLabel1.setText("Elements");
+        jPanel2.add(jLabel1);
+
+        add(jPanel2);
+
+        elementsPane.setLayout(new java.awt.GridLayout(0, 2));
+        add(elementsPane);
+
+        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jLabel2.setFont(new java.awt.Font("Simplified Arabic", 0, 14)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel2.setText("Controls");
+        jPanel1.add(jLabel2);
+
+        add(jPanel1);
+
+        controlsPane.setLayout(new java.awt.GridLayout(0, 2));
+        add(controlsPane);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel controlsPane;
+    private javax.swing.JPanel elementsPane;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 
     private void addPaletteComponents(){
@@ -60,7 +99,10 @@ public class PaletteView extends javax.swing.JPanel {
             });
             for(Class c : classes){
                 NWidget widget = new NWidget(c);
-                this.add(widget);
+                if(GControl.class.isAssignableFrom(c)){
+                    this.controlsPane.add(widget);
+                }else
+                    this.elementsPane.add(widget);
             }
  
     }catch (Exception e){
