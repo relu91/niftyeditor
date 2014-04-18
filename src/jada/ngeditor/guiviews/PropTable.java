@@ -28,6 +28,10 @@ import javax.swing.table.TableCellEditor;
  */
 public class PropTable extends JTable{
     private static final JComboEditor layoutEditor = new JComboEditor("absolute","center", "vertical", "horizontal","overlay");
+    private static final JComboEditor alingEditor = new JComboEditor("left","center", "right");
+    private static final JComboEditor valingEditor = new JComboEditor("top","center", "bottom");
+    private static final SizeEditor sizeEditor = new SizeEditor();
+    private static final String [] sizeValues = {"height","width","x","y"};
     private GUIEditor editor;
     public PropTable() {
 	super();
@@ -80,8 +84,12 @@ public class PropTable extends JTable{
             }else if(pname.equalsIgnoreCase("filename") 
                     || pname.equalsIgnoreCase("backgroundImage")){
                 editor = new FileChooserEditor(this.editor.getGui().getAssetFolder());
-            }else if( pname.equalsIgnoreCase("height")){
-                editor = new SizeEditor();
+            }else if(isSizeValue(pname)){
+                editor = sizeEditor;
+            }else if( pname.equalsIgnoreCase("valign")){
+                editor = valingEditor;
+            }else if( pname.equalsIgnoreCase("align")){
+                editor = alingEditor;
             }
 	return editor;
     }
@@ -90,6 +98,15 @@ public class PropTable extends JTable{
     
     public void setEditor(GUIEditor editor){
         this.editor = editor;
+    }
+
+    private boolean isSizeValue(String pname) {
+        boolean res = false;
+        for(String s : sizeValues){
+            if(s.equals(pname))
+                res = true;
+        }
+        return res;
     }
     
 }

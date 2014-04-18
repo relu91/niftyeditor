@@ -164,7 +164,6 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
                
                e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR));
                curDir=DIR_SE;
-               
            }else if(e.getX()==selected.getMinX() && (e.getY()<selected.getMaxY() && e.getY()>selected.getMinY() )){
                e.getComponent().setCursor(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR));
                curDir=DIR_W;

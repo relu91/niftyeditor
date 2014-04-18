@@ -136,6 +136,7 @@ public class FileChooserEditor extends AbstractCellEditor implements TableCellEd
         group.add(copy);
         group.add(relative);
         group.add(absolute);
+        absolute.setSelected(true);
         result.add(new ImagePreview(jFileChooser1));
         result.add(absolute);
         result.add(relative);
