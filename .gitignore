@@ -4,3 +4,4 @@
 *.ear
 /dist/
 /build/
+/standalone/
