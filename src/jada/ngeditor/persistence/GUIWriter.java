@@ -14,15 +14,18 @@
  */
 package jada.ngeditor.persistence;
 
+import de.lessvoid.xml.tools.ClassHelper;
 import jada.ngeditor.model.GUI;
 import jada.ngeditor.model.utils.ClassUtils;
 import jada.ngeditor.model.elements.GButton;
+import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.elements.GImage;
 import jada.ngeditor.model.elements.GLayer;
 import jada.ngeditor.model.elements.GPanel;
 import jada.ngeditor.model.elements.GScreen;
 import java.io.*;
 import java.lang.annotation.Annotation;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
@@ -30,6 +33,10 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.PropertyException;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
+import org.reflections.scanners.TypeAnnotationsScanner;
+import org.reflections.util.ClasspathHelper;
 
 /**
  *
@@ -41,8 +48,13 @@ public class GUIWriter {
     
     public GUIWriter(GUI gui)throws JAXBException, ClassNotFoundException, IOException{
         this.gui = gui;
-        Class[] classes = ClassUtils.getClasses("jada.ngeditor.model", new XmlClassPredicate());
-        JAXBContext jc = JAXBContext.newInstance(classes);
+        //Class[] classes = ClassUtils.getClasses("jada.ngeditor.model", new XmlClassPredicate());
+        Reflections reflections = new Reflections ("jada.ngeditor.model",ClasspathHelper.forClass(GElement.class), 
+                             new SubTypesScanner(false), new TypeAnnotationsScanner());
+        Set<Class<?>> setXmlRoot = reflections.getTypesAnnotatedWith(XmlRootElement.class);
+        Class[] classes = setXmlRoot.toArray(new Class[0]);
+        
+        JAXBContext jc = JAXBContext.newInstance("jada.ngeditor.model:jada.ngeditor.model.elements:jada.ngeditor.model.elements.specials",this.getClass().getClassLoader());
         m = jc.createMarshaller();
         m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
     }

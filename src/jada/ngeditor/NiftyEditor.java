@@ -42,6 +42,7 @@ public class NiftyEditor {
           
                     
        try{
+        System.setProperty("file.encoding", "UTF-8");
         final SplashScreen splash = SplashScreen.getSplashScreen();
         if (splash != null) {
         Graphics2D g = splash.createGraphics();

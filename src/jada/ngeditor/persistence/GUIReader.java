@@ -119,7 +119,7 @@ public class GUIReader {
         private HashMap<String, Class<? extends GElement>> mappings = new HashMap<String, Class<? extends GElement>>();
 
         private GElementFactory() throws ClassNotFoundException, IOException {
-            Class[] classes = ClassUtils.getClasses("jada.ngeditor.model.elements");
+            Set<Class<? extends GElement>> classes = ClassUtils.findAllGElements();
             for (Class c : classes) {
                 ControlBinding binding = (ControlBinding) c.getAnnotation(ControlBinding.class);
                 if (binding != null) {

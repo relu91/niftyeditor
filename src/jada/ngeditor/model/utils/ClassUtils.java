@@ -4,14 +4,20 @@
  */
 package jada.ngeditor.model.utils;
 
+import jada.ngeditor.model.elements.GElement;
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import org.jdesktop.el.impl.util.ReflectionUtil;
+import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.FilterBuilder;
 
 /**
  * <b>Notice<\b> This class is an early implementation , could change every time. 
@@ -101,7 +107,12 @@ public class ClassUtils {
 		return classes;
 	}
 
-
+public static  Set<Class<? extends GElement>> findAllGElements(){
+     Reflections reflections = new Reflections ("jada.ngeditor.model",ClasspathHelper.forClass(GElement.class), 
+    new SubTypesScanner(false));
+        Set<Class<? extends GElement>> subTypesOf = reflections.getSubTypesOf(GElement.class);
+        return subTypesOf;
+}
 public static void main(String[] args) throws IOException, ClassNotFoundException{
         ArrayList<Class<?>> classesForPackage = ClassUtils.getClassesForPackage("jada.ngeditor.model");
     for(Class c : classesForPackage){

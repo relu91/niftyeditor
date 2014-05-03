@@ -19,6 +19,7 @@ import jada.ngeditor.model.elements.GControl;
 import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.utils.ClassUtils;
 import java.lang.reflect.Modifier;
+import java.util.Set;
 
 /**
  *
@@ -89,24 +90,31 @@ public class PaletteView extends javax.swing.JPanel {
 
     private void addPaletteComponents(){
         try{
-            Class[] classes = ClassUtils.getClasses("jada.ngeditor.model.elements",new ClassUtils.Predicate<Class>() {
-
-                @Override
-                public boolean apply(Class object) {
-                   boolean abs = Modifier.isAbstract( object.getModifiers() );
-                   return !abs && !object.isAnonymousClass() && GElement.class.isAssignableFrom(object);
-                }
-            });
+            /* Class[] classes = ClassUtils.getClasses("jada.ngeditor.model.elements",new ClassUtils.Predicate<Class>() {
+            @Override
+            public boolean apply(Class object) {
+            boolean abs = Modifier.isAbstract( object.getModifiers() );
+            return !abs && !object.isAnonymousClass() && GElement.class.isAssignableFrom(object);
+            }
+            });*/
+            Set<Class<? extends GElement>> classes = ClassUtils.findAllGElements();
             for(Class c : classes){
+                if(this.isConcreteClass(c)){
                 NWidget widget = new NWidget(c);
                 if(GControl.class.isAssignableFrom(c)){
                     this.controlsPane.add(widget);
                 }else
                     this.elementsPane.add(widget);
+                }
             }
  
     }catch (Exception e){
         e.printStackTrace();
     }
+    }
+    
+    private boolean isConcreteClass(Class object){
+        boolean abs = Modifier.isAbstract( object.getModifiers() );
+        return !abs && !object.isAnonymousClass() && GElement.class.isAssignableFrom(object);
     }
 }

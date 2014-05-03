@@ -86,12 +86,8 @@ public abstract class GElement {
     @Deprecated
     public void setIndex(int index) {
         nElement.setIndex(index);
-        if ((index + 1) < children.size()) {
-            GElement after = children.get(index + 1);
-
-        } else {
-            GElement after = parent.children.get(index);
-        }
+        parent.children.remove(this);
+        parent.children.add(index, this);
     }
 
     public void removeFromParent() {

@@ -209,7 +209,7 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
         graphics2D.setBackground(this.getBackground());
         done = nifty.update();
         nifty.setAbsoluteClip(clipView.x,clipView.y,clipView.x+clipView.width,clipView.height+clipView.y);
-         nifty.render(true);
+        nifty.render(true);
         graphics2D.setPaintMode();
         graphics2D.setClip(clipView.x,clipView.y,clipView.x+clipView.width,clipView.height+clipView.y);
         if (nifty.isDebugOptionPanelColors()) {
