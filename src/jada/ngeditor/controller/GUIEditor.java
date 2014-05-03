@@ -86,7 +86,7 @@ public class GUIEditor extends Observable{
         System.gc();
     }
     /**
-     * Create a new gui from a file
+     * Create a new gui from a file and current assetFolder as assets
      * @param nifty a valid Nifty instace @see Nifty
      * @throws ParserConfigurationException if controller failed to create
      * a valid document instance
@@ -97,9 +97,14 @@ public class GUIEditor extends Observable{
      * 
      */
     public String createNewGui(Nifty nifty ,File filename) throws ParserConfigurationException, IOException, SAXException, NoProductException, Exception{
+       String assets= ".";
+       if(this.gui != null){
+          assets = this.gui.getAssetFolder().getPath(); 
+       }
        GUIReader reader = new GUIReader(nifty);
        String res = "";
        this.gui = reader.readGUI(filename);
+       this.gui.setAssetFolder(new File(assets));
        res = reader.getTagNotLoaded();
        final GScreen screen =this.getGui().gettopScreen();
        for(String sel : nifty.getAllScreensName()){
@@ -122,6 +127,42 @@ public class GUIEditor extends Observable{
             
     }
     
+     /**
+     * Create a new gui from a file with given assetsFolder
+     * @param nifty a valid Nifty instace @see Nifty
+     * @throws ParserConfigurationException if controller failed to create
+     * a valid document instance
+     * @throws IOException
+     * @throws  SAXException
+     * @throws Exception if nifty can't create the gui
+     * @return A string with the elements that weren't loaded
+      */
+     public String createNewGui(Nifty nifty ,File filename,File assetsFolder) throws ParserConfigurationException, IOException, SAXException, NoProductException, Exception{
+       GUIReader reader = new GUIReader(nifty);
+       String res = "";
+       this.gui = reader.readGUI(filename);
+       this.gui.setAssetFolder(assetsFolder);
+       res = reader.getTagNotLoaded();
+       final GScreen screen =this.getGui().gettopScreen();
+       for(String sel : nifty.getAllScreensName()){
+                    nifty.removeScreen(sel);
+       }
+       writer = new GUIWriter(gui);
+      nifty.scheduleEndOfFrameElementAction(new Reload(nifty, screen.getID()), new EndNotify() {
+
+            @Override
+            public void perform() {
+               setChanged();
+               notifyObservers(new Action(Action.NEW,screen));
+               clearChanged();
+            }
+        });
+       currentL=gui.getTopLayer();
+       currentS=gui.gettopScreen();
+       currentlayers.addAll(gui.getLayers());
+       return res;
+            
+    }
     
     public void saveGui(String filename) throws FileNotFoundException, JAXBException{
         writer.writeGUI(filename);
