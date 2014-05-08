@@ -123,6 +123,7 @@ public class GUIEditor extends Observable{
        currentL=gui.getTopLayer();
        currentS=gui.gettopScreen();
        currentlayers.addAll(gui.getLayers());
+       dragDropManager = new NiftyDDManager(nifty);
        return res;
             
     }
@@ -160,6 +161,7 @@ public class GUIEditor extends Observable{
        currentL=gui.getTopLayer();
        currentS=gui.gettopScreen();
        currentlayers.addAll(gui.getLayers());
+       dragDropManager = new NiftyDDManager(nifty);
        return res;
             
     }

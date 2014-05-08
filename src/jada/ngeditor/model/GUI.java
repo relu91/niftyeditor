@@ -198,7 +198,10 @@ public class GUI extends Observable {
     public String toString() {
         return "GUI: " + this.GUIID;
     }
-
+    
+    public int getGUIid(){
+        return this.GUIID;
+    }
     public GLayer getTopLayer() {
         return this.currentlayers.peekLast();
     }

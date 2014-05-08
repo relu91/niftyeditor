@@ -15,17 +15,10 @@
 package jada.ngeditor.model;
 
 import de.lessvoid.nifty.Nifty;
-import jada.ngeditor.model.utils.ClassUtils;
 import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.exception.NoProductException;
-import java.io.IOException;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
-import org.w3c.dom.Element;
 
 /**
  * With this factory you can retrieve gui elements or a new GUI
