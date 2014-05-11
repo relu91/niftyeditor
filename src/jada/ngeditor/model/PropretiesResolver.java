@@ -102,7 +102,6 @@ public class PropretiesResolver {
         return result;
        }else{
            key = new elementType("elementType","anyType");
-           System.out.println(prop.get(key));
            return this.prop.get(key);
        }
            

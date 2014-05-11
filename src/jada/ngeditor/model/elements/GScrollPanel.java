@@ -38,8 +38,8 @@ public class GScrollPanel extends GControl  {
     public void initDefault() {
      attributes.put("width", "50%");
      attributes.put("height", "30%");
-     attributes.put("verticalScrollbar", "true");
-     attributes.put("horizontalScrollbar", "true");
+     attributes.put("vertical", "true");
+     attributes.put("horizontal", "true");
       
     }
     

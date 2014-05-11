@@ -44,6 +44,10 @@ public abstract class GControl extends GElement{
           String defvalue = getAttribute(prop);
           res.put(prop, defvalue);
       }
+      for(String prop : jada.ngeditor.model.PropretiesResolver.inst.resolve(this.getName()+"Type")){
+          String defvalue = getAttribute(prop);
+          res.put(prop, defvalue);
+      }
        return res;
     }
 

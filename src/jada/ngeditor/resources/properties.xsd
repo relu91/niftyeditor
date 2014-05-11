@@ -442,4 +442,76 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
+  
+  <xs:complexType name="dropDownType">
+    <xs:complexContent>
+      <xs:extension base="elementType">
+       <xs:attribute type="xs:integer" name="displayItems" use="optional" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="imageSelectType">
+    <xs:complexContent>
+      <xs:extension base="elementType">
+       <xs:attribute type="xs:string" name="imageWidth" use="required" />
+       <xs:attribute type="xs:string" name="imageHeight" use="required"/>
+       <xs:attribute type="xs:string" name="imageList" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="radioButtonType">
+    <xs:complexContent>
+      <xs:extension base="elementType">
+       <xs:attribute type="xs:string" name="group"  />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+   <xs:complexType name="radioButtonGroupType">
+    <xs:complexContent>
+      <xs:extension base="elementType">
+       <xs:attribute type="xs:boolean" name="allowDeselection"  />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="horizontalScrollbarType">
+    <xs:complexContent>
+      <xs:extension base="elementType">
+       <xs:attribute type="xs:float" name="worldMax"/>
+       <xs:attribute type="xs:float" name="worldPageSize" />
+       <xs:attribute type="xs:float" name="initial" />
+       <xs:attribute type="xs:float" name="buttonStepSize" />
+       <xs:attribute type="xs:float" name="pageStepSize" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="verticalScrollbarType">
+    <xs:complexContent>
+      <xs:extension base="elementType">
+       <xs:attribute type="xs:float" name="worldMax"/>
+       <xs:attribute type="xs:float" name="worldPageSize" />
+       <xs:attribute type="xs:float" name="initial" />
+       <xs:attribute type="xs:float" name="buttonStepSize" />
+       <xs:attribute type="xs:float" name="pageStepSize" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="scrollPanelType">
+    <xs:complexContent>
+      <xs:extension base="elementType">
+       <xs:attribute type="xs:float" name="stepSizeX"/>
+       <xs:attribute type="xs:float" name="stepSizeY" />
+       <xs:attribute type="xs:float" name="pageSizeX" />
+       <xs:attribute type="xs:float" name="pageSizeY" />
+       <xs:attribute type="xs:string" name="autoScroll" />
+       <xs:attribute type="xs:boolean" name="vertical" />
+       <xs:attribute type="xs:boolean" name="horizontal" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
 </xs:schema>

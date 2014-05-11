@@ -79,7 +79,7 @@ public abstract class GElement {
     }
 
     /**
-     * fixme this method should be in GUI
+     * 
      *
      * @param index
      */
