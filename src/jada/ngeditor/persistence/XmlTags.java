@@ -42,7 +42,10 @@ public enum XmlTags {
     NIFTYTREEBOX("nifty-tree-box"),
     IMAGESELECT("imageSelect"),
     DRAGGABLE("draggable"),
-    DROPPABLE("droppable");
+    DROPPABLE("droppable"),
+    NIFTYCHAT("nifty-chat"),
+    VERTICALSLIDER("verticalSlider"),
+    HORIZONTALSLIDER("horizontalSlider");
     
     public static String CONTROL_TAG = "control";
     private String val;

@@ -81,4 +81,11 @@ public abstract class GControl extends GElement{
     public void initDefault() {
         
     }
+
+    @Override
+    public GElement create(String id) {
+        return null;
+    }
+    
+    
 }

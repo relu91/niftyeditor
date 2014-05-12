@@ -94,6 +94,7 @@ public abstract class GElement {
         if (parent != null) {
             this.parent.children.remove(this);
             this.parent = null;
+            
         }
     }
 
