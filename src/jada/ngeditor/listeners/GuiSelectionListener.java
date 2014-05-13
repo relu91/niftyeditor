@@ -14,6 +14,7 @@
  */
 package jada.ngeditor.listeners;
 
+import de.lessvoid.nifty.builder.ElementBuilder;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.layout.align.HorizontalAlign;
 import de.lessvoid.nifty.layout.align.VerticalAlign;
@@ -33,6 +34,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JPanel;
@@ -318,16 +320,18 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
     @Override
     public void keyPressed(KeyEvent e) {
         
-            GElement sel = gui.getSelected();
-            String layout = sel.getParent().getAttribute("childLayout");
-            if(layout.equals("horizontal")) {
+        GElement sel = gui.getSelected();
+        String layout = sel.getParent().getAttribute("childLayout");
+        if(layout.equals("horizontal")) {
             horizontalBeahvior(sel,e.getKeyCode());
         }
-            else if(layout.equals("vertical")) {
+        else if(layout.equals("vertical")) {
             verticalBeahvior(sel,e.getKeyCode());
         }
-            else {
+        else if(layout.equals("absolute")) {
             absoluteBehavior(sel,e.getKeyCode());
+        }else if(sel instanceof GLayer){
+            layerBeahvior(sel,e.getKeyCode());
         }
         this.gui.fireUpdate(sel);
      
@@ -436,5 +440,17 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
         }
         v.displayRect(sel.getNiftyElement().getX(), sel.getNiftyElement().getY(),sel.getNiftyElement().getHeight(), sel.getNiftyElement().getWidth() );
         this.selected.setRect(sel.getNiftyElement().getX(), sel.getNiftyElement().getY(),sel.getNiftyElement().getWidth(), sel.getNiftyElement().getHeight() );
+    }
+
+    private void layerBeahvior(GElement sel, int keyCode) {
+        List<Element> children = sel.getParent().getNiftyElement().getChildren();
+        int index = children.indexOf(sel.getNiftyElement());
+        if(keyCode==KeyEvent.VK_UP && index > 0 ){
+            index--;
+            sel.setIndex(index);
+        }else if(keyCode == KeyEvent.VK_DOWN && index < (children.size() - 1)){
+            index++;
+            sel.setIndex(index);
+        }
     }
 }
