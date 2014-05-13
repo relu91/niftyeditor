@@ -35,7 +35,7 @@ public class GWindow extends GControl {
     
       public GWindow(String id) throws IllegalArgumentException{
       super(id);
-      builder = new WindowBuilder();
+      builder = new WindowBuilder(id,"window");
       name = "window";
       
       
@@ -46,19 +46,7 @@ public class GWindow extends GControl {
          return nElement.getControl(WindowControl.class).getContent();
      }
      
-     @Override
-     public void addAttribute(String key , String val){
-        if(key.equals("id")){
-            this.id = val;
-        }
-        if(key.equals("childLayout")){
-            Attributes att = getDropContext().getElementType().getAttributes();
-            att.set(key, val);
-        }else{
-        Attributes att = this.nElement.getElementType().getAttributes();
-        att.set(key, val);
-        }
-    }
+    
    
     @Override
     public GElement create(String id) {
