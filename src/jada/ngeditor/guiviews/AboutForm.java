@@ -4,14 +4,31 @@
  */
 package jada.ngeditor.guiviews;
 
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URI;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
  * @author cris
  */
-public class AboutForm extends javax.swing.JFrame {
+public class AboutForm extends javax.swing.JFrame implements MouseListener{
 
     /**
      * Creates new form AboutForm
@@ -20,10 +37,10 @@ public class AboutForm extends javax.swing.JFrame {
         initComponents();
        this.setResizable(false);
         Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize ();
-Dimension frameSize = this.getSize ();
-
-this.setLocation ((screenSize.width - frameSize.width) / 2,
-(screenSize.height - frameSize.height) / 2);
+        Dimension frameSize = this.getSize ();
+        this.setLocation ((screenSize.width - frameSize.width) / 2,
+        (screenSize.height - frameSize.height) / 2);
+            this.jList1.addMouseListener(this);
     }
 
     /**
@@ -35,19 +52,19 @@ this.setLocation ((screenSize.width - frameSize.width) / 2,
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("About");
         setLocationByPlatform(true);
         setModalExclusionType(java.awt.Dialog.ModalExclusionType.TOOLKIT_EXCLUDE);
         setName("about"); // NOI18N
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jada/ngeditor/resources/icon.png"))); // NOI18N
 
         jButton1.setText("OK");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -56,45 +73,68 @@ this.setLocation ((screenSize.width - frameSize.width) / 2,
             }
         });
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jada/ngeditor/resources/asf-logo.png"))); // NOI18N
-        jLabel3.setText("jLabel3");
-
+        jList1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jList1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Nifty-Gui Library", "Guava", "JTatoo", "EventBus", "xpp", "javassist", "slf4j-simple", "xsom", "relaxngDatatype", " " };
+            String[] strings = { "Nifty-Gui: http://nifty-gui.lessvoid.com/", "Guava: https://code.google.com/p/guava-libraries/", "JTatoo: http://www.jtattoo.net/index.html", "xsom: https://xsom.java.net/" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
+        jList1.setToolTipText("Click to view license or Right click to go to the site");
         jScrollPane1.setViewportView(jList1);
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel1.setText("Nifty-Editor");
+
+        jLabel2.setText("<html>Nifty-Editor is an open source software developed to simplify the editing of nify-gui files . All sources are aviable at : <a href=\"https://github.com/relu91/niftyeditor\" >https://github.com/relu91/niftyeditor</a>\n and it's under Apache 2.0 license . The following list cointains all the libraries used by Nifty-Editor and their licencense . </html>");
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jada/ngeditor/resources/asf-logo.png"))); // NOI18N
+
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jada/ngeditor/resources/icon-little.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(274, 274, 274)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 112, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(224, 224, 224)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(108, 108, 108)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel4))
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 68, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(252, 252, 252)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -108,8 +148,76 @@ this.setLocation ((screenSize.width - frameSize.width) / 2,
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JList jList1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if(e.getButton() == e.BUTTON1){
+        String selectedValue = (String) this.jList1.getSelectedValue();
+        String lib = selectedValue.split(":")[0];
+        InputStream resourceAsStream = this.getClass().getResourceAsStream("/jada/ngeditor/resources/"+lib+".license");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(resourceAsStream));
+        String output = "";
+        String line = "";
+        while(line!=null){
+            try {
+                output+=line;
+                output+="\n";
+                line = reader.readLine();
+                
+            } catch (IOException ex) {
+                Logger.getLogger(AboutForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        JTextArea textarea = new JTextArea(output);
+        textarea.setAutoscrolls(true);
+        JScrollPane scrollPane = new JScrollPane(textarea);  
+        textarea.setLineWrap(true);  
+        textarea.setWrapStyleWord(true); 
+        scrollPane.setPreferredSize( new Dimension( 500, 500 ) );
+        JOptionPane.showMessageDialog(null, scrollPane);
+        }
+        
+        if(e.getButton() == e.BUTTON3){
+            int index = jList1.locationToIndex(e.getPoint());
+            this.jList1.setSelectedIndex(index);
+             String selectedValue = (String) this.jList1.getSelectedValue();
+             String suri = selectedValue.split(": ")[1];
+            Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+    if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+        try {
+            desktop.browse(new URI(suri));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+       
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+       
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        
+    }
+
+   
 }

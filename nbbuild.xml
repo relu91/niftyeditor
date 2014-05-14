@@ -77,7 +77,7 @@
             minus the .jar extension. It should be like this :
             <property name="standalone.jar.name" value="MathForChild"/>
        -->
-       <property name="standalone.jar.name" value="Nifty-Editor0.5.7"/>
+       <property name="standalone.jar.name" value="Nifty-Editor0.5.9"/>
 
 
        <!-- don't edit below this line -->
@@ -96,6 +96,7 @@
 
            <manifest>
                <attribute name="Main-Class" value="${main.class}"/>
+               <attribute name="SplashScreen-Image" value="jada/ngeditor/resources/icon.png" />
            </manifest>
        </jar>
 
