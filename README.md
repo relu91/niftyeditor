@@ -17,6 +17,10 @@ Download and news at [home page](http://niftyeditor.it/). Also here is a video a
 
 [![IMAGE ALT TEXT HERE](http://img.youtube.com/vi/B3Y3UdEbIRQ/0.jpg)](http://www.youtube.com/watch?v=B3Y3UdEbIRQ)
 
+## Supported Controls
+
+Nifty editor supports all nifty-gui controls except for Tabbed panel , pop-up , menus . This list could change in the next versions . For any futher details about which are nifty-gui controls and their properties look at [Nifty controls wiki ](https://github.com/void256/nifty-gui/wiki)
+
 ## How to Contribute
 
 Simply fork my repo and send pull requests . This is a Netbeans project so if you want to compile it you need a Netbeans installation on you desktop. In the future it maybe will become a gradle project so you would use it in your prefered java IDE.
