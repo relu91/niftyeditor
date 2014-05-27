@@ -48,9 +48,11 @@ public class PaletteDropTarget extends DropTarget implements Observer {
     public synchronized void dragOver(DropTargetDragEvent dtde){
         super.dragOver(dtde);
         J2DNiftyView comp = (J2DNiftyView) this.getComponent();
-        if(dtde.getDropAction() == DnDConstants.ACTION_MOVE ){
+       
+        if(dtde.getDropAction() == DnDConstants.ACTION_MOVE 
+                && dtde.getTransferable().isDataFlavorSupported(WidgetData.POINTFLAVOR)){
             comp.moveRect(dtde.getLocation().x, dtde.getLocation().y);
-            this.obj.getDragDropSupport().dragAround(dtde.getLocation().x, dtde.getLocation().y);
+           this.obj.getDragDropSupport().dragAround(dtde.getLocation().x, dtde.getLocation().y);
         }
         
     }
@@ -68,14 +70,18 @@ public class PaletteDropTarget extends DropTarget implements Observer {
                dtde.acceptDrop(DnDConstants.ACTION_MOVE);
                GElement from  =  (GElement) dtde.getTransferable().getTransferData(WidgetData.FLAVOR); 
                 if(dtde.getTransferable().isDataFlavorSupported(WidgetData.POINTFLAVOR)){
-                    
                     Point2D point = (Point2D) dtde.getTransferable().getTransferData(WidgetData.POINTFLAVOR);
                     dtde.getLocation().x= (int) (dtde.getLocation().x - point.getX());
                     dtde.getLocation().y= (int) (dtde.getLocation().y - point.getY());
-                }
-               obj.move(dtde.getLocation(), from);
+                    obj.move(dtde.getLocation(), from);
                obj.getDragDropSupport().endDrag();
                dtde.dropComplete(true);
+                }else{
+                     GElement res  =  (GElement) dtde.getTransferable().getTransferData(WidgetData.FLAVOR);
+                    obj.addElement(res,dtde.getLocation());
+                    dtde.dropComplete(true);
+                }
+               
           }
         }catch (IllegalDropException ex){
             JOptionPane.showMessageDialog(dtde.getDropTargetContext().getComponent(), ex.getMessage());
