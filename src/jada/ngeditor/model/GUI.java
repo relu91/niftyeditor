@@ -26,6 +26,7 @@ import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.visitor.Visitor;
 import java.awt.geom.Point2D;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Observable;
@@ -52,9 +53,9 @@ public class GUI extends Observable {
         return manager;
     }
     @XmlElement
-    private GUseControls useControls = new GUseControls();
+    private ArrayList<GUseControls> useControls = new ArrayList<GUseControls>();
     @XmlElement
-    private GUseStyle useStyles = new GUseStyle();
+    private ArrayList<GUseStyle> useStyles = new ArrayList<GUseStyle>();
     @XmlElementRef
     private LinkedList<GScreen> screens;
     private LinkedList<GLayer> currentlayers;
@@ -75,8 +76,6 @@ public class GUI extends Observable {
         this.screens = new LinkedList<GScreen>();
         this.currentlayers = new LinkedList<GLayer>();
         this.currentS = null;
-        this.useControls.setFilename("nifty-default-controls.xml");
-        this.useStyles.setFilename("nifty-default-styles.xml");
         this.GUIID++;
         this.assetsFile = new File(".");
 
@@ -230,4 +229,15 @@ public class GUI extends Observable {
     public File getAssetFolder(){
         return assetsFile;
     }
+    
+    public void addUseControls(GUseControls controls){
+        controls.createInNifty(manager);
+        this.useControls.add(controls);
+    }
+    
+    public void addUseStyles(GUseStyle styles){
+        styles.createInNifty(manager);
+        this.useStyles.add(styles);
+    }
+    
 }

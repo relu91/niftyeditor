@@ -4,13 +4,15 @@
  */
 package jada.ngeditor.model.elements.specials;
 
+import de.lessvoid.nifty.Nifty;
+import jada.ngeditor.model.GSpecial;
 import javax.xml.bind.annotation.XmlAttribute;
 
 /**
  *
  * @author cris
  */
-public class GUseStyle {
+public class GUseStyle implements GSpecial{
      private String filename = "";
      @XmlAttribute
     public String getFilename() {
@@ -19,5 +21,10 @@ public class GUseStyle {
 
     public void setFilename(String filename) {
         this.filename = filename;
+    }
+
+    @Override
+    public void createInNifty(Nifty manager) {
+        manager.loadStyleFile(filename);
     }
 }

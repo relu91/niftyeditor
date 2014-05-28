@@ -52,7 +52,6 @@ public class GUIFactory {
         } catch (Exception ex) {
               ex.printStackTrace();
               throw new NoProductException(elementClass.getName());
-        }
-          
-    }   
+        }    
+    } 
 }

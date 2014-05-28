@@ -19,6 +19,8 @@ import jada.ngeditor.model.GUI;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.IDgenerator;
 import jada.ngeditor.model.elements.GElement;
+import jada.ngeditor.model.elements.specials.GUseControls;
+import jada.ngeditor.model.elements.specials.GUseStyle;
 import jada.ngeditor.model.exception.NoProductException;
 import jada.ngeditor.model.utils.ClassUtils;
 import java.io.File;
@@ -77,6 +79,24 @@ public class GUIReader {
                 }
             }
         }
+        NodeList useControls = document.getElementsByTagName("useControls");
+         for (int i = 0; i < screens.getLength(); i++) {
+             if (useControls.item(i).getNodeType() == Node.ELEMENT_NODE){
+                 GUseControls controls = new GUseControls();
+                 Element contEle = (Element) useControls.item(i);
+                 controls.setFilename(contEle.getAttribute("filename"));
+                 result.addUseControls(controls);
+             }
+         }
+         NodeList useStyles = document.getElementsByTagName("useStyles");
+          for (int i = 0; i < screens.getLength(); i++) {
+             if (useStyles.item(i).getNodeType() == Node.ELEMENT_NODE){
+                 GUseStyle styles = new GUseStyle();
+                 Element styleEle = (Element) useStyles.item(i);
+                 styles.setFilename(styleEle.getAttribute("filename"));
+                 result.addUseStyles(styles);
+             }
+         }
         return result;
     }
 
