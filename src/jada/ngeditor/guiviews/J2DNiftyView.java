@@ -101,8 +101,11 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
 
         popUp = new javax.swing.JPopupMenu();
         DeleteButton = new javax.swing.JMenuItem();
-        HideButton = new javax.swing.JMenuItem();
+        NormalizeMenu = new javax.swing.JMenu();
         NormalizeButton = new javax.swing.JMenuItem();
+        NormalizePosition = new javax.swing.JMenuItem();
+        Normalize = new javax.swing.JMenuItem();
+        HideButton = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
 
         DeleteButton.setText("Delete");
@@ -113,13 +116,7 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
         });
         popUp.add(DeleteButton);
 
-        HideButton.setText("Hide");
-        HideButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                HideButtonActionPerformed(evt);
-            }
-        });
-        popUp.add(HideButton);
+        NormalizeMenu.setText("Normalize");
 
         NormalizeButton.setText("NormalizeSize");
         NormalizeButton.addActionListener(new java.awt.event.ActionListener() {
@@ -127,7 +124,35 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
                 NormalizeButtonActionPerformed(evt);
             }
         });
-        popUp.add(NormalizeButton);
+        NormalizeMenu.add(NormalizeButton);
+
+        NormalizePosition.setText("NormalizePosition");
+        NormalizePosition.setToolTipText("Set position to percentage");
+        NormalizePosition.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NormalizePositionActionPerformed(evt);
+            }
+        });
+        NormalizeMenu.add(NormalizePosition);
+
+        Normalize.setText("Normalize");
+        Normalize.setToolTipText("Set both size and position to percentange");
+        Normalize.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NormalizeActionPerformed(evt);
+            }
+        });
+        NormalizeMenu.add(Normalize);
+
+        popUp.add(NormalizeMenu);
+
+        HideButton.setText("Hide");
+        HideButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                HideButtonActionPerformed(evt);
+            }
+        });
+        popUp.add(HideButton);
 
         jMenuItem1.setText("fill");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
@@ -158,10 +183,21 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
         this.manager.getElementEditor().fill();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    private void NormalizePositionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NormalizePositionActionPerformed
+        this.manager.getElementEditor().normalizePosition();
+    }//GEN-LAST:event_NormalizePositionActionPerformed
+
+    private void NormalizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NormalizeActionPerformed
+         this.manager.getElementEditor().normalize();
+    }//GEN-LAST:event_NormalizeActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem DeleteButton;
     private javax.swing.JMenuItem HideButton;
+    private javax.swing.JMenuItem Normalize;
     private javax.swing.JMenuItem NormalizeButton;
+    private javax.swing.JMenu NormalizeMenu;
+    private javax.swing.JMenuItem NormalizePosition;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPopupMenu popUp;
     // End of variables declaration//GEN-END:variables

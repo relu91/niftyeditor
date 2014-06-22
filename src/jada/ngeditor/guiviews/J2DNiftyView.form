@@ -16,20 +16,45 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="DeleteButtonActionPerformed"/>
           </Events>
         </MenuItem>
+        <Menu class="javax.swing.JMenu" name="NormalizeMenu">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Normalize"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="NormalizeButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="NormalizeSize"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="NormalizeButtonActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="NormalizePosition">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="NormalizePosition"/>
+                <Property name="toolTipText" type="java.lang.String" value="Set position to percentage"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="NormalizePositionActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="Normalize">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Normalize"/>
+                <Property name="toolTipText" type="java.lang.String" value="Set both size and position to percentange"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="NormalizeActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
         <MenuItem class="javax.swing.JMenuItem" name="HideButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Hide"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="HideButtonActionPerformed"/>
-          </Events>
-        </MenuItem>
-        <MenuItem class="javax.swing.JMenuItem" name="NormalizeButton">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="NormalizeSize"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="NormalizeButtonActionPerformed"/>
           </Events>
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">

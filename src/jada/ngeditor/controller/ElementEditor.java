@@ -84,6 +84,28 @@ public class ElementEditor {
         this.update();
     }
     
+    public void normalizePosition(){
+        Element parent = selected.getParent().getNiftyElement();
+        Element sel = selected.getNiftyElement();
+        float hp = parent.getHeight();
+        float wp = parent.getWidth();
+        float totalPaddingHorz = parent.getPaddingLeft().getValue(wp) + parent.getPaddingRight().getValue(wp);
+        float totalPaddingVert = parent.getPaddingTop().getValue(hp) + parent.getPaddingBottom().getValue(hp);
+        float X = (float)(sel.getX()-parent.getX())/(parent.getWidth()- totalPaddingHorz);
+        float Y = (float)(sel.getY()-parent.getY())/(parent.getHeight()-totalPaddingVert);
+        int percX = Math.round(X*100);
+        int percY = Math.round(Y*100);
+       
+        selected.addAttribute("x", ""+percX+"%");
+        selected.addAttribute("y", ""+percY+"%");
+        selected.lightRefresh();
+        this.update();
+    }
+    
+    public void normalize(){
+        this.normalizePosition();
+        this.normalizeSize();
+    }
     public void fill(){
         selected.addAttribute("width", "*");
         selected.addAttribute("height", "*");

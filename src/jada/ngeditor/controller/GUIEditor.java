@@ -215,6 +215,9 @@ public class GUIEditor extends Observable{
      * @param UID GElement to select
      */
     public void selectElement(GElement UID){
+        if(this.selected != null && this.selected.equals(UID)){
+            return;
+        }
         if(UID instanceof GScreen ){
             this.currentS = (GScreen) UID;
             this.currentlayers.clear();
