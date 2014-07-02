@@ -21,12 +21,14 @@ import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.ImageRenderer;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.xml.xpp3.Attributes;
+import jada.ngeditor.listeners.actions.Action;
 import jada.ngeditor.model.visitor.Visitor;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Observable;
 import javax.xml.XMLConstants;
 import javax.xml.bind.annotation.XmlAnyAttribute;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -39,7 +41,7 @@ import javax.xml.namespace.QName;
  *
  * @author cris
  */
-public abstract class GElement {
+public abstract class GElement extends Observable{
 
     static private int UID = 0;
     @XmlElementRef
@@ -92,16 +94,22 @@ public abstract class GElement {
 
     public void removeFromParent() {
         if (parent != null) {
-            this.parent.children.remove(this);
-            this.parent = null;
+            this.parent.removeChild(this);
             
         }
     }
-
+    
+    public void removeChild(GElement child){
+         this.children.remove(child);
+         child.parent = null;
+         this.setChanged();
+         this.notifyObservers(new Action(Action.UPDATE, this));
+    }
     public void addChild(GElement toAdd, boolean xml) {
         this.children.add(toAdd);
         toAdd.parent = this;
-
+        this.setChanged();
+        this.notifyObservers(new Action(Action.UPDATE, this));
     }
 
     @XmlTransient
