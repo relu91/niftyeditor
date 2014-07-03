@@ -15,9 +15,11 @@
 
 
 import de.lessvoid.nifty.builder.LayerBuilder;
+import de.lessvoid.nifty.elements.Element;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.visitor.Visitor;
+import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -38,9 +40,28 @@ public class GLayer extends GElement{
       builder= new LayerBuilder(id);
       
     }
+
+    @Override
+    public void removeFromParent() {
+        GScreen parent = (GScreen) this.parent;
+        parent.getScreen().removeLayerElement(nElement);
+        super.removeFromParent();
+        
+    }
+
+    @Override
+    public void setIndex(int index) {
+        super.setIndex(index);
+       GScreen parent = (GScreen) this.parent;
+       List<Element> layerElements = parent.getScreen().getLayerElements();
+       layerElements.remove(this.nElement);
+       layerElements.add(index, nElement);
+    }
+    
+    
     
    
-
+    
     
 
     @Override
