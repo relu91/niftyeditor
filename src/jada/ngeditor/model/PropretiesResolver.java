@@ -71,7 +71,8 @@ public class PropretiesResolver {
         Iterator<XSAttributeUse> t = (Iterator<XSAttributeUse>) ct.iterateDeclaredAttributeUses();
         ArrayList<String> pr = new ArrayList<String>();
         while(t.hasNext()){
-          String prova = t.next().getDecl().getName();
+          XSAttributeUse next = t.next();
+          String prova = next.getDecl().getName();
           pr.add(prova);
       }
         this.prop.put(new elementType(typeName,baseTypeName), pr);

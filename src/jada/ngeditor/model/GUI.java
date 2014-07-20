@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Observable;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -40,7 +41,9 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  * @author cris
  */
-@XmlRootElement(name = "nifty")
+
+
+@XmlRootElement(namespace="",name = "nifty")
 public class GUI extends Observable {
 
     private static int GUIID = 0;
@@ -48,7 +51,8 @@ public class GUI extends Observable {
     private FileSystemLocation assets;
     @XmlTransient
     private File assetsFile;
-
+    @XmlAttribute
+    private final String xmlns = "http://nifty-gui.lessvoid.com/nifty-gui"; 
     public Nifty getNifty() {
         return manager;
     }
