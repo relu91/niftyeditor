@@ -41,6 +41,7 @@ public class PopUpShowListener extends MouseAdapter{
     private void maybeShowPopup(MouseEvent e) {
         if (e.isPopupTrigger()) {
              javax.swing.JTree tree = (javax.swing.JTree) e.getComponent();
+             tree.requestFocusInWindow();
              TreePath path = tree.getPathForLocation(e.getX(), e.getY());
 		    if(path != null) {
                         tree.setSelectionPath(path);

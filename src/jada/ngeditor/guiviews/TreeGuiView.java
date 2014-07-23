@@ -15,17 +15,22 @@
 package jada.ngeditor.guiviews;
 
 import jada.ngeditor.controller.GUIEditor;
+import jada.ngeditor.guiviews.DND.TreeTrasferHandling;
 import jada.ngeditor.listeners.ElementSelectionListener;
 import jada.ngeditor.listeners.PopUpShowListener;
-import jada.ngeditor.listeners.actions.Action;
-import jada.ngeditor.persistence.XmlTags;
+import jada.ngeditor.listeners.events.AddElementEvent;
+import jada.ngeditor.listeners.events.ReloadGuiEvent;
+import jada.ngeditor.listeners.events.RemoveElementEvent;
+import jada.ngeditor.listeners.events.SelectionChanged;
+import jada.ngeditor.listeners.events.UpdateElementEvent;
 import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.elements.GScreen;
 import jada.ngeditor.renderUtil.NiftyTreeRender;
 import java.util.Enumeration;
 import java.util.Observable;
 import java.util.Observer;
-import javax.swing.LookAndFeel;
+import javax.swing.ActionMap;
+import javax.swing.TransferHandler;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
@@ -42,11 +47,23 @@ public class TreeGuiView extends javax.swing.JPanel implements Observer {
      */
     public TreeGuiView() {
         initComponents();
-        this.jTree2.addMouseListener(new PopUpShowListener(this.jPopupMenu1));
+        ActionMap map = this.getActionMap();
+       map.put(TransferHandler.getCopyAction().getValue(javax.swing.Action.NAME),
+                TransferHandler.getCopyAction());
+        
+        
+        map.put(TransferHandler.getPasteAction().getValue(javax.swing.Action.NAME),
+                TransferHandler.getPasteAction());
+        map.put(TransferHandler.getCutAction().getValue(javax.swing.Action.NAME),
+                TransferHandler.getCutAction());
+        
+       
     }
 
     public void initView(GUIEditor gui) {
-
+        TreeTrasferHandling trasferHandling = new TreeTrasferHandling(gui);
+        this.jTree2.setTransferHandler(trasferHandling);
+        this.jTree2.addMouseListener(new PopUpShowListener(new EditingPopUp(gui)));
         this.jTree2.addTreeSelectionListener(new ElementSelectionListener(gui));
         jTree2.setCellRenderer(new NiftyTreeRender());
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) this.jTree2.getModel().getRoot();
@@ -83,36 +100,8 @@ public class TreeGuiView extends javax.swing.JPanel implements Observer {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPopupMenu1 = new javax.swing.JPopupMenu();
-        HidePop = new javax.swing.JMenuItem();
-        ShowPop = new javax.swing.JMenuItem();
-        DelPop = new javax.swing.JMenuItem();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTree2 = new javax.swing.JTree();
-
-        HidePop.setText("Hide");
-        HidePop.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                HidePopActionPerformed(evt);
-            }
-        });
-        jPopupMenu1.add(HidePop);
-
-        ShowPop.setText("Show");
-        ShowPop.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ShowPopActionPerformed(evt);
-            }
-        });
-        jPopupMenu1.add(ShowPop);
-
-        DelPop.setText("Remove");
-        DelPop.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DelPopActionPerformed(evt);
-            }
-        });
-        jPopupMenu1.add(DelPop);
 
         setMinimumSize(new java.awt.Dimension(80, 20));
         setPreferredSize(new java.awt.Dimension(60, 60));
@@ -125,74 +114,54 @@ public class TreeGuiView extends javax.swing.JPanel implements Observer {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void HidePopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HidePopActionPerformed
-        this.currentGui.getElementEditor().setVisibileSelected(false);
-    }//GEN-LAST:event_HidePopActionPerformed
-
-    private void ShowPopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShowPopActionPerformed
-        this.currentGui.getElementEditor().setVisibileSelected(true);
-    }//GEN-LAST:event_ShowPopActionPerformed
-
-    private void DelPopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DelPopActionPerformed
-        this.currentGui.removeSelected();
-
-    }//GEN-LAST:event_DelPopActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem DelPop;
-    private javax.swing.JMenuItem HidePop;
-    private javax.swing.JMenuItem ShowPop;
-    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTree jTree2;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void update(Observable o, Object arg) {
-        Action act = (Action) arg;
-        if (act.getType() == Action.ADD) {
-            if (!(act.getGUIElement() instanceof GScreen)) {
-                GElement e = act.getGUIElement().getParent();
+        if(arg instanceof AddElementEvent){
+            AddElementEvent act = (AddElementEvent) arg;
+            DefaultMutableTreeNode node = new DefaultMutableTreeNode(act.getElement());
+            if (!(act.getElement() instanceof GScreen)) {
+                GElement e = act.getElement().getParent();
                 DefaultMutableTreeNode parent = this.searchNode(e);
-                parent.add(new DefaultMutableTreeNode(act.getGUIElement()));
+                parent.add(node);
+                this.addRecursive(act.getElement(), node);
             } else {
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTree2.getModel().getRoot();
-                node.add(new DefaultMutableTreeNode(act.getGUIElement()));
+                DefaultMutableTreeNode rootnode = (DefaultMutableTreeNode) jTree2.getModel().getRoot();
+                rootnode.add(node);
             }
             for (int row = 0; row < jTree2.getRowCount(); row++) {
                 jTree2.expandRow(row);
             }
             jTree2.updateUI();
-        } else if (act.getType() == Action.DEL) {
-            GElement ele = act.getGUIElement();
+        }
+         else if (arg instanceof RemoveElementEvent) {
+            GElement ele = ((RemoveElementEvent)arg).getElement();
             this.searchNode(ele).removeFromParent();
             jTree2.updateUI();
-        } else if (act.getType() == Action.MOV) {
-            GElement ele = act.getGUIElement();
-            DefaultMutableTreeNode node = this.searchNode(ele);
-            DefaultMutableTreeNode parent = this.searchNode(ele.getParent());
-            parent.add(node);
-            for (int row = 0; row < jTree2.getRowCount(); row++) {
-                jTree2.expandRow(row);
-            }
-            jTree2.updateUI();
-        } else if (act.getType() == Action.NEW) {
+        } else if (arg instanceof ReloadGuiEvent) {
             this.newGui(((GUIEditor) o));
-        } else if (act.getType() == Action.UPDATE) {
-            int i = currentGui.getElementEditor(act.getGUIElement()).getIndex();
-            DefaultMutableTreeNode node = searchNode(act.getGUIElement());
+        } else if (arg instanceof UpdateElementEvent) {
+            UpdateElementEvent event = (UpdateElementEvent) arg;
+            int i = currentGui.getElementEditor(event.getElement()).getIndex();
+            DefaultMutableTreeNode node = searchNode(event.getElement());
             DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
             parent.insert(node, i);
             jTree2.updateUI();
-        } else if (act.getType() == Action.SEL){
-            DefaultMutableTreeNode node = this.searchNode(act.getGUIElement());
+        } else if (arg instanceof SelectionChanged){
+            SelectionChanged event = (SelectionChanged) arg;
+            DefaultMutableTreeNode node = this.searchNode(event.getElement());
             if(node != null){
                 TreePath temp = new TreePath(node.getPath());
                 jTree2.setSelectionPath(temp);

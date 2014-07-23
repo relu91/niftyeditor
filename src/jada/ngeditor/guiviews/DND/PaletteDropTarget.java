@@ -16,7 +16,7 @@ package jada.ngeditor.guiviews.DND;
 
 import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.guiviews.J2DNiftyView;
-import jada.ngeditor.listeners.actions.Action;
+import jada.ngeditor.listeners.events.ReloadGuiEvent;
 import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.elements.GElement;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -85,13 +85,14 @@ public class PaletteDropTarget extends DropTarget implements Observer {
           }
         }catch (IllegalDropException ex){
             JOptionPane.showMessageDialog(dtde.getDropTargetContext().getComponent(), ex.getMessage());
-            obj.getDragDropSupport().reverDrag();
+            obj.getDragDropSupport().revertDrag();
         } catch (UnsupportedFlavorException ex) {
-             obj.getDragDropSupport().reverDrag();
+             obj.getDragDropSupport().revertDrag();
             Logger.getLogger(PaletteDropTarget.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-             obj.getDragDropSupport().reverDrag();
-            Logger.getLogger(PaletteDropTarget.class.getName()).log(Level.SEVERE, null, ex);
+             Logger.getLogger(PaletteDropTarget.class.getName()).log(Level.SEVERE, null, ex);
+             obj.getDragDropSupport().revertDrag();
+           
         }   
         } else {
             dtde.rejectDrop();
@@ -100,9 +101,10 @@ public class PaletteDropTarget extends DropTarget implements Observer {
     }
  @Override
     public void update(Observable o, Object arg) {
-        if(((Action)arg).getType() == Action.NEW) {
-            this.obj = ((GUIEditor)o);
+        if(arg instanceof ReloadGuiEvent){
+            this.obj = (GUIEditor)o;
         }
+        
     }
     
     

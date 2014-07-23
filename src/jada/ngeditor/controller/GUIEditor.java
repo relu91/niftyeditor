@@ -18,9 +18,14 @@ import de.lessvoid.nifty.EndNotify;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.NiftyControl;
 import de.lessvoid.nifty.elements.Element;
-import jada.ngeditor.listeners.actions.Action;
+import jada.ngeditor.listeners.events.AddElementEvent;
+import jada.ngeditor.listeners.events.ReloadGuiEvent;
+import jada.ngeditor.listeners.events.RemoveElementEvent;
+import jada.ngeditor.listeners.events.SelectionChanged;
+import jada.ngeditor.listeners.events.UpdateElementEvent;
 import jada.ngeditor.model.GUI;
 import jada.ngeditor.model.GUIFactory;
+import jada.ngeditor.model.Selection;
 import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.elements.GLayer;
 import jada.ngeditor.model.elements.GScreen;
@@ -87,7 +92,7 @@ public class GUIEditor extends Observable{
         this.gui.addUseControls(standardControls);
         this.gui.addUseStyles(standardStyle);
         this.setChanged();
-        this.notifyObservers(new Action(Action.NEW,screen));
+        this.notifyObservers(new ReloadGuiEvent(gui));
         this.clearChanged();
         writer = new GUIWriter(gui);
         dragDropManager = new NiftyDDManager(nifty);
@@ -124,7 +129,7 @@ public class GUIEditor extends Observable{
             @Override
             public void perform() {
                setChanged();
-               notifyObservers(new Action(Action.NEW,screen));
+               notifyObservers(new ReloadGuiEvent(gui));
                clearChanged();
             }
         });
@@ -162,7 +167,7 @@ public class GUIEditor extends Observable{
             @Override
             public void perform() {
                setChanged();
-               notifyObservers(new Action(Action.NEW,screen));
+               notifyObservers(new ReloadGuiEvent(gui));
                clearChanged();
             }
         });
@@ -249,7 +254,8 @@ public class GUIEditor extends Observable{
         }
         this.selected=UID;
         this.setChanged();
-        this.notifyObservers(new Action(Action.SEL,UID));
+        this.gui.getSelection().setSelection(selected);
+        this.notifyObservers(new SelectionChanged(this.gui.getSelection()));
         this.clearChanged();
     }
     
@@ -313,7 +319,7 @@ public class GUIEditor extends Observable{
             this.getGui().addElement(child, parent);
         }
         this.setChanged();
-        this.notifyObservers(new Action(Action.ADD,child));
+        this.notifyObservers(new AddElementEvent(child));
         parent.getNiftyElement().layoutElements();
         this.selectElement(child);
         return this;
@@ -364,8 +370,9 @@ public class GUIEditor extends Observable{
           }
         }
         this.setChanged();
-        this.notifyObservers(new Action(Action.ADD,e));
-        this.clearChanged();
+        this.notifyObservers(new AddElementEvent(e));
+        this.selectElement(e);
+       
        
     }
     
@@ -382,9 +389,13 @@ public class GUIEditor extends Observable{
     
     
      public void removeSelected(){
-        this.getGui().removeElement(selected);
-        if(selected instanceof GLayer){
-            this.currentlayers.remove(selected);
+       this.removeElement(selected);
+    }
+     
+    public void removeElement(GElement element){
+         this.getGui().removeElement(element);
+        if(element instanceof GLayer){
+            this.currentlayers.remove(element);
             if(this.currentlayers.size() > 0){
                 this.currentL = this.currentlayers.getLast();
                
@@ -392,10 +403,11 @@ public class GUIEditor extends Observable{
                  this.currentL = null;
         }
         this.setChanged();
-        this.notifyObservers(new Action(Action.DEL,selected));
-        this.notifyObservers(new Action(Action.SEL,this.currentL));
+        this.notifyObservers(new RemoveElementEvent(element));
+         Selection selection = new Selection();//Teporaney 
+        selection.setSelection(selected);
+        this.notifyObservers(new SelectionChanged(selection));
         this.clearChanged();
-        
     }
      
     public void reloadAfterFresh(){
@@ -416,20 +428,32 @@ public class GUIEditor extends Observable{
      * @param to
      * @param from 
      */
-    public void move(Point2D to,GElement from){
+    public void move(Point2D to,final GElement from){
         if(from instanceof GLayer)
             return;
+        this.setChanged();
+        this.notifyObservers(new RemoveElementEvent(from));
+        EndNotify callback = new EndNotify() {
+
+            @Override
+            public void perform() {
+                GUIEditor.this.setChanged();
+                GUIEditor.this.notifyObservers(new AddElementEvent(from));
+                GUIEditor.this.selectElement(from);
+                fireUpdate(from);
+            }
+        };
         LinkedList<GElement> elements = findAllElements(to);
         GElement ele = elements.pollLast();
         if(ele.equals(from)) {
-            getGui().move(to,elements.pollLast(), from);
+            getGui().move(to,elements.pollLast(), from,callback);
         }
         else {
-            getGui().move(to,ele,from);
+            getGui().move(to,ele,from,callback);
         }
-        this.setChanged();
-        this.notifyObservers(new Action(Action.MOV,from));
-        this.clearChanged();
+       
+       
+        
     }
 
     /**
@@ -496,7 +520,7 @@ public class GUIEditor extends Observable{
      */
     public void fireUpdate(GElement sel){
         this.setChanged();
-        this.notifyObservers(new Action(Action.UPDATE,sel));
+        this.notifyObservers(new UpdateElementEvent(sel));
         this.clearChanged();
     }
     

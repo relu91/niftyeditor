@@ -14,21 +14,23 @@
  */
 package jada.ngeditor.model.elements;
 
-import de.lessvoid.nifty.EndNotify;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.builder.ElementBuilder;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.ImageRenderer;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.xml.xpp3.Attributes;
-import jada.ngeditor.listeners.actions.Action;
+import jada.ngeditor.listeners.events.UpdateElementEvent;
 import jada.ngeditor.model.visitor.Visitor;
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Observable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.XMLConstants;
 import javax.xml.bind.annotation.XmlAnyAttribute;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -41,7 +43,7 @@ import javax.xml.namespace.QName;
  *
  * @author cris
  */
-public abstract class GElement extends Observable{
+public abstract class GElement extends Observable implements Cloneable{
 
     static private int UID = 0;
     @XmlElementRef
@@ -64,7 +66,6 @@ public abstract class GElement extends Observable{
 
     protected GElement(String id) throws IllegalArgumentException {
         this.id = id;
-
         this.parent = null;
         this.children = new LinkedList<GElement>();
         this.UniID = UID;
@@ -74,7 +75,12 @@ public abstract class GElement extends Observable{
 
 
     }
-
+    
+    public void copy(GElement template){
+            this.attributes.putAll(template.attributes);
+            this.id = this.id +"Cloned("+UID+")";
+    }
+    
     public int getUniID() {
 
         return this.UniID;
@@ -90,6 +96,8 @@ public abstract class GElement extends Observable{
         nElement.setIndex(index);
         parent.children.remove(this);
         parent.children.add(index, this);
+        this.setChanged();
+        this.notifyObservers(new UpdateElementEvent(this));
     }
 
     public void removeFromParent() {
@@ -103,13 +111,13 @@ public abstract class GElement extends Observable{
          this.children.remove(child);
          child.parent = null;
          this.setChanged();
-         this.notifyObservers(new Action(Action.UPDATE, this));
+         this.notifyObservers(new UpdateElementEvent(this));
     }
     public void addChild(GElement toAdd, boolean xml) {
         this.children.add(toAdd);
         toAdd.parent = this;
         this.setChanged();
-        this.notifyObservers(new Action(Action.UPDATE, this));
+        this.notifyObservers(new UpdateElementEvent(this));
     }
 
     @XmlTransient
@@ -245,6 +253,8 @@ public abstract class GElement extends Observable{
         nElement.setId(id);
         this.internalRefresh(temp, attcopy);
         this.processRemoved();
+        this.setChanged();
+        this.notifyObservers(new UpdateElementEvent(this));
     }
     /*
      * used for simple elment attributes
@@ -311,7 +321,37 @@ public abstract class GElement extends Observable{
         visitor.visit(this);
     }
     //FIXME : remove this method 
-    public abstract GElement create(String id);
+    public GElement create(String id){
+        return null;
+    }
 
-    public abstract void initDefault();
+    public abstract void initDefault(); 
+    
+    public GElement clone(){
+        try {
+            GElement clone = (GElement) super.clone();
+            clone.attributes = (HashMap<String, String>) this.attributes.clone();
+            UID++;
+            clone.UniID = UID;
+            clone.id = this.id +"Cloned("+UID+")";
+            clone.parent = null;
+            clone.toBeRemoved = (ArrayList<String>) this.toBeRemoved.clone();
+            clone.toBeRemoved.clear();
+            clone.oldStyle = "";
+            clone.nElement = null;
+            LinkedList<GElement> cloneChildren = new LinkedList<GElement>();
+            for(GElement child : this.children){
+                GElement childclone = child.clone();
+                childclone.parent = clone;
+                cloneChildren.add(childclone);
+                
+            }
+            clone.children = cloneChildren;
+            return clone;
+        } catch (CloneNotSupportedException ex) {
+            Logger.getLogger(GElement.class.getName()).log(Level.SEVERE, null, ex);
+            //Should never get here;
+            return null;
+        }
+    }
 }

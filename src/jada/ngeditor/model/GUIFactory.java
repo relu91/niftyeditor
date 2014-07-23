@@ -37,7 +37,7 @@ public class GUIFactory {
         return instance;
     }
     
-    public GUI createGUI(Nifty manager) throws ParserConfigurationException{
+    public GUI createGUI(Nifty manager){
         gui = new GUI(manager);
         return gui;
     }

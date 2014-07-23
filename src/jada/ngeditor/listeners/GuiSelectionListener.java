@@ -20,8 +20,11 @@ import de.lessvoid.nifty.layout.align.HorizontalAlign;
 import de.lessvoid.nifty.layout.align.VerticalAlign;
 import de.lessvoid.nifty.tools.SizeValue;
 import jada.ngeditor.controller.GUIEditor;
+import jada.ngeditor.guiviews.EditingPopUp;
 import jada.ngeditor.guiviews.J2DNiftyView;
-import jada.ngeditor.listeners.actions.Action;
+import jada.ngeditor.listeners.events.ReloadGuiEvent;
+import jada.ngeditor.listeners.events.SelectionChanged;
+import jada.ngeditor.listeners.events.UpdateElementEvent;
 import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.elements.GLayer;
 import jada.ngeditor.model.elements.GScreen;
@@ -66,15 +69,11 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
     
     
 
-    public GuiSelectionListener(GUIEditor currentGUI) {
-        this.gui = currentGUI;
-        enable =true;
-        
-    }
+    
 
-    public GuiSelectionListener(GUIEditor toChange, JPopupMenu po,J2DNiftyView view) {
-        this.gui=toChange;
-        this.p=po;
+    public GuiSelectionListener(GUIEditor editor,J2DNiftyView view) {
+        this.gui=editor;
+        this.p= new EditingPopUp(editor);
         this.v=view;
         enable =true;
         this.selected=new Rectangle();
@@ -296,19 +295,26 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
 
     @Override
     public void update(Observable o, Object arg) {
-        Action act = (Action) arg;
-        if(act.getType()== Action.SEL && !(act.getGUIElement() instanceof GLayer)){
-            this.selected.setBounds( act.getGUIElement().getBounds());
-            this.selecting=true;
-        }else if(act.getType()== Action.NEW){
+        
+        if(arg instanceof SelectionChanged){
+            SelectionChanged event = (SelectionChanged) arg;
+            if(!(event.getElement() instanceof GLayer)){
+                this.selected.setBounds( event.getElement().getBounds());
+                this.selecting=true;
+                v.displayRect(this.selected.x, this.selected.y, this.selected.height, this.selected.width);
+            }
+        }else if(arg instanceof ReloadGuiEvent){
             this.gui = (((GUIEditor)o));
             this.selecting=false;
            
-        }else if(act.getType() == Action.UPDATE){
-            this.selected.setBounds( act.getGUIElement().getBounds());
+        }else if(arg instanceof UpdateElementEvent){
+            UpdateElementEvent event = (UpdateElementEvent) arg;
+            this.selected.setBounds(event.getElement().getBounds());
+             v.displayRect(this.selected.x, this.selected.y, this.selected.height, this.selected.width);
             this.selecting=true;
         } else{
             this.selecting=false;
+            
         }
     }
 

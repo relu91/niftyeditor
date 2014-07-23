@@ -83,7 +83,7 @@ public class NiftyDDManager {
     }
     
     
-    public void reverDrag(){
+    public void revertDrag(){
         if(dragged == null){
             throw new IllegalStateException("You must start drag before!");
         }

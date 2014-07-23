@@ -31,31 +31,29 @@ import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
+import javax.swing.JTree;
 import javax.swing.TransferHandler;
 
 /**
  *
  * @author cris
  */
-public class TrasferHandling extends TransferHandler implements Observer{
+public class TreeTrasferHandling extends TransferHandler {
     
     private GUIEditor gui;
     private boolean coping=false;
     private GElement copyTemplate;
+
+    public TreeTrasferHandling(GUIEditor gui) {
+      
+        this.gui = gui;
+      
+    }
+    
     
     @Override
     public  Transferable createTransferable(JComponent c) {
-        if(c instanceof NWidget){
-            NWidget comp = (NWidget)c;
-            return comp.getData();
-        } else{
-             if(!coping){
-             Rectangle rec = gui.getSelected().getBounds();
-             int a = (int)rec.getCenterX() - gui.getSelected().getNiftyElement().getX();
-             int b = (int)rec.getCenterY() - gui.getSelected().getNiftyElement().getY();
-             return new WidgetData(gui.getSelected(),a,b);
-             }
-             else{
+       
                 if(copyTemplate!=null){
                    
                    
@@ -63,8 +61,8 @@ public class TrasferHandling extends TransferHandler implements Observer{
                 
                 }else
                     return null;
-             }
-        }
+             
+        
         
         
     }
@@ -74,46 +72,12 @@ public class TrasferHandling extends TransferHandler implements Observer{
    
     @Override
     public int getSourceActions(JComponent c) {
-        if(c instanceof NWidget)
-            return COPY;
-        else
-            return COPY_OR_MOVE;
+       return COPY_OR_MOVE;
     }
     
     @Override
     public boolean canImport(TransferSupport support){
-       if(support.getComponent() instanceof NWidget ) {
-            return false;
-        } 
-       else {
-            try {
-               GElement ele = (GElement) support.getTransferable().getTransferData(WidgetData.FLAVOR);
-               if(ele instanceof GLayer)
-                        return false;
-            } catch (UnsupportedFlavorException ex) {
-                Logger.getLogger(TrasferHandling.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(TrasferHandling.class.getName()).log(Level.SEVERE, null, ex);
-            }
-       }
-       return true;
-    }
-
-    @Override
-    public void exportAsDrag(JComponent comp, InputEvent e, int action) {
-        coping = false;
-        super.exportAsDrag(comp, e, action);
-    }
-
-
-    
-
-    @Override
-    public void update(Observable o, Object arg) {
-        if(arg instanceof ReloadGuiEvent){
-            this.gui = (GUIEditor)o;
-        }
-        
+       return false;
     }
 
     @Override
@@ -133,12 +97,12 @@ public class TrasferHandling extends TransferHandler implements Observer{
         try {
             GElement from  =  (GElement) support.getTransferable().getTransferData(WidgetData.FLAVOR);
             GElement cloned = from.clone();
-            Point mousePosition = support.getComponent().getMousePosition();
-            this.gui.addElement(cloned,mousePosition);
+            
+            this.gui.addElement(cloned,this.gui.getSelected());
         } catch (UnsupportedFlavorException ex) {
-            Logger.getLogger(TrasferHandling.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TreeTrasferHandling.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(TrasferHandling.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TreeTrasferHandling.class.getName()).log(Level.SEVERE, null, ex);
         }
         }
         return res;

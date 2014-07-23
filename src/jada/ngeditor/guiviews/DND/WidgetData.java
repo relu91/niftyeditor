@@ -20,13 +20,25 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.geom.Point2D;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author cris
  */
 public class WidgetData implements Transferable{
-    public static final DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, "widget");
+    public static DataFlavor FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, "widget");
+    static{
+         try {
+            FLAVOR =  new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType +
+                      ";class=jada.ngeditor.model.elements.GElement");
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(WidgetData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public static final DataFlavor POINTFLAVOR = new DataFlavor(Point2D.class, "poin2d");
     private final GElement e;
     private final Point2D p;
@@ -34,7 +46,8 @@ public class WidgetData implements Transferable{
     
     public WidgetData(GElement element, int diffX,int diffY){
         e=element;
-        p = new Point2D.Double(diffX, diffY);
+        p = new Point2D.Double(diffX, diffY); 
+       
     }
     public WidgetData(GElement element){
         this.e = element;

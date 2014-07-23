@@ -14,9 +14,12 @@
  */
 package jada.ngeditor.model;
 
+import com.sun.istack.internal.Nullable;
+import de.lessvoid.nifty.EndNotify;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.tools.resourceloader.FileSystemLocation;
-import jada.ngeditor.listeners.actions.Action;
+import jada.ngeditor.listeners.events.AddElementEvent;
+import jada.ngeditor.listeners.events.RemoveElementEvent;
 import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.elements.GLayer;
 import jada.ngeditor.model.elements.GScreen;
@@ -62,12 +65,14 @@ public class GUI extends Observable {
     private ArrayList<GUseStyle> useStyles = new ArrayList<GUseStyle>();
     @XmlElementRef
     private LinkedList<GScreen> screens;
-    private LinkedList<GLayer> currentlayers;
     private GScreen currentS;
+    private final Selection selection;
+    private GLayer currentL;
    
 
     public GUI() {
         manager = null;
+        selection = null;
     }
 
     /**
@@ -78,17 +83,16 @@ public class GUI extends Observable {
     protected GUI(Nifty nifty) {
         this.manager = nifty;
         this.screens = new LinkedList<GScreen>();
-        this.currentlayers = new LinkedList<GLayer>();
         this.currentS = null;
         this.GUIID++;
         this.assetsFile = new File(".");
-
+        this.selection = new Selection();
     }
 
     public void addScreen(GScreen screen) {
         this.screens.add(screen);
         screen.createNiftyElement(manager);
-        manager.gotoScreen(screen.getID());
+        this.goTo(screen);
     }
 
     public LinkedList<GScreen> getScreens() {
@@ -102,7 +106,6 @@ public class GUI extends Observable {
             this.currentS = screen;
         } else if (parent instanceof GScreen) {
             GLayer temp = (GLayer) child;
-            this.currentlayers.add(temp);
             if (this.currentS != null) {
                 parent.addChild(child, false);
             }
@@ -110,23 +113,30 @@ public class GUI extends Observable {
             parent.addChild(child, false);
         }
         this.setChanged();
-        this.notifyObservers(new Action(Action.ADD, child));
-        this.clearChanged();
+        this.notifyObservers(new AddElementEvent(child));
 
     }
 
     public boolean addElement(GElement child, GElement parent) {
         try {
             parent.addChild(child, true);
-            child.createNiftyElement(manager);
+            this.recorsiveCreateNiftyElement(child);
+            this.setChanged();
+            this.notifyObservers(new AddElementEvent(child));
             return true;
         } catch (IllegalDropException e) {
             child.removeFromParent();
             throw e;
         }
     }
-
-    public void move(Point2D to, GElement toEle, GElement from) {
+    
+    private void recorsiveCreateNiftyElement(GElement element){
+        element.createNiftyElement(manager);
+        for(GElement child : element.getElements()){
+            this.recorsiveCreateNiftyElement(child);
+        }
+    }
+    public void move(Point2D to, GElement toEle, GElement from,EndNotify callback) {
         if (!toEle.equals(from)) {
             de.lessvoid.nifty.elements.Element nTo = toEle.getDropContext();
             if (toEle.getAttribute("childLayout").equals("absolute")) {
@@ -134,14 +144,18 @@ public class GUI extends Observable {
                 int parentY = toEle.getNiftyElement().getY();
                 from.addAttribute("x", "" + (int) (to.getX() - parentX));
                 from.addAttribute("y", "" + (int) (to.getY() - parentY));
-                this.manager.moveElement(this.manager.getCurrentScreen(), from.getNiftyElement(), nTo, null);
+                this.manager.moveElement(this.manager.getCurrentScreen(), from.getNiftyElement(), nTo, callback);
                 from.lightRefresh();
             } else {
-                this.manager.moveElement(this.manager.getCurrentScreen(), from.getNiftyElement(), nTo, null);
+                this.manager.moveElement(this.manager.getCurrentScreen(), from.getNiftyElement(), nTo, callback);
             }
             from.removeFromParent();
             toEle.addChild(from, true);
-
+            this.setChanged();
+            this.notifyObservers(new RemoveElementEvent(from));
+            this.setChanged();
+            this.notifyObservers(new AddElementEvent(from));
+            
         }
     }
 
@@ -150,12 +164,13 @@ public class GUI extends Observable {
             this.screens.remove(e);
             manager.removeScreen(e.getID());
         } else if (e instanceof GLayer) {
-            this.currentlayers.remove(e);
             manager.removeElement(manager.getCurrentScreen(), e.getNiftyElement());
         } else {
             manager.removeElement(manager.getCurrentScreen(), e.getNiftyElement());
         }
         e.removeFromParent();
+        this.setChanged();
+        this.notifyObservers(new RemoveElementEvent(e));
     }
 
     public void reloadAfterFresh() {
@@ -194,6 +209,7 @@ public class GUI extends Observable {
                 manager.getCurrentScreen().getFocusHandler().resetFocusElements();
             }
         }, null);
+        this.currentS = screen;
 
     }
 
@@ -205,13 +221,14 @@ public class GUI extends Observable {
     public int getGUIid(){
         return this.GUIID;
     }
+    
     public GLayer getTopLayer() {
-        return this.currentlayers.peekLast();
+        int last = this.currentS.getLayers().size() -1;
+        return this.currentS.getLayers().get(last);
     }
 
     public Collection<GLayer> getLayers() {
-
-        return this.currentlayers;
+        return this.currentS.getLayers();
     }
 
     public void accept(Visitor visit) {
@@ -242,6 +259,29 @@ public class GUI extends Observable {
     public void addUseStyles(GUseStyle styles){
         styles.createInNifty(manager);
         this.useStyles.add(styles);
+    }
+    
+    /**
+     * 
+     * @return the selection
+     */
+    public Selection getSelection() {
+        return selection;
+    }
+
+    /**
+     * @return the currentLayer
+     */
+    @Nullable
+    public GLayer getCurrentLayer() {
+        return currentL;
+    }
+
+    /**
+     * @param currentL the currentLayer to set
+     */
+    public void setCurrentLayer(GLayer currentL) {
+        this.currentL = currentL;
     }
     
 }

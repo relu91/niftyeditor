@@ -23,7 +23,11 @@ import de.lessvoid.nifty.render.NiftyRenderEngineImpl;
 import de.lessvoid.nifty.tools.TimeProvider;
 import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.listeners.GuiSelectionListener;
-import jada.ngeditor.listeners.actions.Action;
+import jada.ngeditor.listeners.events.AddElementEvent;
+import jada.ngeditor.listeners.events.ElementEvent;
+import jada.ngeditor.listeners.events.ReloadGuiEvent;
+import jada.ngeditor.listeners.events.RemoveElementEvent;
+import jada.ngeditor.listeners.events.UpdateElementEvent;
 import jada.ngeditor.model.elements.GLayer;
 import jada.ngeditor.renderUtil.SoudDevicenull;
 import java.awt.BasicStroke;
@@ -32,22 +36,31 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ActionMap;
+import javax.swing.JComponent;
+import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
+import javax.swing.KeyStroke;
 import javax.swing.Timer;
+import javax.swing.TransferHandler;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -82,6 +95,17 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
       
     public J2DNiftyView(int width , int height) {
         initComponents();
+        //Init cut&paste
+        ActionMap map = this.getActionMap();
+       map.put(TransferHandler.getCopyAction().getValue(javax.swing.Action.NAME),
+                TransferHandler.getCopyAction());
+        
+        
+        map.put(TransferHandler.getPasteAction().getValue(javax.swing.Action.NAME),
+                TransferHandler.getPasteAction());
+        map.put(TransferHandler.getCutAction().getValue(javax.swing.Action.NAME),
+                TransferHandler.getCutAction());
+
         this.setPreferredSize(new Dimension(width,height));
         this.graphWrap = new GraphicsWrappImpl(width, height);
         this.setOpaque(true);
@@ -99,107 +123,10 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        popUp = new javax.swing.JPopupMenu();
-        DeleteButton = new javax.swing.JMenuItem();
-        NormalizeMenu = new javax.swing.JMenu();
-        NormalizeButton = new javax.swing.JMenuItem();
-        NormalizePosition = new javax.swing.JMenuItem();
-        Normalize = new javax.swing.JMenuItem();
-        HideButton = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
-
-        DeleteButton.setText("Delete");
-        DeleteButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DeleteButtonActionPerformed(evt);
-            }
-        });
-        popUp.add(DeleteButton);
-
-        NormalizeMenu.setText("Normalize");
-
-        NormalizeButton.setText("NormalizeSize");
-        NormalizeButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NormalizeButtonActionPerformed(evt);
-            }
-        });
-        NormalizeMenu.add(NormalizeButton);
-
-        NormalizePosition.setText("NormalizePosition");
-        NormalizePosition.setToolTipText("Set position to percentage");
-        NormalizePosition.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NormalizePositionActionPerformed(evt);
-            }
-        });
-        NormalizeMenu.add(NormalizePosition);
-
-        Normalize.setText("Normalize");
-        Normalize.setToolTipText("Set both size and position to percentange");
-        Normalize.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NormalizeActionPerformed(evt);
-            }
-        });
-        NormalizeMenu.add(Normalize);
-
-        popUp.add(NormalizeMenu);
-
-        HideButton.setText("Hide");
-        HideButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                HideButtonActionPerformed(evt);
-            }
-        });
-        popUp.add(HideButton);
-
-        jMenuItem1.setText("fill");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        popUp.add(jMenuItem1);
-
         setLayout(new java.awt.BorderLayout());
     }// </editor-fold>//GEN-END:initComponents
 
-    private void HideButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HideButtonActionPerformed
-        this.manager.getElementEditor().setVisibileSelected(false);
-        this.selecting=false; //clear the screen from selection
-    }//GEN-LAST:event_HideButtonActionPerformed
-
-    private void DeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteButtonActionPerformed
-       this.manager.removeSelected();
-       this.selecting=false;
-    }//GEN-LAST:event_DeleteButtonActionPerformed
-
-    private void NormalizeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NormalizeButtonActionPerformed
-        this.manager.getElementEditor().normalizeSize();
-    }//GEN-LAST:event_NormalizeButtonActionPerformed
-
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        this.manager.getElementEditor().fill();
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
-    private void NormalizePositionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NormalizePositionActionPerformed
-        this.manager.getElementEditor().normalizePosition();
-    }//GEN-LAST:event_NormalizePositionActionPerformed
-
-    private void NormalizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NormalizeActionPerformed
-         this.manager.getElementEditor().normalize();
-    }//GEN-LAST:event_NormalizeActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem DeleteButton;
-    private javax.swing.JMenuItem HideButton;
-    private javax.swing.JMenuItem Normalize;
-    private javax.swing.JMenuItem NormalizeButton;
-    private javax.swing.JMenu NormalizeMenu;
-    private javax.swing.JMenuItem NormalizePosition;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JPopupMenu popUp;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -302,18 +229,22 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
     
     public void newGui(GUIEditor toChange) {
        this.manager = toChange;
-       this.setClickListener( new GuiSelectionListener(toChange,popUp,this));
+       this.setClickListener( new GuiSelectionListener(toChange,this));
        this.selecting=false;
     }
 
     @Override
     public void update(Observable o, Object arg) {
-       
-        Action act = (Action) arg;
-        if ((act.getType() == Action.SEL || act.getType() == Action.UPDATE) && !(act.getGUIElement() instanceof GLayer)) {
-            this.selected.setBounds(act.getGUIElement().getBounds());
-            this.selecting = true;
-        } else if (act.getType() == Action.NEW) {
+        if(arg instanceof ElementEvent){
+            ElementEvent event = (ElementEvent) arg;
+            if ((event instanceof AddElementEvent || event instanceof UpdateElementEvent) 
+                    && !(event.getElement() instanceof GLayer)) {
+                this.selected.setBounds(event.getElement().getBounds());
+                this.selecting = true;
+            }else if( event instanceof RemoveElementEvent){
+                this.selecting = false;
+            }
+        }else if (arg instanceof ReloadGuiEvent) {
             this.newGui(((GUIEditor) o));
             o.addObserver(this.previous);
         } else {
@@ -385,4 +316,36 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
         
         
     } 
+    
+    private class TransferActionListener implements ActionListener,
+                                              PropertyChangeListener {
+    private JComponent focusOwner = null;
+
+    public TransferActionListener() {
+        KeyboardFocusManager manager = KeyboardFocusManager.
+           getCurrentKeyboardFocusManager();
+        manager.addPropertyChangeListener("permanentFocusOwner", this);
+    }
+
+    public void propertyChange(PropertyChangeEvent e) {
+        Object o = e.getNewValue();
+        if (o instanceof JComponent) {
+            focusOwner = (JComponent)o;
+        } else {
+            focusOwner = null;
+        }
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        if (focusOwner == null)
+            return;
+        String action = (String)e.getActionCommand();
+        javax.swing.Action a = focusOwner.getActionMap().get(action);
+        if (a != null) {
+            a.actionPerformed(new ActionEvent(focusOwner,
+                                              ActionEvent.ACTION_PERFORMED,
+                                              null));
+        }
+    }
+}
 }

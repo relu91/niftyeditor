@@ -4,20 +4,17 @@
  */
 package jada.ngeditor.model;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Observable;
 
 /**
  * Main model class where you can retrieve all the current {@code GUI}.
  * @author cris
  */
-public class GuiEditorModel  {
-    public static final String PROP_CURRENT_GUI = "PROP_CURRENT_GUI";
+public class GuiEditorModel extends Observable {
     private ArrayList<GUI> guis = new ArrayList<GUI>();
-    private final transient PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
     private static GuiEditorModel instance;
     private GUI current;
     public static GuiEditorModel getInstance(){
@@ -59,21 +56,6 @@ public class GuiEditorModel  {
      * @param current the current GUI to set
      */
     public void setCurentGUI(GUI current) {
-        jada.ngeditor.model.GUI oldCurrent = current;
-        if(!guis.contains(current)){
-            this.addGUI(current);
-        }
         this.current = current;
-        propertyChangeSupport.firePropertyChange(PROP_CURRENT_GUI, oldCurrent, current);
-    }
-    
-     public void addPropertyChangeListener( PropertyChangeListener listener )
-    {
-        this. propertyChangeSupport.addPropertyChangeListener( listener );
-    }
-
-    public void removePropertyChangeListener( PropertyChangeListener listener )
-    {
-        this. propertyChangeSupport.removePropertyChangeListener( listener );
     }
 }

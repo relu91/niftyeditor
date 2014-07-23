@@ -19,6 +19,8 @@ import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.screen.Screen;
 import jada.ngeditor.model.visitor.Visitor;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -78,14 +80,10 @@ public class GScreen extends GElement{
          }
     }
 
-    @Override
-    public GElement create(String id) {
-        
-        GScreen te =new  GScreen(id);
-       
-        return te;
+    public List<GLayer> getLayers(){
+        return (List) this.getElements();
     }
-
+    
     /**
      *
      * @param visitor
