@@ -15,23 +15,14 @@
 package jada.ngeditor.guiviews.DND;
 
 import jada.ngeditor.controller.GUIEditor;
-import jada.ngeditor.guiviews.palettecomponents.NWidget;
-import jada.ngeditor.listeners.events.ReloadGuiEvent;
 import jada.ngeditor.model.elements.GElement;
-import jada.ngeditor.model.elements.GLayer;
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.event.InputEvent;
 import java.io.IOException;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
-import javax.swing.JTree;
 import javax.swing.TransferHandler;
 
 /**

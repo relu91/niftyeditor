@@ -81,10 +81,13 @@ public class GUIEditor extends Observable{
     public void createNewGui(Nifty nifty) throws ParserConfigurationException, JAXBException, ClassNotFoundException, IOException, NoProductException{
         gui= GUIFactory.getInstance().createGUI(nifty);
         GScreen screen = (GScreen) GUIFactory.getInstance().newGElement(GScreen.class);
+        GLayer layer1 = (GLayer) GUIFactory.getInstance().newGElement(GLayer.class);
+        screen.addChild(layer1, true);
         getGui().addScreen(screen);
         this.currentS = screen;
-        this.currentL = null;
+        this.currentL = layer1;
         this.currentlayers.clear();
+        this.currentlayers.add(layer1);
         GUseControls standardControls = new GUseControls();
         GUseStyle standardStyle = new GUseStyle();
         standardControls.setFilename("nifty-default-controls.xml");

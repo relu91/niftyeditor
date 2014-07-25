@@ -140,6 +140,7 @@ public class TreeGuiView extends javax.swing.JPanel implements Observer {
             } else {
                 DefaultMutableTreeNode rootnode = (DefaultMutableTreeNode) jTree2.getModel().getRoot();
                 rootnode.add(node);
+                this.addRecursive(act.getElement(), node);
             }
             for (int row = 0; row < jTree2.getRowCount(); row++) {
                 jTree2.expandRow(row);

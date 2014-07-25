@@ -87,8 +87,8 @@ public class PaletteDropTarget extends DropTarget implements Observer {
             JOptionPane.showMessageDialog(dtde.getDropTargetContext().getComponent(), ex.getMessage());
             obj.getDragDropSupport().revertDrag();
         } catch (UnsupportedFlavorException ex) {
-             obj.getDragDropSupport().revertDrag();
             Logger.getLogger(PaletteDropTarget.class.getName()).log(Level.SEVERE, null, ex);
+            obj.getDragDropSupport().revertDrag();
         } catch (IOException ex) {
              Logger.getLogger(PaletteDropTarget.class.getName()).log(Level.SEVERE, null, ex);
              obj.getDragDropSupport().revertDrag();

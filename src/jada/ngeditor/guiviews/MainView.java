@@ -111,7 +111,6 @@ public class MainView extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         changeResMenu = new javax.swing.JMenuItem();
         assetFolderMenu = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
         refresh = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         CheckPane = new javax.swing.JCheckBoxMenuItem();
@@ -224,15 +223,6 @@ public class MainView extends javax.swing.JFrame {
             }
         });
         jMenu2.add(assetFolderMenu);
-
-        jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem4.setText("Undo");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem4);
 
         refresh.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
         refresh.setText("Refresh");
@@ -427,10 +417,6 @@ public class MainView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_changeResMenuActionPerformed
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-      jada.ngeditor.UndoManager.instance.undo();
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem CheckPane;
@@ -445,7 +431,6 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

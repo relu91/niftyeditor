@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package jada.ngeditor.commands;
+package jada.ngeditor.controller.commands;
 
 import de.lessvoid.nifty.Nifty;
 import jada.ngeditor.controller.GUIEditor;
@@ -30,9 +30,5 @@ public class NewGuiCommand implements Command{
          GuiEditorModel.getInstance().addGUI(editor.getGui());
     }
 
-    @Override
-    public UndoableEdit getEdit() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
     
 }

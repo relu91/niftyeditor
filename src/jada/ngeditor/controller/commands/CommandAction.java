@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package jada.ngeditor.commands;
+package jada.ngeditor.controller.commands;
 
 import com.google.common.annotations.Beta;
 import com.sun.istack.internal.Nullable;
@@ -18,11 +18,8 @@ import javax.swing.undo.UndoManager;
  *
  * @author cris
  */
-public abstract class CommandAction extends AbstractAction{
+public class CommandAction extends AbstractAction{
     private final Command com;
-    @Beta
-    @Nullable
-    private UndoManager manager; 
     
     public CommandAction(String name,Command com){
         super(name);
@@ -32,10 +29,7 @@ public abstract class CommandAction extends AbstractAction{
     @Override
     public void actionPerformed(ActionEvent e) {
        try{
-       this.com.perform();
-       if(manager != null){
-           manager.addEdit(this.com.getEdit());
-       }
+            this.com.perform();
        }catch(Exception ex){
            JOptionPane.showMessageDialog(null,"Command "+e.getActionCommand()+" failed with this message:"+ex.getMessage(),"Nifty-Editor error",JOptionPane.ERROR_MESSAGE);
        }

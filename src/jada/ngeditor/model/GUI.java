@@ -17,6 +17,7 @@ package jada.ngeditor.model;
 import com.sun.istack.internal.Nullable;
 import de.lessvoid.nifty.EndNotify;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.elements.Action;
 import de.lessvoid.nifty.tools.resourceloader.FileSystemLocation;
 import jada.ngeditor.listeners.events.AddElementEvent;
 import jada.ngeditor.listeners.events.RemoveElementEvent;
@@ -44,9 +45,7 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  * @author cris
  */
-
-
-@XmlRootElement(namespace="",name = "nifty")
+@XmlRootElement(namespace = "", name = "nifty")
 public class GUI extends Observable {
 
     private static int GUIID = 0;
@@ -55,7 +54,8 @@ public class GUI extends Observable {
     @XmlTransient
     private File assetsFile;
     @XmlAttribute
-    private final String xmlns = "http://nifty-gui.lessvoid.com/nifty-gui"; 
+    private final String xmlns = "http://nifty-gui.lessvoid.com/nifty-gui";
+
     public Nifty getNifty() {
         return manager;
     }
@@ -68,7 +68,6 @@ public class GUI extends Observable {
     private GScreen currentS;
     private final Selection selection;
     private GLayer currentL;
-   
 
     public GUI() {
         manager = null;
@@ -89,10 +88,21 @@ public class GUI extends Observable {
         this.selection = new Selection();
     }
 
-    public void addScreen(GScreen screen) {
+    public void addScreen(final GScreen screen) {
         this.screens.add(screen);
         screen.createNiftyElement(manager);
         this.goTo(screen);
+        //Needed to add other children after nifty has changed the screen.
+        if (!screen.getElements().isEmpty()) {
+            manager.scheduleEndOfFrameElementAction(new Action() {
+                @Override
+                public void perform() {
+                    for (GElement child : screen.getElements()) {
+                        recorsiveCreateNiftyElement(child);
+                    }
+                }
+            }, null);
+        }
     }
 
     public LinkedList<GScreen> getScreens() {
@@ -129,14 +139,15 @@ public class GUI extends Observable {
             throw e;
         }
     }
-    
-    private void recorsiveCreateNiftyElement(GElement element){
+
+    private void recorsiveCreateNiftyElement(GElement element) {
         element.createNiftyElement(manager);
-        for(GElement child : element.getElements()){
+        for (GElement child : element.getElements()) {
             this.recorsiveCreateNiftyElement(child);
         }
     }
-    public void move(Point2D to, GElement toEle, GElement from,EndNotify callback) {
+
+    public void move(Point2D to, GElement toEle, GElement from, EndNotify callback) {
         if (!toEle.equals(from)) {
             de.lessvoid.nifty.elements.Element nTo = toEle.getDropContext();
             if (toEle.getAttribute("childLayout").equals("absolute")) {
@@ -155,7 +166,7 @@ public class GUI extends Observable {
             this.notifyObservers(new RemoveElementEvent(from));
             this.setChanged();
             this.notifyObservers(new AddElementEvent(from));
-            
+
         }
     }
 
@@ -217,13 +228,13 @@ public class GUI extends Observable {
     public String toString() {
         return "GUI: " + this.GUIID;
     }
-    
-    public int getGUIid(){
+
+    public int getGUIid() {
         return this.GUIID;
     }
-    
+
     public GLayer getTopLayer() {
-        int last = this.currentS.getLayers().size() -1;
+        int last = this.currentS.getLayers().size() - 1;
         return this.currentS.getLayers().get(last);
     }
 
@@ -234,35 +245,38 @@ public class GUI extends Observable {
     public void accept(Visitor visit) {
         visit.visit(this);
     }
+
     /**
-     * Set asset folder for this gui . All the resources of this gui should be inside
-     * this particular folder.
-     * @param f 
+     * Set asset folder for this gui . All the resources of this gui should be
+     * inside this particular folder.
+     *
+     * @param f
      */
-    public void setAssetFolder(File f){
+    public void setAssetFolder(File f) {
         //remove previous assets
         manager.getResourceLoader().removeResourceLocation(assets);
         assets = new FileSystemLocation(f);
         this.assetsFile = f;
         manager.getResourceLoader().addResourceLocation(assets);
     }
+
     @XmlTransient
-    public File getAssetFolder(){
+    public File getAssetFolder() {
         return assetsFile;
     }
-    
-    public void addUseControls(GUseControls controls){
+
+    public void addUseControls(GUseControls controls) {
         controls.createInNifty(manager);
         this.useControls.add(controls);
     }
-    
-    public void addUseStyles(GUseStyle styles){
+
+    public void addUseStyles(GUseStyle styles) {
         styles.createInNifty(manager);
         this.useStyles.add(styles);
     }
-    
+
     /**
-     * 
+     *
      * @return the selection
      */
     public Selection getSelection() {
@@ -283,5 +297,4 @@ public class GUI extends Observable {
     public void setCurrentLayer(GLayer currentL) {
         this.currentL = currentL;
     }
-    
 }
