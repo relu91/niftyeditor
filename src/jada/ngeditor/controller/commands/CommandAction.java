@@ -4,13 +4,9 @@
  */
 package jada.ngeditor.controller.commands;
 
-import com.google.common.annotations.Beta;
-import com.sun.istack.internal.Nullable;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import javax.swing.undo.UndoManager;
 
 
 

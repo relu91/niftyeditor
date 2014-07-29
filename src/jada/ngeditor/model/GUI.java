@@ -14,7 +14,7 @@
  */
 package jada.ngeditor.model;
 
-import com.sun.istack.internal.Nullable;
+
 import de.lessvoid.nifty.EndNotify;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.elements.Action;
@@ -286,7 +286,6 @@ public class GUI extends Observable {
     /**
      * @return the currentLayer
      */
-    @Nullable
     public GLayer getCurrentLayer() {
         return currentL;
     }

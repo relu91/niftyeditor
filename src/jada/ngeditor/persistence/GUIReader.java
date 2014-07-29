@@ -80,7 +80,7 @@ public class GUIReader {
             }
         }
         NodeList useControls = document.getElementsByTagName("useControls");
-         for (int i = 0; i < screens.getLength(); i++) {
+         for (int i = 0; i < useControls.getLength(); i++) {
              if (useControls.item(i).getNodeType() == Node.ELEMENT_NODE){
                  GUseControls controls = new GUseControls();
                  Element contEle = (Element) useControls.item(i);
@@ -89,7 +89,7 @@ public class GUIReader {
              }
          }
          NodeList useStyles = document.getElementsByTagName("useStyles");
-          for (int i = 0; i < screens.getLength(); i++) {
+          for (int i = 0; i < useStyles.getLength(); i++) {
              if (useStyles.item(i).getNodeType() == Node.ELEMENT_NODE){
                  GUseStyle styles = new GUseStyle();
                  Element styleEle = (Element) useStyles.item(i);
