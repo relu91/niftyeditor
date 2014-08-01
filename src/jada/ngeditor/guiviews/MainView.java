@@ -17,6 +17,9 @@ package jada.ngeditor.guiviews;
 
 
 import jada.ngeditor.controller.GUIEditor;
+import jada.ngeditor.controller.MainCrontroller;
+import jada.ngeditor.controller.commands.RedoCommand;
+import jada.ngeditor.controller.commands.UndoCommand;
 import jada.ngeditor.guiviews.DND.PaletteDropTarget;
 import jada.ngeditor.guiviews.DND.TrasferHandling;
 import jada.ngeditor.listeners.ClosingListener;
@@ -52,7 +55,7 @@ public class MainView extends javax.swing.JFrame {
      * Creates new form MainView
      */
     public MainView() {
-        this.editor = new GUIEditor();
+        this.editor = MainCrontroller.getInstance().getGuiEditor();
         IOmanager = new JFileChooser();
         XmlFileFilter filter = new XmlFileFilter();
         IOmanager.setFileFilter(filter);
@@ -95,6 +98,7 @@ public class MainView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuItem4 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jSplitPane1 = new javax.swing.JSplitPane();
         proprietesView2 = new jada.ngeditor.guiviews.ProprietesView();
@@ -109,6 +113,9 @@ public class MainView extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
         changeResMenu = new javax.swing.JMenuItem();
         assetFolderMenu = new javax.swing.JMenuItem();
         refresh = new javax.swing.JMenuItem();
@@ -116,6 +123,8 @@ public class MainView extends javax.swing.JFrame {
         CheckPane = new javax.swing.JCheckBoxMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
+
+        jMenuItem4.setText("jMenuItem4");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Nifty-Editor v. 0.5.9");
@@ -205,6 +214,17 @@ public class MainView extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
+
+        jMenuItem5.setAction(MainCrontroller.getInstance().createAction("Undo", UndoCommand.class));
+        jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem5.setText("Undo");
+        jMenu2.add(jMenuItem5);
+
+        jMenuItem7.setAction(MainCrontroller.getInstance().createAction("Redo", RedoCommand.class));
+        jMenuItem7.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem7.setText("Redo");
+        jMenu2.add(jMenuItem7);
+        jMenu2.add(jSeparator1);
 
         changeResMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.ALT_MASK));
         changeResMenu.setText("Change Resolution");
@@ -431,9 +451,13 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private jada.ngeditor.guiviews.PaletteView paletteView2;

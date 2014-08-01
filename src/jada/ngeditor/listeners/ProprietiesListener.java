@@ -16,6 +16,8 @@ package jada.ngeditor.listeners;
 
 
 import jada.ngeditor.controller.ElementEditor;
+import jada.ngeditor.controller.MainCrontroller;
+import jada.ngeditor.controller.commands.EditAttributeCommand;
 import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -37,6 +39,7 @@ public class ProprietiesListener implements TableModelListener{
     public void tableChanged(TableModelEvent e) {
         
         if (e.getType() == TableModelEvent.UPDATE) {
+            EditAttributeCommand command = MainCrontroller.getInstance().getCommand(EditAttributeCommand.class);
             TableModel mod = (TableModel) e.getSource();
             String proName = (String) mod.getValueAt(e.getLastRow(), 0);
             String proVal = (String) mod.getValueAt(e.getLastRow(), 1);
@@ -45,7 +48,9 @@ public class ProprietiesListener implements TableModelListener{
                 if (proVal == null || proVal.isEmpty()) {
                     editor.removeAttribute(proName);
                 } else {
-                    editor.setAttribute(proName, proVal);
+                   command.setAttribute(proName);
+                   command.setValue(proVal);
+                   MainCrontroller.getInstance().excuteCommand(command);
                 }
                 }catch(Exception ex){
                     ex.printStackTrace();

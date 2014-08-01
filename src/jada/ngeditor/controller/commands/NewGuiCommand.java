@@ -4,6 +4,7 @@
  */
 package jada.ngeditor.controller.commands;
 
+import jada.ngeditor.controller.Command;
 import de.lessvoid.nifty.Nifty;
 import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.model.GuiEditorModel;
@@ -30,5 +31,14 @@ public class NewGuiCommand implements Command{
          GuiEditorModel.getInstance().addGUI(editor.getGui());
     }
 
+    @Override
+    public boolean isActive() {
+       return true;
+    }
+    
+     @Override
+    public String getName() {
+        return "New Gui";
+    }
     
 }

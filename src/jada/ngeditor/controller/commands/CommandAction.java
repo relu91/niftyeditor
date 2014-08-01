@@ -4,6 +4,7 @@
  */
 package jada.ngeditor.controller.commands;
 
+import jada.ngeditor.controller.Command;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
@@ -27,8 +28,9 @@ public class CommandAction extends AbstractAction{
        try{
             this.com.perform();
        }catch(Exception ex){
+           ex.printStackTrace();
            JOptionPane.showMessageDialog(null,"Command "+e.getActionCommand()+" failed with this message:"+ex.getMessage(),"Nifty-Editor error",JOptionPane.ERROR_MESSAGE);
        }
     }
-    
+  
 }

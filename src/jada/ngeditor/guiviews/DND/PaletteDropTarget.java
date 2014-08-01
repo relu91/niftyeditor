@@ -15,6 +15,8 @@
 package jada.ngeditor.guiviews.DND;
 
 import jada.ngeditor.controller.GUIEditor;
+import jada.ngeditor.controller.MainCrontroller;
+import jada.ngeditor.controller.commands.AddElementCommand;
 import jada.ngeditor.guiviews.J2DNiftyView;
 import jada.ngeditor.listeners.events.ReloadGuiEvent;
 import jada.ngeditor.model.exception.IllegalDropException;
@@ -63,7 +65,10 @@ public class PaletteDropTarget extends DropTarget implements Observer {
           if(dtde.getDropAction() == DnDConstants.ACTION_COPY){
             dtde.acceptDrop(DnDConstants.ACTION_COPY);
             GElement res  =  (GElement) dtde.getTransferable().getTransferData(WidgetData.FLAVOR);
-            obj.addElement(res,dtde.getLocation());
+            AddElementCommand command = MainCrontroller.getInstance().getCommand(AddElementCommand.class);
+                  command.setChild(res);
+                  command.setPoint(dtde.getLocation());
+                 MainCrontroller.getInstance().excuteCommand(command);
             dtde.dropComplete(true);
           } 
           else if(dtde.getDropAction() == DnDConstants.ACTION_MOVE){
@@ -78,7 +83,11 @@ public class PaletteDropTarget extends DropTarget implements Observer {
                dtde.dropComplete(true);
                 }else{
                      GElement res  =  (GElement) dtde.getTransferable().getTransferData(WidgetData.FLAVOR);
-                    obj.addElement(res,dtde.getLocation());
+                   AddElementCommand command = MainCrontroller.getInstance().getCommand(AddElementCommand.class);
+                  command.setChild(res);
+                  command.setPoint(dtde.getLocation());
+                    MainCrontroller.getInstance().executeAsynCommand(command);
+                    dtde.dropComplete(true);
                     dtde.dropComplete(true);
                 }
                
@@ -93,6 +102,9 @@ public class PaletteDropTarget extends DropTarget implements Observer {
              Logger.getLogger(PaletteDropTarget.class.getName()).log(Level.SEVERE, null, ex);
              obj.getDragDropSupport().revertDrag();
            
+        }catch (Exception ex){
+             JOptionPane.showMessageDialog(dtde.getDropTargetContext().getComponent(), ex.getMessage());
+             obj.getDragDropSupport().revertDrag();
         }   
         } else {
             dtde.rejectDrop();

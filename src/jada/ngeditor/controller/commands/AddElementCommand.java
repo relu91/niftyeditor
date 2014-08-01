@@ -4,6 +4,7 @@
  */
 package jada.ngeditor.controller.commands;
 
+import jada.ngeditor.controller.Command;
 import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.model.elements.GElement;
 import java.awt.geom.Point2D;
@@ -11,7 +12,6 @@ import javax.swing.undo.AbstractUndoableEdit;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
-import javax.swing.undo.UndoableEdit;
 
 /**
  *
@@ -46,7 +46,7 @@ public class AddElementCommand extends AbstractUndoableEdit implements Command{
             throw new IllegalStateException("No child or point to add");
         }
          this.editor.addElement(child, point);
-         this.manager.addEdit(this);
+         
     }
 
     /**
@@ -63,6 +63,18 @@ public class AddElementCommand extends AbstractUndoableEdit implements Command{
         this.point = point;
     }
 
+    @Override
+    public boolean isActive() {
+        return !(child == null || point == null);
+    }
+
+    @Override
+    public String getName() {
+        return "Add Element";
+    }
+
+    
+    
     
     
     
