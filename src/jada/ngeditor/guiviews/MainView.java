@@ -300,6 +300,7 @@ public class MainView extends javax.swing.JFrame {
                editor.addObserver(treeGuiView1);
                editor.addObserver(proprietesView2);
                editor.createNewGui(cont.getNifty()); 
+               cont.newGui(editor.getGui());
            }
         } catch (NoProductException ex) {
             Logger.getLogger(MainView.class.getName()).log(Level.SEVERE, null, ex);
@@ -384,6 +385,7 @@ public class MainView extends javax.swing.JFrame {
                  JOptionPane.showMessageDialog(this, "Some elements cannot be handled: "+errors);
             }
             jTabbedPane2.setSelectedIndex(0);
+            this.cont.newGui(editor.getGui());
         } catch (ParserConfigurationException ex) {
            JOptionPane.showMessageDialog(this, " Errore nel parsing del file ");
         } catch (IOException ex) {

@@ -15,11 +15,17 @@
 package jada.ngeditor.guiviews.DND;
 
 import jada.ngeditor.controller.GUIEditor;
+import jada.ngeditor.controller.MainCrontroller;
+import jada.ngeditor.controller.commands.AddElementCommand;
+import jada.ngeditor.model.GUI;
+import jada.ngeditor.model.GuiEditorModel;
 import jada.ngeditor.model.elements.GElement;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
@@ -29,16 +35,14 @@ import javax.swing.TransferHandler;
  *
  * @author cris
  */
-public class TreeTrasferHandling extends TransferHandler {
+public class TreeTrasferHandling extends TransferHandler implements Observer {
     
-    private GUIEditor gui;
+    private GUI gui;
     private boolean coping=false;
     private GElement copyTemplate;
 
-    public TreeTrasferHandling(GUIEditor gui) {
-      
-        this.gui = gui;
-      
+    public TreeTrasferHandling() {
+        MainCrontroller.getInstance().getObservable().addObserver(TreeTrasferHandling.this);
     }
     
     
@@ -74,9 +78,9 @@ public class TreeTrasferHandling extends TransferHandler {
     @Override
     public void exportToClipboard(JComponent comp, Clipboard clip, int action) throws IllegalStateException {
         coping = true;
-        copyTemplate = gui.getSelected();
+        copyTemplate = gui.getSelection().getFirst();
         if(action == MOVE){
-            gui.removeElement(gui.getSelected());
+            gui.removeElement(gui.getSelection().getFirst());
         }
         super.exportToClipboard(comp, clip, action);
     }  
@@ -88,15 +92,26 @@ public class TreeTrasferHandling extends TransferHandler {
         try {
             GElement from  =  (GElement) support.getTransferable().getTransferData(WidgetData.FLAVOR);
             GElement cloned = from.clone();
-            
-            this.gui.addElement(cloned,this.gui.getSelected());
-        } catch (UnsupportedFlavorException ex) {
+              AddElementCommand command = MainCrontroller.getInstance().getCommand(AddElementCommand.class);
+              command.setChild(cloned);
+              command.setParent(this.gui.getSelection().getFirst());
+           MainCrontroller.getInstance().excuteCommand(command);
+        }   catch (UnsupportedFlavorException ex) {
             Logger.getLogger(TreeTrasferHandling.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(TreeTrasferHandling.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+                Logger.getLogger(TreeTrasferHandling.class.getName()).log(Level.SEVERE, null, ex);
         }
         }
         return res;
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+       if(o instanceof GuiEditorModel){
+           this.gui = ((GuiEditorModel)o).getCurrent();
+       }
     }
  
     

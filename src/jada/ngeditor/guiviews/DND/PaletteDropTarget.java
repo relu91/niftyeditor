@@ -54,13 +54,14 @@ public class PaletteDropTarget extends DropTarget implements Observer {
         if(dtde.getDropAction() == DnDConstants.ACTION_MOVE 
                 && dtde.getTransferable().isDataFlavorSupported(WidgetData.POINTFLAVOR)){
             comp.moveRect(dtde.getLocation().x, dtde.getLocation().y);
-           this.obj.getDragDropSupport().dragAround(dtde.getLocation().x, dtde.getLocation().y);
+           comp.getDDManager().dragAround(dtde.getLocation().x, dtde.getLocation().y);
         }
         
     }
     @Override
     public void drop(DropTargetDropEvent dtde) {
         if(dtde.isDataFlavorSupported(WidgetData.FLAVOR)){
+           J2DNiftyView comp = (J2DNiftyView) this.getComponent();
          try {
           if(dtde.getDropAction() == DnDConstants.ACTION_COPY){
             dtde.acceptDrop(DnDConstants.ACTION_COPY);
@@ -79,14 +80,14 @@ public class PaletteDropTarget extends DropTarget implements Observer {
                     dtde.getLocation().x= (int) (dtde.getLocation().x - point.getX());
                     dtde.getLocation().y= (int) (dtde.getLocation().y - point.getY());
                     obj.move(dtde.getLocation(), from);
-               obj.getDragDropSupport().endDrag();
+               comp.getDDManager().endDrag();
                dtde.dropComplete(true);
                 }else{
                      GElement res  =  (GElement) dtde.getTransferable().getTransferData(WidgetData.FLAVOR);
                    AddElementCommand command = MainCrontroller.getInstance().getCommand(AddElementCommand.class);
                   command.setChild(res);
                   command.setPoint(dtde.getLocation());
-                    MainCrontroller.getInstance().executeAsynCommand(command);
+                    MainCrontroller.getInstance().excuteCommand(command);
                     dtde.dropComplete(true);
                     dtde.dropComplete(true);
                 }
@@ -94,17 +95,17 @@ public class PaletteDropTarget extends DropTarget implements Observer {
           }
         }catch (IllegalDropException ex){
             JOptionPane.showMessageDialog(dtde.getDropTargetContext().getComponent(), ex.getMessage());
-            obj.getDragDropSupport().revertDrag();
+            comp.getDDManager().revertDrag();
         } catch (UnsupportedFlavorException ex) {
             Logger.getLogger(PaletteDropTarget.class.getName()).log(Level.SEVERE, null, ex);
-            obj.getDragDropSupport().revertDrag();
+            comp.getDDManager().revertDrag();
         } catch (IOException ex) {
              Logger.getLogger(PaletteDropTarget.class.getName()).log(Level.SEVERE, null, ex);
-             obj.getDragDropSupport().revertDrag();
+             comp.getDDManager().revertDrag();
            
         }catch (Exception ex){
              JOptionPane.showMessageDialog(dtde.getDropTargetContext().getComponent(), ex.getMessage());
-             obj.getDragDropSupport().revertDrag();
+              comp.getDDManager().revertDrag();
         }   
         } else {
             dtde.rejectDrop();

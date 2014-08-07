@@ -22,11 +22,13 @@ import de.lessvoid.nifty.tools.SizeValue;
 import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.controller.MainCrontroller;
 import jada.ngeditor.controller.commands.EditAttributeCommand;
+import jada.ngeditor.controller.commands.SelectCommand;
 import jada.ngeditor.guiviews.EditingPopUp;
 import jada.ngeditor.guiviews.J2DNiftyView;
 import jada.ngeditor.listeners.events.ReloadGuiEvent;
 import jada.ngeditor.listeners.events.SelectionChanged;
 import jada.ngeditor.listeners.events.UpdateElementEvent;
+import jada.ngeditor.model.GUI;
 import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.elements.GLayer;
 import jada.ngeditor.model.elements.GScreen;
@@ -61,7 +63,7 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
     private final byte DIR_SE=4;
     private final byte NOP=-1;
     private byte curDir;
-    private GUIEditor gui;
+    private GUI gui;
     private Timer hold;
     private MouseEvent toServe;
     private  JPopupMenu p;
@@ -69,18 +71,21 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
     private Rectangle selected;
     private boolean selecting;
     private boolean dragging;
-    private J2DNiftyView v;
+    private J2DNiftyView niftyView;
     
     
 
     
 
-    public GuiSelectionListener(GUIEditor editor,J2DNiftyView view) {
-        this.gui=editor;
-        this.p= new EditingPopUp(editor);
-        this.v=view;
+    public GuiSelectionListener(GUI gui,J2DNiftyView view) {
+        this.gui=gui;
+        gui.addObserver(this);
+        this.gui.getSelection().addObserver(this);
+        this.p= new EditingPopUp();
+        this.niftyView=view;
         enable =true;
         this.selected=new Rectangle();
+        MainCrontroller.getInstance().getObservable().addObserver(GuiSelectionListener.this);
     }
     
    
@@ -90,13 +95,13 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
                 JPanel c = (JPanel) e.getComponent();
                 TransferHandler handler = c.getTransferHandler();
                 handler.exportAsDrag(c, e, TransferHandler.MOVE);
-                this.gui.getDragDropSupport().startDrag(this.getSelected());
+                this.niftyView.getDDManager().startDrag(this.getSelected());
             }
         }
       
     }
     public GElement getSelected(){
-        return gui.getSelected();
+        return gui.getSelection().getFirst();
     }
      @Override
     public void mousePressed(MouseEvent e) {
@@ -122,11 +127,17 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
            
            }
              if(e.isPopupTrigger()){
-                 this.gui.selectElement(e.getX(), e.getY());
-                this.p.show(e.getComponent(), e.getX(), e.getY()); 
+                try {
+                    SelectCommand command = MainCrontroller.getInstance().getCommand(SelectCommand.class);
+                    command.selectByPoint(e.getX(), e.getY());
+                    MainCrontroller.getInstance().excuteCommand(command); 
+                    this.p.show(e.getComponent(), e.getX(), e.getY());
+                } catch (Exception ex) {
+                    Logger.getLogger(GuiSelectionListener.class.getName()).log(Level.SEVERE, null, ex);
+                }
              }
         if(dragging){
-         GElement sel = this.gui.getSelected();
+         GElement sel = this.getSelected();
          dragging = false;
          if(sel!=null && this.selected!=null){
                 try {
@@ -150,7 +161,9 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
                    // sel.lightRefresh();
                     this.selected.setRect(sel.getBounds());
                     this.enable();
-                    this.gui.selectElement(this.getSelected());
+                    SelectCommand command = MainCrontroller.getInstance().getCommand(SelectCommand.class);
+                command.setElement(this.getSelected());
+                MainCrontroller.getInstance().excuteCommand(command);
                 } catch (Exception ex) {
                     Logger.getLogger(GuiSelectionListener.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -159,8 +172,14 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
         }
      @Override
      public void mouseClicked(MouseEvent e) {
-           this.gui.selectElement(e.getX(), e.getY());
-           e.getComponent().requestFocus();
+        try {
+            SelectCommand command = MainCrontroller.getInstance().getCommand(SelectCommand.class);
+            command.selectByPoint(e.getX(), e.getY());
+           MainCrontroller.getInstance().excuteCommand(command);
+            e.getComponent().requestFocus();
+        } catch (Exception ex) {
+            Logger.getLogger(GuiSelectionListener.class.getName()).log(Level.SEVERE, null, ex);
+        }
      }
 
     @Override
@@ -235,7 +254,7 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
                     to=(int) (e.getX() - this.selected.getMaxX());
                     if((this.selected.width+to)>0){
                     this.selected.width+=to;
-                    this.gui.getSelected().getNiftyElement().setWidth(selected.width);
+                    this.getSelected().getNiftyElement().setWidth(selected.width);
                     //this.gui.getSelected().addAttribute("width",""+selected.width+"px" );
                     }
                     break;
@@ -244,12 +263,12 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
                      if((this.selected.width+to)>0){
                     this.selected.x=e.getX();
                     this.selected.width+=to;
-                     if(this.gui.getSelected().getParent().getAttribute("childLayout").equals("absolute")){
-                        int x = gui.getSelected().getParent().getNiftyElement().getX();
+                     if(this.getSelected().getParent().getAttribute("childLayout").equals("absolute")){
+                        int x = this.getSelected().getParent().getNiftyElement().getX();
                         //this.gui.getSelected().addAttribute("x",""+(e.getX()-x)+"px" );
-                        this.gui.getSelected().getNiftyElement().setConstraintX(SizeValue.px(e.getX()-x));
-                        this.gui.getSelected().getParent().getNiftyElement().layoutElements();
-                          this.gui.getSelected().getNiftyElement().setWidth(selected.width);
+                        this.getSelected().getNiftyElement().setConstraintX(SizeValue.px(e.getX()-x));
+                        this.getSelected().getParent().getNiftyElement().layoutElements();
+                          this.getSelected().getNiftyElement().setWidth(selected.width);
                     }
                    // this.gui.getSelected().addAttribute("width",""+selected.width+"px" );
                    
@@ -261,7 +280,7 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
                      if((this.selected.height+to)>0){
                     this.selected.height+=to;
                     
-                    this.gui.getSelected().getNiftyElement().setHeight(selected.height);
+                    this.getSelected().getNiftyElement().setHeight(selected.height);
                    // this.gui.getSelected().addAttribute("height",""+selected.height+"px" );
                      }
                     break;
@@ -274,12 +293,12 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
                     else
                          this.selected.height+=toy;
                   
-                    this.gui.getSelected().getNiftyElement().setHeight(selected.height);
+                    this.getSelected().getNiftyElement().setHeight(selected.height);
                     //this.gui.getSelected().addAttribute("height",""+selected.height+"px" );
                    
                     this.selected.width+=to;
                    
-                    this.gui.getSelected().getNiftyElement().setWidth(selected.width);
+                    this.getSelected().getNiftyElement().setWidth(selected.width);
                    // this.gui.getSelected().addAttribute("width",""+selected.width+"px" );
                     
                     if(e.isControlDown()){
@@ -297,11 +316,11 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
                     this.selected.y=e.getY();
                     
                    // this.gui.getSelected().addAttribute("height",""+selected.height+"px" );
-                    if(this.gui.getSelected().getParent().getAttribute("childLayout").equals("absolute")){
-                        int y = gui.getSelected().getParent().getNiftyElement().getY();
-                        gui.getSelected().getNiftyElement().setConstraintY(SizeValue.px(e.getY()-y));
-                          this.gui.getSelected().getParent().getNiftyElement().layoutElements();
-                         this.gui.getSelected().getNiftyElement().setHeight(selected.height);
+                    if(this.getSelected().getParent().getAttribute("childLayout").equals("absolute")){
+                        int y = this.getSelected().getParent().getNiftyElement().getY();
+                        this.getSelected().getNiftyElement().setConstraintY(SizeValue.px(e.getY()-y));
+                          this.getSelected().getParent().getNiftyElement().layoutElements();
+                         this.getSelected().getNiftyElement().setHeight(selected.height);
                       //  this.gui.getSelected().addAttribute("y",""+(e.getY()-y)+"px" );
                     }
                     
@@ -312,8 +331,8 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
                  
                 
             }
-       v.displayRect(selected.x, selected.y, selected.height, selected.width);
-        this.gui.getSelected().getNiftyElement().layoutElements();
+       niftyView.displayRect(selected.x, selected.y, selected.height, selected.width);
+        this.getSelected().getNiftyElement().layoutElements();
        
         
         }
@@ -324,19 +343,18 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
         
         if(arg instanceof SelectionChanged){
             SelectionChanged event = (SelectionChanged) arg;
-            if(!(event.getElement() instanceof GLayer)){
+            if(!event.getNewSelection().isEmpty() && !(event.getElement() instanceof GLayer)){
                 this.selected.setBounds( event.getElement().getBounds());
                 this.selecting=true;
-                v.displayRect(this.selected.x, this.selected.y, this.selected.height, this.selected.width);
+                event.getElement().addObserver(this);
+                niftyView.displayRect(this.selected.x, this.selected.y, this.selected.height, this.selected.width);
+            }else{
+                this.selecting = false;
             }
-        }else if(arg instanceof ReloadGuiEvent){
-            this.gui = (((GUIEditor)o));
-            this.selecting=false;
-           
         }else if(arg instanceof UpdateElementEvent){
             UpdateElementEvent event = (UpdateElementEvent) arg;
             this.selected.setBounds(event.getElement().getBounds());
-             v.displayRect(this.selected.x, this.selected.y, this.selected.height, this.selected.width);
+            niftyView.displayRect(this.selected.x, this.selected.y, this.selected.height, this.selected.width);
             this.selecting=true;
         } else{
             this.selecting=false;
@@ -352,7 +370,7 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
     @Override
     public void keyPressed(KeyEvent e) {
         
-        GElement sel = gui.getSelected();
+        GElement sel = this.getSelected();
         String layout = sel.getParent().getAttribute("childLayout");
         if(layout.equals("horizontal")) {
             horizontalBeahvior(sel,e.getKeyCode());
@@ -365,7 +383,8 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
         }else if(sel instanceof GLayer){
             layerBeahvior(sel,e.getKeyCode());
         }
-        this.gui.fireUpdate(sel);
+        //NOTE: why it was here?
+       // this.gui.fireUpdate(sel);
      
     }
 
@@ -399,7 +418,7 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
             sel.addAttribute("x", ""+x);
             sel.lightRefresh();
         }
-        v.displayRect(x, y,sel.getNiftyElement().getHeight(), sel.getNiftyElement().getWidth() );
+        niftyView.displayRect(x, y,sel.getNiftyElement().getHeight(), sel.getNiftyElement().getWidth() );
       this.selected.setRect(sel.getNiftyElement().getX(), sel.getNiftyElement().getY(),sel.getNiftyElement().getWidth(), sel.getNiftyElement().getHeight() );
     }
     
@@ -435,7 +454,7 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
             sel.lightRefresh();
         }
         }
-        v.displayRect(sel.getNiftyElement().getX(), sel.getNiftyElement().getY(),sel.getNiftyElement().getHeight(), sel.getNiftyElement().getWidth() );
+        niftyView.displayRect(sel.getNiftyElement().getX(), sel.getNiftyElement().getY(),sel.getNiftyElement().getHeight(), sel.getNiftyElement().getWidth() );
         this.selected.setRect(sel.getNiftyElement().getX(), sel.getNiftyElement().getY(),sel.getNiftyElement().getWidth(), sel.getNiftyElement().getHeight() );
     }
     
@@ -470,7 +489,7 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
             sel.lightRefresh();
         }
         }
-        v.displayRect(sel.getNiftyElement().getX(), sel.getNiftyElement().getY(),sel.getNiftyElement().getHeight(), sel.getNiftyElement().getWidth() );
+        niftyView.displayRect(sel.getNiftyElement().getX(), sel.getNiftyElement().getY(),sel.getNiftyElement().getHeight(), sel.getNiftyElement().getWidth() );
         this.selected.setRect(sel.getNiftyElement().getX(), sel.getNiftyElement().getY(),sel.getNiftyElement().getWidth(), sel.getNiftyElement().getHeight() );
     }
 

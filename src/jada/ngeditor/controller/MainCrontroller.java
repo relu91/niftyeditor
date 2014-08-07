@@ -44,13 +44,13 @@ public class MainCrontroller {
         this.compoundEdit = new CompoundEdit();
     }
     /**
-     * Get an Observable that fire the events in the 
-     * @see jada.ngeditor.listeners.events
+     * Get an Observable that fire the events when a new current
+     * gui is set. 
      * @return 
      */
     @Beta
     public Observable getObservable(){
-        return this.editor;
+        return this.editor.getModel();
     }
     
     /**

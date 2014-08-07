@@ -22,6 +22,8 @@ public class AddElementCommand extends AbstractUndoableEdit implements Command{
     private GElement child;
     private Point2D point;
     private final UndoManager manager;
+    private GElement parent;
+    private boolean pointMode = false;
     
     public AddElementCommand(GUIEditor editor,UndoManager manager){
         this.editor = editor;
@@ -31,7 +33,11 @@ public class AddElementCommand extends AbstractUndoableEdit implements Command{
     @Override
     public void redo() throws CannotRedoException {
         super.redo();
-        this.editor.addElement(child, point);
+        if(pointMode){
+            this.editor.addElement(child, point);
+        }else{
+            this.editor.addElement(child, parent);
+        }
     }
 
     @Override
@@ -45,8 +51,11 @@ public class AddElementCommand extends AbstractUndoableEdit implements Command{
         if(child == null || point == null){
             throw new IllegalStateException("No child or point to add");
         }
-         this.editor.addElement(child, point);
-         
+        if(pointMode){
+            this.editor.addElement(child, point);
+        }else{
+            this.editor.addElement(child, parent);
+        }
     }
 
     /**
@@ -60,7 +69,13 @@ public class AddElementCommand extends AbstractUndoableEdit implements Command{
      * @param point the point to set
      */
     public void setPoint(Point2D point) {
+        pointMode = true;
         this.point = point;
+    }
+    
+    public void setParent(GElement parent){
+        pointMode= false;
+        this.parent = parent;
     }
 
     @Override

@@ -11,20 +11,14 @@ import java.util.Observable;
 
 /**
  * Main model class where you can retrieve all the current {@code GUI}.
+ * Fire changes when the current gui is changed.
  * @author cris
  */
 public class GuiEditorModel extends Observable {
     private ArrayList<GUI> guis = new ArrayList<GUI>();
-    private static GuiEditorModel instance;
     private GUI current;
-    public static GuiEditorModel getInstance(){
-        if(instance == null) {
-            instance = new GuiEditorModel();
-        }
-        return instance;
-    }
-  
     
+   
     public Collection<GUI> getGUIs(){
         return Collections.unmodifiableCollection(guis);
     }
@@ -44,6 +38,10 @@ public class GuiEditorModel extends Observable {
     public void removeGUI(GUI g){
         this.guis.remove(g);
     }
+    
+    public void removeGUI(int uid){
+        this.removeGUI(this.getGUI(uid));
+    }
 
     /**
      * @return the current gui
@@ -57,5 +55,14 @@ public class GuiEditorModel extends Observable {
      */
     public void setCurentGUI(GUI current) {
         this.current = current;
+        this.setChanged();
+        this.notifyObservers();
+    }
+    /**
+     * 
+     * @param uid the id of GUI to set
+     */
+    public void setCurrentGUI(int uid){
+        this.setCurentGUI(this.getGUI(uid));
     }
 }

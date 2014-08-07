@@ -96,8 +96,7 @@ public abstract class GElement extends Observable implements Cloneable{
         nElement.setIndex(index);
         parent.children.remove(this);
         parent.children.add(index, this);
-        this.setChanged();
-        this.notifyObservers(new UpdateElementEvent(this));
+        fireUpdate();
     }
 
     public void removeFromParent() {
@@ -110,14 +109,12 @@ public abstract class GElement extends Observable implements Cloneable{
     public void removeChild(GElement child){
          this.children.remove(child);
          child.parent = null;
-         this.setChanged();
-         this.notifyObservers(new UpdateElementEvent(this));
+         fireUpdate();
     }
     public void addChild(GElement toAdd, boolean xml) {
         this.children.add(toAdd);
         toAdd.parent = this;
-        this.setChanged();
-        this.notifyObservers(new UpdateElementEvent(this));
+        fireUpdate();
     }
 
     @XmlTransient
@@ -253,8 +250,7 @@ public abstract class GElement extends Observable implements Cloneable{
         nElement.setId(id);
         this.internalRefresh(temp, attcopy);
         this.processRemoved();
-        this.setChanged();
-        this.notifyObservers(new UpdateElementEvent(this));
+        fireUpdate();
     }
     /*
      * used for simple elment attributes
@@ -353,5 +349,11 @@ public abstract class GElement extends Observable implements Cloneable{
             //Should never get here;
             return null;
         }
+    }
+   
+
+    public void fireUpdate() {
+        this.setChanged();
+        this.notifyObservers(new UpdateElementEvent(this));
     }
 }

@@ -28,7 +28,6 @@ public class NewGuiCommand implements Command{
     @Override
     public void perform() throws ParserConfigurationException, JAXBException, ClassNotFoundException, IOException, NoProductException {
          editor.createNewGui(nifty);
-         GuiEditorModel.getInstance().addGUI(editor.getGui());
     }
 
     @Override

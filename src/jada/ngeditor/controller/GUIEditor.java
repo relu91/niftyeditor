@@ -25,6 +25,7 @@ import jada.ngeditor.listeners.events.SelectionChanged;
 import jada.ngeditor.listeners.events.UpdateElementEvent;
 import jada.ngeditor.model.GUI;
 import jada.ngeditor.model.GUIFactory;
+import jada.ngeditor.model.GuiEditorModel;
 import jada.ngeditor.model.Selection;
 import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.elements.GLayer;
@@ -43,6 +44,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBException;
@@ -57,7 +59,7 @@ import org.xml.sax.SAXException;
  * @author Cris
  */
 
-public class GUIEditor extends Observable{
+public class GUIEditor extends Observable implements Observer{
     private  GUI gui;
     private  GElement selected;
     private LinkedList<GLayer> currentlayers;
@@ -66,14 +68,20 @@ public class GUIEditor extends Observable{
     private GUIWriter writer ;
     private final ElementEditor eEditor;
     private NiftyDDManager dragDropManager;
+    /**
+     * The model of the editor.
+     */
+    private GuiEditorModel model;
     
     
     public GUIEditor(){
         currentlayers= new LinkedList<GLayer>();
         eEditor=new ElementEditor(this);
+        this.model = new GuiEditorModel();
+        this.model.addObserver(this);
     }
     /**
-     * Create a new empty gui with one screen
+     * Create a new empty gui with one screen and set as the current gui.
      * @param nifty a valid Nifty instace @see Nifty
      * @throws ParserConfigurationException if controller failed to create
      * a valid document instance
@@ -94,6 +102,7 @@ public class GUIEditor extends Observable{
         standardStyle.setFilename("nifty-default-styles.xml");
         this.gui.addUseControls(standardControls);
         this.gui.addUseStyles(standardStyle);
+        this.model.setCurentGUI(gui);
         this.setChanged();
         this.notifyObservers(new ReloadGuiEvent(gui));
         this.clearChanged();
@@ -140,6 +149,7 @@ public class GUIEditor extends Observable{
        currentS=gui.gettopScreen();
        currentlayers.addAll(gui.getLayers());
        dragDropManager = new NiftyDDManager(nifty);
+       this.model.setCurentGUI(gui);
        return res;
             
     }
@@ -178,6 +188,7 @@ public class GUIEditor extends Observable{
        currentS=gui.gettopScreen();
        currentlayers.addAll(gui.getLayers());
        dragDropManager = new NiftyDDManager(nifty);
+       this.model.setCurentGUI(gui);
        return res;
             
     }
@@ -522,6 +533,7 @@ public class GUIEditor extends Observable{
      * @param sel updated gui element
      */
     public void fireUpdate(GElement sel){
+        sel.fireUpdate();
         this.setChanged();
         this.notifyObservers(new UpdateElementEvent(sel));
         this.clearChanged();
@@ -537,6 +549,11 @@ public class GUIEditor extends Observable{
     @Override
     public String toString(){
         return this.gui.toString();
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+       this.gui = this.model.getCurrent();
     }
     
     private class Reload implements de.lessvoid.nifty.elements.Action{
@@ -562,5 +579,9 @@ public class GUIEditor extends Observable{
             }
         }
         
+    }
+
+    public GuiEditorModel getModel() {
+        return model;
     }
 }

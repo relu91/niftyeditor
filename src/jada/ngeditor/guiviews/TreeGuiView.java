@@ -61,9 +61,9 @@ public class TreeGuiView extends javax.swing.JPanel implements Observer {
     }
 
     public void initView(GUIEditor gui) {
-        TreeTrasferHandling trasferHandling = new TreeTrasferHandling(gui);
+        TreeTrasferHandling trasferHandling = new TreeTrasferHandling();
         this.jTree2.setTransferHandler(trasferHandling);
-        this.jTree2.addMouseListener(new PopUpShowListener(new EditingPopUp(gui)));
+        this.jTree2.addMouseListener(new PopUpShowListener(new EditingPopUp()));
         this.jTree2.addTreeSelectionListener(new ElementSelectionListener(gui));
         jTree2.setCellRenderer(new NiftyTreeRender());
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) this.jTree2.getModel().getRoot();

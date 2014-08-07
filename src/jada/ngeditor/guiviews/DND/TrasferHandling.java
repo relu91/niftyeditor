@@ -14,9 +14,11 @@
  */
 package jada.ngeditor.guiviews.DND;
 
-import jada.ngeditor.controller.GUIEditor;
+import jada.ngeditor.controller.MainCrontroller;
+import jada.ngeditor.controller.commands.AddElementCommand;
 import jada.ngeditor.guiviews.palettecomponents.NWidget;
-import jada.ngeditor.listeners.events.ReloadGuiEvent;
+import jada.ngeditor.model.GUI;
+import jada.ngeditor.model.GuiEditorModel;
 import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.elements.GLayer;
 import java.awt.Point;
@@ -39,9 +41,14 @@ import javax.swing.TransferHandler;
  */
 public class TrasferHandling extends TransferHandler implements Observer{
     
-    private GUIEditor gui;
+    private GUI gui;
     private boolean coping=false;
     private GElement copyTemplate;
+
+    public TrasferHandling() {
+        super();
+        MainCrontroller.getInstance().getObservable().addObserver(this);
+    }
     
     @Override
     public  Transferable createTransferable(JComponent c) {
@@ -50,10 +57,10 @@ public class TrasferHandling extends TransferHandler implements Observer{
             return comp.getData();
         } else{
              if(!coping){
-             Rectangle rec = gui.getSelected().getBounds();
-             int a = (int)rec.getCenterX() - gui.getSelected().getNiftyElement().getX();
-             int b = (int)rec.getCenterY() - gui.getSelected().getNiftyElement().getY();
-             return new WidgetData(gui.getSelected(),a,b);
+             Rectangle rec = gui.getSelection().getFirst().getBounds();
+             int a = (int)rec.getCenterX() - gui.getSelection().getFirst().getNiftyElement().getX();
+             int b = (int)rec.getCenterY() - gui.getSelection().getFirst().getNiftyElement().getY();
+             return new WidgetData(gui.getSelection().getFirst(),a,b);
              }
              else{
                 if(copyTemplate!=null){
@@ -110,8 +117,8 @@ public class TrasferHandling extends TransferHandler implements Observer{
 
     @Override
     public void update(Observable o, Object arg) {
-        if(arg instanceof ReloadGuiEvent){
-            this.gui = (GUIEditor)o;
+        if(o instanceof GuiEditorModel){
+            this.gui = ((GuiEditorModel)o).getCurrent();
         }
         
     }
@@ -119,9 +126,9 @@ public class TrasferHandling extends TransferHandler implements Observer{
     @Override
     public void exportToClipboard(JComponent comp, Clipboard clip, int action) throws IllegalStateException {
         coping = true;
-        copyTemplate = gui.getSelected();
+        copyTemplate = gui.getSelection().getFirst();
         if(action == MOVE){
-            gui.removeElement(gui.getSelected());
+            gui.removeElement(gui.getSelection().getFirst());
         }
         super.exportToClipboard(comp, clip, action);
     }  
@@ -134,11 +141,16 @@ public class TrasferHandling extends TransferHandler implements Observer{
             GElement from  =  (GElement) support.getTransferable().getTransferData(WidgetData.FLAVOR);
             GElement cloned = from.clone();
             Point mousePosition = support.getComponent().getMousePosition();
-            this.gui.addElement(cloned,mousePosition);
+             AddElementCommand command = MainCrontroller.getInstance().getCommand(AddElementCommand.class);
+                  command.setChild(cloned);
+                  command.setPoint(mousePosition);
+           MainCrontroller.getInstance().excuteCommand(command);
         } catch (UnsupportedFlavorException ex) {
             Logger.getLogger(TrasferHandling.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(TrasferHandling.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (Exception ex) {
+           Logger.getLogger(TrasferHandling.class.getName()).log(Level.SEVERE, null, ex);
         }
         }
         return res;

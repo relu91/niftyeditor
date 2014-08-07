@@ -5,12 +5,17 @@
 package jada.ngeditor.guiviews;
 
 import jada.ngeditor.controller.GUIEditor;
+import jada.ngeditor.controller.MainCrontroller;
+import jada.ngeditor.model.GUI;
+import jada.ngeditor.model.GuiEditorModel;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
@@ -25,12 +30,12 @@ import javax.swing.TransferHandler;
  */
 //TODO: make this class context aware like the popup menu of netbeans(i.e. providing
 // an action map for an element.
-public class EditingPopUp extends JPopupMenu{
-    private final GUIEditor editor;
+public class EditingPopUp extends JPopupMenu implements Observer{
+    private GUI editor;
 
-    public EditingPopUp(GUIEditor editor) {
+    public EditingPopUp() {
         super("Edit");
-        this.editor = editor;
+        MainCrontroller.getInstance().getObservable().addObserver(EditingPopUp.this);
         
         JMenuItem menuItem = new JMenuItem(TransferHandler.getCopyAction());
          JMenuItem menuItemPaste = new JMenuItem(TransferHandler.getPasteAction());
@@ -69,6 +74,13 @@ public class EditingPopUp extends JPopupMenu{
         menu.add(new JMenuItem(new Normalize("Normalize")));
         this.add(menu);
     }
+
+     @Override
+    public void update(Observable o, Object arg) {
+       if(o instanceof GuiEditorModel){
+           this.editor = ((GuiEditorModel)o).getCurrent();
+       }
+    }
     
     
     private class FillAction extends AbstractAction{
@@ -79,7 +91,7 @@ public class EditingPopUp extends JPopupMenu{
         
         @Override
         public void actionPerformed(ActionEvent e) {
-            editor.getElementEditor().fill();
+           // editor.getElementEditor().fill();
         }
         
     }
@@ -104,13 +116,13 @@ public class EditingPopUp extends JPopupMenu{
         public void actionPerformed(ActionEvent e) {
             switch(action){
                 case 0 :
-                    editor.getElementEditor().normalizeSize();
+                   // editor.getElementEditor().normalizeSize();
                     break;
                 case 1 :
-                    editor.getElementEditor().normalizePosition();
+                  //  editor.getElementEditor().normalizePosition();
                     break;
                 default: 
-                    editor.getElementEditor().normalize();
+                   // editor.getElementEditor().normalize();
             }
         }
         
@@ -124,7 +136,7 @@ public class EditingPopUp extends JPopupMenu{
 
         @Override
         public void actionPerformed(ActionEvent e) {
-           editor.getElementEditor().setVisibileSelected(false);
+          // editor.getElementEditor().setVisibileSelected(false);
         }
         
         
@@ -138,7 +150,7 @@ public class EditingPopUp extends JPopupMenu{
 
         @Override
         public void actionPerformed(ActionEvent e) {
-           editor.getElementEditor().setVisibileSelected(true);
+          // editor.getElementEditor().setVisibileSelected(true);
         }
         
         
@@ -152,7 +164,7 @@ public class EditingPopUp extends JPopupMenu{
 
         @Override
         public void actionPerformed(ActionEvent e) {
-           editor.removeSelected();
+          // editor.removeSelected();
         }
         
         

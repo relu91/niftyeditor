@@ -19,7 +19,6 @@ import de.lessvoid.nifty.java2d.input.InputSystemAwtImpl;
 import de.lessvoid.nifty.java2d.renderer.FontProviderJava2dImpl;
 import de.lessvoid.nifty.java2d.renderer.GraphicsWrapper;
 import de.lessvoid.nifty.java2d.renderer.RenderDeviceJava2dImpl;
-import de.lessvoid.nifty.render.NiftyRenderEngineImpl;
 import de.lessvoid.nifty.tools.TimeProvider;
 import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.listeners.GuiSelectionListener;
@@ -27,8 +26,12 @@ import jada.ngeditor.listeners.events.AddElementEvent;
 import jada.ngeditor.listeners.events.ElementEvent;
 import jada.ngeditor.listeners.events.ReloadGuiEvent;
 import jada.ngeditor.listeners.events.RemoveElementEvent;
+import jada.ngeditor.listeners.events.SelectionChanged;
 import jada.ngeditor.listeners.events.UpdateElementEvent;
+import jada.ngeditor.model.GUI;
+import jada.ngeditor.model.GuiEditorModel;
 import jada.ngeditor.model.elements.GLayer;
+import jada.ngeditor.model.utils.NiftyDDManager;
 import jada.ngeditor.renderUtil.SoudDevicenull;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -41,11 +44,7 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
@@ -55,10 +54,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ActionMap;
 import javax.swing.JComponent;
-import javax.swing.JMenuItem;
-import javax.swing.JScrollPane;
 import javax.swing.JViewport;
-import javax.swing.KeyStroke;
 import javax.swing.Timer;
 import javax.swing.TransferHandler;
 import javax.swing.event.ChangeEvent;
@@ -85,6 +81,7 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
     private final static BasicStroke stroke = new BasicStroke(1.5f,BasicStroke.CAP_SQUARE,BasicStroke.JOIN_ROUND,30,new float[] { 10.0f, 4.0f },0);;
     private Timer timer;
     private final GraphicsWrappImpl graphWrap;
+    private NiftyDDManager dragDropManager;
     /**
      * Used if this panel is within a JScrollPanel
      */
@@ -156,6 +153,7 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
         } catch (IOException ex) {
             Logger.getLogger(J2DNiftyView.class.getName()).log(Level.SEVERE, null, ex);
         }
+        this.dragDropManager = new NiftyDDManager(nifty);
         timer = new Timer(30,this); 
         timer.start();
         this.setIgnoreRepaint(true);
@@ -226,30 +224,30 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
         previous=list;
     }
 
+    public NiftyDDManager getDDManager(){
+        return this.dragDropManager;
+    }
     
-    public void newGui(GUIEditor toChange) {
-       this.manager = toChange;
+    public void newGui(GUI toChange) {
+       toChange.addObserver(this);
        this.setClickListener( new GuiSelectionListener(toChange,this));
        this.selecting=false;
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        if(arg instanceof ElementEvent){
-            ElementEvent event = (ElementEvent) arg;
-            if ((event instanceof AddElementEvent || event instanceof UpdateElementEvent) 
-                    && !(event.getElement() instanceof GLayer)) {
-                this.selected.setBounds(event.getElement().getBounds());
-                this.selecting = true;
-            }else if( event instanceof RemoveElementEvent){
+       if(arg instanceof SelectionChanged){
+            SelectionChanged event = (SelectionChanged) arg;
+            if(!event.getNewSelection().isEmpty() && !(event.getElement() instanceof GLayer)){
+                this.selecting= true;
+            }else{
                 this.selecting = false;
             }
-        }else if (arg instanceof ReloadGuiEvent) {
-            this.newGui(((GUIEditor) o));
-            o.addObserver(this.previous);
-        } else {
-            this.selecting = false;
-        }
+       }
+            if( arg instanceof RemoveElementEvent){
+                this.selecting = false;
+             }
+         
     }
     
     public void moveRect(int x,int y){
