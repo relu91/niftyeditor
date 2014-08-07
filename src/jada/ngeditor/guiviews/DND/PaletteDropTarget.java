@@ -17,6 +17,7 @@ package jada.ngeditor.guiviews.DND;
 import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.controller.MainCrontroller;
 import jada.ngeditor.controller.commands.AddElementCommand;
+import jada.ngeditor.controller.commands.MoveCommand;
 import jada.ngeditor.guiviews.J2DNiftyView;
 import jada.ngeditor.listeners.events.ReloadGuiEvent;
 import jada.ngeditor.model.exception.IllegalDropException;
@@ -79,7 +80,10 @@ public class PaletteDropTarget extends DropTarget implements Observer {
                     Point2D point = (Point2D) dtde.getTransferable().getTransferData(WidgetData.POINTFLAVOR);
                     dtde.getLocation().x= (int) (dtde.getLocation().x - point.getX());
                     dtde.getLocation().y= (int) (dtde.getLocation().y - point.getY());
-                    obj.move(dtde.getLocation(), from);
+                    MoveCommand command = MainCrontroller.getInstance().getCommand(MoveCommand.class);
+                  command.setElement(from);
+                  command.setTo(dtde.getLocation());
+                  MainCrontroller.getInstance().excuteCommand(command);
                comp.getDDManager().endDrag();
                dtde.dropComplete(true);
                 }else{
