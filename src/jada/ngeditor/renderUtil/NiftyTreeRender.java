@@ -14,6 +14,7 @@
  */
 package jada.ngeditor.renderUtil;
 
+import jada.ngeditor.controller.CommandProcessor;
 import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.model.elements.GElement;
 import java.awt.Color;
@@ -35,7 +36,7 @@ import javax.swing.tree.TreeCellRenderer;
  * @author cris
  */
 public class NiftyTreeRender implements TreeCellRenderer{
-    private Color bla = new Color(119,136,136);
+    private Color nonSelection = new Color(119,136,136);
     public NiftyTreeRender(){
         super();
     }
@@ -54,7 +55,7 @@ public class NiftyTreeRender implements TreeCellRenderer{
        if(row!=0){
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
             DefaultMutableTreeNode root = (DefaultMutableTreeNode) tree.getModel().getRoot();
-            GUIEditor edit = (GUIEditor) root.getUserObject();
+            GUIEditor edit = CommandProcessor.getInstance().getGuiEditor();
             GElement element = (GElement)node.getUserObject();
              Image image =null;
              try {
@@ -74,7 +75,7 @@ public class NiftyTreeRender implements TreeCellRenderer{
             c.setText(value.toString());
             if(element.equals(edit.getCurrentLayer())){
                 c.setBackgroundSelectionColor(Color.CYAN);
-                c.setBackgroundNonSelectionColor(bla);
+                c.setBackgroundNonSelectionColor(nonSelection);
             }
         }
         

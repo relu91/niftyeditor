@@ -222,6 +222,7 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
     }
     
     public void newGui(GUI toChange) {
+       
        toChange.addObserver(this);
        this.setClickListener( new GuiSelectionListener(toChange,this));
        this.selecting=false;

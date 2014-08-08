@@ -14,6 +14,7 @@
  */
 package jada.ngeditor.guiviews;
 
+import jada.ngeditor.controller.CommandProcessor;
 import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.guiviews.DND.TreeTrasferHandling;
 import jada.ngeditor.listeners.ElementSelectionListener;
@@ -23,6 +24,8 @@ import jada.ngeditor.listeners.events.ReloadGuiEvent;
 import jada.ngeditor.listeners.events.RemoveElementEvent;
 import jada.ngeditor.listeners.events.SelectionChanged;
 import jada.ngeditor.listeners.events.UpdateElementEvent;
+import jada.ngeditor.model.GUI;
+import jada.ngeditor.model.GuiEditorModel;
 import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.elements.GScreen;
 import jada.ngeditor.renderUtil.NiftyTreeRender;
@@ -40,13 +43,14 @@ import javax.swing.tree.TreePath;
  */
 public class TreeGuiView extends javax.swing.JPanel implements Observer {
 
-    private GUIEditor currentGui;
+    private GUI currentGui;
 
     /**
      * Creates new form TreeGuiView
      */
     public TreeGuiView() {
         initComponents();
+        CommandProcessor.getInstance().getObservable().addObserver(this);
         ActionMap map = this.getActionMap();
        map.put(TransferHandler.getCopyAction().getValue(javax.swing.Action.NAME),
                 TransferHandler.getCopyAction());
@@ -60,17 +64,17 @@ public class TreeGuiView extends javax.swing.JPanel implements Observer {
        
     }
 
-    public void initView(GUIEditor gui) {
+    public void initView(GUI gui) {
         TreeTrasferHandling trasferHandling = new TreeTrasferHandling();
         this.jTree2.setTransferHandler(trasferHandling);
         this.jTree2.addMouseListener(new PopUpShowListener(new EditingPopUp()));
-        this.jTree2.addTreeSelectionListener(new ElementSelectionListener(gui));
+        this.jTree2.addTreeSelectionListener(new ElementSelectionListener());
         jTree2.setCellRenderer(new NiftyTreeRender());
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) this.jTree2.getModel().getRoot();
         root.removeAllChildren();
         root.setUserObject(gui);
 
-        for (GScreen screen : gui.getGui().getScreens()) {
+        for (GScreen screen : gui.getScreens()) {
             DefaultMutableTreeNode screenNode = new DefaultMutableTreeNode(screen);
             addRecursive(screen, screenNode);
             root.add(screenNode);
@@ -151,21 +155,27 @@ public class TreeGuiView extends javax.swing.JPanel implements Observer {
             GElement ele = ((RemoveElementEvent)arg).getElement();
             this.searchNode(ele).removeFromParent();
             jTree2.updateUI();
-        } else if (arg instanceof ReloadGuiEvent) {
-            this.newGui(((GUIEditor) o));
+        } else if (o instanceof GuiEditorModel) {
+            this.newGui(((GuiEditorModel) o).getCurrent());
         } else if (arg instanceof UpdateElementEvent) {
             UpdateElementEvent event = (UpdateElementEvent) arg;
-            int i = currentGui.getElementEditor(event.getElement()).getIndex();
+            int i = this.getIndex(event.getElement());
             DefaultMutableTreeNode node = searchNode(event.getElement());
             DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
             parent.insert(node, i);
             jTree2.updateUI();
         } else if (arg instanceof SelectionChanged){
             SelectionChanged event = (SelectionChanged) arg;
+            if(!event.getNewSelection().isEmpty()){
             DefaultMutableTreeNode node = this.searchNode(event.getElement());
             if(node != null){
+                event.getElement().addObserver(this);
+                if(!event.getOld().isEmpty()){
+                    event.getOld().getFirst().deleteObserver(this);
+                }
                 TreePath temp = new TreePath(node.getPath());
                 jTree2.setSelectionPath(temp);
+            }
             }
             
         }
@@ -183,8 +193,18 @@ public class TreeGuiView extends javax.swing.JPanel implements Observer {
         return null;
     }
 
-    public void newGui(GUIEditor toChange) {
+    public void newGui(GUI toChange) {
+        if(currentGui != null){
+            this.currentGui.deleteObserver(this);
+            this.currentGui.getSelection().deleteObserver(this);
+        }
         this.currentGui = toChange;
+        this.currentGui.addObserver(this);
+        this.currentGui.getSelection().addObserver(this);
         this.initView(toChange);
+    }
+    
+    private int getIndex(GElement element){
+        return element.getParent().getElements().indexOf(element);
     }
 }

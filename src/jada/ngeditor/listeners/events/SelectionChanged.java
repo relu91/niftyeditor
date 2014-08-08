@@ -13,9 +13,11 @@ import jada.ngeditor.model.elements.GElement;
  */
 public class SelectionChanged implements ElementEvent{
     private final Selection newSelection;
+    private final Selection Old;
     
-    public SelectionChanged(Selection newSelection){
+    public SelectionChanged(Selection newSelection,Selection Old){
         this.newSelection = newSelection;
+        this.Old = Old;
         
     }
 
@@ -29,6 +31,10 @@ public class SelectionChanged implements ElementEvent{
     @Override
     public GElement getElement() {
         return newSelection.getFirst();
+    }
+    
+    public Selection getOld(){
+        return Old;
     }
     
 }

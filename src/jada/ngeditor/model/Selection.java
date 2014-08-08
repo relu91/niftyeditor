@@ -23,28 +23,32 @@ public class Selection extends Observable{
     }
     
     public void addSelection(GElement element){
+        Selection old = this.clone();
         selected.add(element);
         this.setChanged();
-        this.notifyObservers(new SelectionChanged(this));
+        this.notifyObservers(new SelectionChanged(this,old));
     }
     
     public void removeSelection(GElement element){
+         Selection old = this.clone();
         selected.remove(element);
         this.setChanged();
-        this.notifyObservers(new SelectionChanged(this));
+        this.notifyObservers(new SelectionChanged(this,old));
     }
     
     public void setSelection(GElement element){
+         Selection old = this.clone();
         this.clearSelection();
         selected.add(element);
         this.setChanged();
-        this.notifyObservers(new SelectionChanged(this));
+        this.notifyObservers(new SelectionChanged(this,old));
     }
     
     public void clearSelection(){
+        Selection old = this.clone();
         selected.clear();
         this.setChanged();
-        this.notifyObservers(new SelectionChanged(this));
+        this.notifyObservers(new SelectionChanged(this,old));
     }
 
     public GElement getFirst(){
@@ -55,4 +59,9 @@ public class Selection extends Observable{
         return Collections.unmodifiableCollection(this.selected);
     }
     
+    protected Selection clone(){
+        Selection result = new Selection();
+        result.selected.addAll(this.selected);
+        return result;
+    }
 }

@@ -14,10 +14,13 @@
  */
 package jada.ngeditor.guiviews;
 
-import jada.ngeditor.controller.GUIEditor;
+import jada.ngeditor.controller.CommandProcessor;
 import jada.ngeditor.listeners.ProprietiesListener;
 import jada.ngeditor.listeners.events.ElementEvent;
 import jada.ngeditor.listeners.events.RemoveElementEvent;
+import jada.ngeditor.listeners.events.SelectionChanged;
+import jada.ngeditor.model.GUI;
+import jada.ngeditor.model.GuiEditorModel;
 import jada.ngeditor.model.elements.GElement;
 import java.util.Map;
 import java.util.Observable;
@@ -43,6 +46,7 @@ public class ProprietesView extends javax.swing.JPanel implements Observer{
         jScrollPane1.setViewportView(jTable1);
         listener=new ProprietiesListener();
         jTable1.getModel().addTableModelListener(listener);
+        CommandProcessor.getInstance().getObservable().addObserver(this);
     }
 
     /**
@@ -74,8 +78,13 @@ public class ProprietesView extends javax.swing.JPanel implements Observer{
 
     @Override
     public void update(Observable o, Object arg) {
-       
-        
+         if(o instanceof GuiEditorModel){
+            GUI current = ((GuiEditorModel)o).getCurrent();
+             current.addObserver(this);
+             current.getSelection().addObserver(this);
+             return;
+         }
+         
          // create a safe zone where to edit the table without changing the element
         this.jTable1.getModel().removeTableModelListener(listener);
         //Clear previous editing
@@ -84,23 +93,26 @@ public class ProprietesView extends javax.swing.JPanel implements Observer{
         jTable1.setColumnSelectionInterval(0, 0);
         DefaultTableModel model = (DefaultTableModel) this.jTable1.getModel();
         this.clearTable(model);
-       
-        if(arg instanceof RemoveElementEvent){
+        if(arg instanceof SelectionChanged){
+            SelectionChanged selectionEvent = (SelectionChanged)arg;
+            if(selectionEvent.getNewSelection().isEmpty()){
+                this.clearTable(model);
+            }else{
+                GElement first = selectionEvent.getNewSelection().getFirst();
+                this.fillTable(first, model);
+                if(!selectionEvent.getOld().isEmpty()){
+                selectionEvent.getOld().getFirst().deleteObserver(this);
+                }
+                selectionEvent.getNewSelection().getFirst().addObserver(this);
+            }
+         }
+        else if(arg instanceof RemoveElementEvent){
              this.clearTable(model);
         }else if(arg instanceof ElementEvent){
             ElementEvent event = (ElementEvent) arg;
             
             GElement ele = event.getElement();
-            Map<String,String> attribut = ele.listAttributes();
-            model.setNumRows(attribut.keySet().size());
-            int line =0;
-            for(String sel : attribut.keySet()){
-               
-                model.setValueAt(sel, line, 0);
-                model.setValueAt(attribut.get(sel), line, 1);
-                line++;
-            
-            }
+            fillTable(ele, model);
            
            //end safe zone
            jTable1.getModel().addTableModelListener(listener);
@@ -117,6 +129,19 @@ public class ProprietesView extends javax.swing.JPanel implements Observer{
             model.setValueAt("", i, 1);
         }
         
+    }
+
+    private void fillTable(GElement ele, DefaultTableModel model) {
+        Map<String,String> attribut = ele.listAttributes();
+        model.setNumRows(attribut.keySet().size());
+        int line =0;
+        for(String sel : attribut.keySet()){
+           
+            model.setValueAt(sel, line, 0);
+            model.setValueAt(attribut.get(sel), line, 1);
+            line++;
+        
+      }
     }
     
    

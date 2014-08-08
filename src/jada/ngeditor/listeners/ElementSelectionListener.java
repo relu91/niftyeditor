@@ -14,8 +14,12 @@
  */
 package jada.ngeditor.listeners;
 
+import jada.ngeditor.controller.CommandProcessor;
 import jada.ngeditor.controller.GUIEditor;
+import jada.ngeditor.controller.commands.SelectCommand;
 import jada.ngeditor.model.elements.GElement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TreeSelectionEvent;
@@ -29,10 +33,10 @@ import javax.swing.tree.TreePath;
  */
 public class ElementSelectionListener implements TreeSelectionListener {
 
-    private final GUIEditor gui;
+   
 
-    public ElementSelectionListener(GUIEditor gui) {
-        this.gui = gui;
+    public ElementSelectionListener() {
+       
     }
 
     @Override
@@ -41,7 +45,13 @@ public class ElementSelectionListener implements TreeSelectionListener {
         if (path != null) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
             if (!node.isRoot()) {
-                this.gui.selectElement((GElement) node.getUserObject());
+                try {
+                    SelectCommand command = CommandProcessor.getInstance().getCommand(SelectCommand.class);
+                    command.setElement((GElement) node.getUserObject());
+                    CommandProcessor.getInstance().excuteCommand(command);
+                } catch (Exception ex) {
+                    Logger.getLogger(ElementSelectionListener.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             final JTree temp = (JTree) e.getSource();
 

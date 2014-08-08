@@ -14,18 +14,15 @@
  */
 package jada.ngeditor.listeners;
 
-import de.lessvoid.nifty.builder.ElementBuilder;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.layout.align.HorizontalAlign;
 import de.lessvoid.nifty.layout.align.VerticalAlign;
 import de.lessvoid.nifty.tools.SizeValue;
-import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.controller.CommandProcessor;
 import jada.ngeditor.controller.commands.EditAttributeCommand;
 import jada.ngeditor.controller.commands.SelectCommand;
 import jada.ngeditor.guiviews.EditingPopUp;
 import jada.ngeditor.guiviews.J2DNiftyView;
-import jada.ngeditor.listeners.events.ReloadGuiEvent;
 import jada.ngeditor.listeners.events.SelectionChanged;
 import jada.ngeditor.listeners.events.UpdateElementEvent;
 import jada.ngeditor.model.GUI;

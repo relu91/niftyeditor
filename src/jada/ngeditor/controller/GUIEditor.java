@@ -267,10 +267,7 @@ public class GUIEditor extends Observable implements Observer{
             }
         }
         this.selected=UID;
-        this.setChanged();
         this.gui.getSelection().setSelection(selected);
-        this.notifyObservers(new SelectionChanged(this.gui.getSelection()));
-        this.clearChanged();
     }
     
     /**
@@ -418,10 +415,8 @@ public class GUIEditor extends Observable implements Observer{
         }
         this.setChanged();
         this.notifyObservers(new RemoveElementEvent(element));
-         Selection selection = new Selection();//Teporaney 
-        selection.setSelection(selected);
-        this.notifyObservers(new SelectionChanged(selection));
-        this.clearChanged();
+        this.gui.getSelection().clearSelection();
+       
     }
      
     public void reloadAfterFresh(){

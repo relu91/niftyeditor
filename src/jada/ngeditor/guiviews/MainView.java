@@ -70,9 +70,6 @@ public class MainView extends javax.swing.JFrame {
         Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize ();
         Dimension frameSize = this.getSize ();
         this.setLocation ((screenSize.width - frameSize.width) / 2,(screenSize.height - frameSize.height) / 2);
-        this.editor.addObserver(this.treeGuiView1);
-        this.editor.addObserver(cont);
-        this.editor.addObserver(proprietesView2);
         this.newGui();
         jTabbedPane2.setSelectedIndex(1);
         jScrollPane1.getVerticalScrollBar().setUnitIncrement(10);
@@ -295,8 +292,8 @@ public class MainView extends javax.swing.JFrame {
                 ris = JOptionPane.showConfirmDialog(this, "The current gui will be deleted , continue?","New Gui",JOptionPane.YES_NO_OPTION);
            
            if(ris == JOptionPane.YES_OPTION){
-               editor.addObserver(treeGuiView1);
-               editor.addObserver(proprietesView2);
+             
+               //editor.addObserver(proprietesView2);
                editor.createNewGui(cont.getNifty()); 
                cont.newGui(editor.getGui());
            }
