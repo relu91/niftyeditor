@@ -369,19 +369,25 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
 
     @Override
     public void keyPressed(KeyEvent e) {
+        if(!this.gui.getSelection().isEmpty()){
         
         GElement sel = this.getSelected();
         String layout = sel.getParent().getAttribute("childLayout");
         if(layout.equals("horizontal")) {
             horizontalBeahvior(sel,e.getKeyCode());
+            e.consume();
         }
         else if(layout.equals("vertical")) {
             verticalBeahvior(sel,e.getKeyCode());
+             e.consume();
         }
         else if(layout.equals("absolute")) {
             absoluteBehavior(sel,e.getKeyCode());
+             e.consume();
         }else if(sel instanceof GLayer){
             layerBeahvior(sel,e.getKeyCode());
+             e.consume();
+        }
         }
         //NOTE: why it was here?
        // this.gui.fireUpdate(sel);
