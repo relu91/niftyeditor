@@ -15,7 +15,7 @@
 package jada.ngeditor.guiviews.DND;
 
 import jada.ngeditor.controller.GUIEditor;
-import jada.ngeditor.controller.MainCrontroller;
+import jada.ngeditor.controller.CommandProcessor;
 import jada.ngeditor.controller.commands.AddElementCommand;
 import jada.ngeditor.controller.commands.MoveCommand;
 import jada.ngeditor.guiviews.J2DNiftyView;
@@ -39,9 +39,9 @@ import javax.swing.JOptionPane;
  *
  * @author cris
  */
-public class PaletteDropTarget extends DropTarget implements Observer {
+public class PaletteDropTarget extends DropTarget{
     
-    private GUIEditor obj;
+
     
     public PaletteDropTarget(){
         
@@ -67,10 +67,10 @@ public class PaletteDropTarget extends DropTarget implements Observer {
           if(dtde.getDropAction() == DnDConstants.ACTION_COPY){
             dtde.acceptDrop(DnDConstants.ACTION_COPY);
             GElement res  =  (GElement) dtde.getTransferable().getTransferData(WidgetData.FLAVOR);
-            AddElementCommand command = MainCrontroller.getInstance().getCommand(AddElementCommand.class);
+            AddElementCommand command = CommandProcessor.getInstance().getCommand(AddElementCommand.class);
                   command.setChild(res);
                   command.setPoint(dtde.getLocation());
-                 MainCrontroller.getInstance().excuteCommand(command);
+                 CommandProcessor.getInstance().excuteCommand(command);
             dtde.dropComplete(true);
           } 
           else if(dtde.getDropAction() == DnDConstants.ACTION_MOVE){
@@ -80,19 +80,19 @@ public class PaletteDropTarget extends DropTarget implements Observer {
                     Point2D point = (Point2D) dtde.getTransferable().getTransferData(WidgetData.POINTFLAVOR);
                     dtde.getLocation().x= (int) (dtde.getLocation().x - point.getX());
                     dtde.getLocation().y= (int) (dtde.getLocation().y - point.getY());
-                    MoveCommand command = MainCrontroller.getInstance().getCommand(MoveCommand.class);
+                    MoveCommand command = CommandProcessor.getInstance().getCommand(MoveCommand.class);
                   command.setElement(from);
                   command.setTo(dtde.getLocation());
                   command.setElementState(comp.getDDManager().getElementState());
-                  MainCrontroller.getInstance().excuteCommand(command);
+                  CommandProcessor.getInstance().excuteCommand(command);
                comp.getDDManager().endDrag();
                dtde.dropComplete(true);
                 }else{
                      GElement res  =  (GElement) dtde.getTransferable().getTransferData(WidgetData.FLAVOR);
-                   AddElementCommand command = MainCrontroller.getInstance().getCommand(AddElementCommand.class);
+                   AddElementCommand command = CommandProcessor.getInstance().getCommand(AddElementCommand.class);
                   command.setChild(res);
                   command.setPoint(dtde.getLocation());
-                    MainCrontroller.getInstance().excuteCommand(command);
+                    CommandProcessor.getInstance().excuteCommand(command);
                     dtde.dropComplete(true);
                     dtde.dropComplete(true);
                 }
@@ -117,13 +117,6 @@ public class PaletteDropTarget extends DropTarget implements Observer {
         }
         
     }
- @Override
-    public void update(Observable o, Object arg) {
-        if(arg instanceof ReloadGuiEvent){
-            this.obj = (GUIEditor)o;
-        }
-        
-    }
-    
+ 
     
 }

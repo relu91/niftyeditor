@@ -20,7 +20,7 @@ import de.lessvoid.nifty.layout.align.HorizontalAlign;
 import de.lessvoid.nifty.layout.align.VerticalAlign;
 import de.lessvoid.nifty.tools.SizeValue;
 import jada.ngeditor.controller.GUIEditor;
-import jada.ngeditor.controller.MainCrontroller;
+import jada.ngeditor.controller.CommandProcessor;
 import jada.ngeditor.controller.commands.EditAttributeCommand;
 import jada.ngeditor.controller.commands.SelectCommand;
 import jada.ngeditor.guiviews.EditingPopUp;
@@ -85,7 +85,7 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
         this.niftyView=view;
         enable =true;
         this.selected=new Rectangle();
-        MainCrontroller.getInstance().getObservable().addObserver(GuiSelectionListener.this);
+        CommandProcessor.getInstance().getObservable().addObserver(GuiSelectionListener.this);
     }
     
    
@@ -128,9 +128,9 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
            }
              if(e.isPopupTrigger()){
                 try {
-                    SelectCommand command = MainCrontroller.getInstance().getCommand(SelectCommand.class);
+                    SelectCommand command = CommandProcessor.getInstance().getCommand(SelectCommand.class);
                     command.selectByPoint(e.getX(), e.getY());
-                    MainCrontroller.getInstance().excuteCommand(command); 
+                    CommandProcessor.getInstance().excuteCommand(command); 
                     this.p.show(e.getComponent(), e.getX(), e.getY());
                 } catch (Exception ex) {
                     Logger.getLogger(GuiSelectionListener.class.getName()).log(Level.SEVERE, null, ex);
@@ -141,10 +141,10 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
          dragging = false;
          if(sel!=null && this.selected!=null){
                 try {
-                    EditAttributeCommand xCommand = MainCrontroller.getInstance().getCommand(EditAttributeCommand.class);
-                    EditAttributeCommand yCommand = MainCrontroller.getInstance().getCommand(EditAttributeCommand.class);
-                    EditAttributeCommand wCommand = MainCrontroller.getInstance().getCommand(EditAttributeCommand.class);
-                    EditAttributeCommand hCommand = MainCrontroller.getInstance().getCommand(EditAttributeCommand.class);
+                    EditAttributeCommand xCommand = CommandProcessor.getInstance().getCommand(EditAttributeCommand.class);
+                    EditAttributeCommand yCommand = CommandProcessor.getInstance().getCommand(EditAttributeCommand.class);
+                    EditAttributeCommand wCommand = CommandProcessor.getInstance().getCommand(EditAttributeCommand.class);
+                    EditAttributeCommand hCommand = CommandProcessor.getInstance().getCommand(EditAttributeCommand.class);
                     xCommand.setAttribute("x");
                     xCommand.setValue(""+this.selected.x+"px");
                     yCommand.setAttribute("y");
@@ -153,17 +153,17 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
                     wCommand.setValue(this.selected.width+"px");
                     hCommand.setAttribute("height");
                     hCommand.setValue(this.selected.height+"px");
-                    MainCrontroller.getInstance().batchCommand(xCommand);
-                    MainCrontroller.getInstance().batchCommand(yCommand);
-                    MainCrontroller.getInstance().batchCommand(wCommand);
-                    MainCrontroller.getInstance().batchCommand(hCommand);
-                    MainCrontroller.getInstance().executeBatch();
+                    CommandProcessor.getInstance().batchCommand(xCommand);
+                    CommandProcessor.getInstance().batchCommand(yCommand);
+                    CommandProcessor.getInstance().batchCommand(wCommand);
+                    CommandProcessor.getInstance().batchCommand(hCommand);
+                    CommandProcessor.getInstance().executeBatch();
                    // sel.lightRefresh();
                     this.selected.setRect(sel.getBounds());
                     this.enable();
-                    SelectCommand command = MainCrontroller.getInstance().getCommand(SelectCommand.class);
+                    SelectCommand command = CommandProcessor.getInstance().getCommand(SelectCommand.class);
                 command.setElement(this.getSelected());
-                MainCrontroller.getInstance().excuteCommand(command);
+                CommandProcessor.getInstance().excuteCommand(command);
                 } catch (Exception ex) {
                     Logger.getLogger(GuiSelectionListener.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -173,9 +173,9 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
      @Override
      public void mouseClicked(MouseEvent e) {
         try {
-            SelectCommand command = MainCrontroller.getInstance().getCommand(SelectCommand.class);
+            SelectCommand command = CommandProcessor.getInstance().getCommand(SelectCommand.class);
             command.selectByPoint(e.getX(), e.getY());
-           MainCrontroller.getInstance().excuteCommand(command);
+           CommandProcessor.getInstance().excuteCommand(command);
             e.getComponent().requestFocus();
         } catch (Exception ex) {
             Logger.getLogger(GuiSelectionListener.class.getName()).log(Level.SEVERE, null, ex);

@@ -14,11 +14,15 @@
  */
 package jada.ngeditor.guiviews;
 
-import jada.ngeditor.controller.GUIEditor;
+import jada.ngeditor.controller.CommandProcessor;
 import jada.ngeditor.guiviews.editors.FileChooserEditor;
 import jada.ngeditor.guiviews.editors.HexColorCellEditor;
 import jada.ngeditor.guiviews.editors.JComboEditor;
 import jada.ngeditor.guiviews.editors.SizeEditor;
+import jada.ngeditor.model.GUI;
+import jada.ngeditor.model.GuiEditorModel;
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
 
@@ -26,15 +30,16 @@ import javax.swing.table.TableCellEditor;
  *
  * @author cris
  */
-public class PropTable extends JTable{
+public class PropTable extends JTable implements Observer{
     private static final JComboEditor layoutEditor = new JComboEditor("absolute","center", "vertical", "horizontal","overlay");
     private static final JComboEditor alingEditor = new JComboEditor("left","center", "right");
     private static final JComboEditor valingEditor = new JComboEditor("top","center", "bottom");
     private static final SizeEditor sizeEditor = new SizeEditor();
     private static final String [] sizeValues = {"height","width","x","y"};
-    private GUIEditor editor;
+    private GUI gui;
     public PropTable() {
 	super();
+        CommandProcessor.getInstance().getObservable().addObserver(this);
         this.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
@@ -83,7 +88,7 @@ public class PropTable extends JTable{
                 editor = new HexColorCellEditor();
             }else if(pname.equalsIgnoreCase("filename") 
                     || pname.equalsIgnoreCase("backgroundImage")){
-                editor = new FileChooserEditor(this.editor.getGui().getAssetFolder());
+                editor = new FileChooserEditor(this.gui.getAssetFolder());
             }else if(isSizeValue(pname)){
                 editor = sizeEditor;
             }else if( pname.equalsIgnoreCase("valign")){
@@ -96,9 +101,7 @@ public class PropTable extends JTable{
        return editor;
     }
     
-    public void setEditor(GUIEditor editor){
-        this.editor = editor;
-    }
+   
 
     private boolean isSizeValue(String pname) {
         boolean res = false;
@@ -107,6 +110,13 @@ public class PropTable extends JTable{
                 res = true;
         }
         return res;
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if(o instanceof GuiEditorModel){
+            this.gui = ((GuiEditorModel)o).getCurrent();
+        }
     }
     
 }

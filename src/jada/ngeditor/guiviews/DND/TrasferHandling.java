@@ -14,7 +14,7 @@
  */
 package jada.ngeditor.guiviews.DND;
 
-import jada.ngeditor.controller.MainCrontroller;
+import jada.ngeditor.controller.CommandProcessor;
 import jada.ngeditor.controller.commands.AddElementCommand;
 import jada.ngeditor.guiviews.palettecomponents.NWidget;
 import jada.ngeditor.model.GUI;
@@ -47,7 +47,7 @@ public class TrasferHandling extends TransferHandler implements Observer{
 
     public TrasferHandling() {
         super();
-        MainCrontroller.getInstance().getObservable().addObserver(this);
+        CommandProcessor.getInstance().getObservable().addObserver(this);
     }
     
     @Override
@@ -141,10 +141,10 @@ public class TrasferHandling extends TransferHandler implements Observer{
             GElement from  =  (GElement) support.getTransferable().getTransferData(WidgetData.FLAVOR);
             GElement cloned = from.clone();
             Point mousePosition = support.getComponent().getMousePosition();
-             AddElementCommand command = MainCrontroller.getInstance().getCommand(AddElementCommand.class);
+             AddElementCommand command = CommandProcessor.getInstance().getCommand(AddElementCommand.class);
                   command.setChild(cloned);
                   command.setPoint(mousePosition);
-           MainCrontroller.getInstance().excuteCommand(command);
+           CommandProcessor.getInstance().excuteCommand(command);
         } catch (UnsupportedFlavorException ex) {
             Logger.getLogger(TrasferHandling.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {

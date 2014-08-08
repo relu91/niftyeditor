@@ -62,7 +62,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem5">
               <Properties>
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="MainCrontroller.getInstance().createAction(&quot;Undo&quot;, UndoCommand.class)" type="code"/>
+                  <Connection code="jada.ngeditor.controller.CommandProcessor.getInstance().createAction(&quot;Undo&quot;, UndoCommand.class)" type="code"/>
                 </Property>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+Z"/>
@@ -73,7 +73,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem7">
               <Properties>
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="MainCrontroller.getInstance().createAction(&quot;Redo&quot;, RedoCommand.class)" type="code"/>
+                  <Connection code="jada.ngeditor.controller.CommandProcessor.getInstance().createAction(&quot;Redo&quot;, RedoCommand.class)" type="code"/>
                 </Property>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+Y"/>

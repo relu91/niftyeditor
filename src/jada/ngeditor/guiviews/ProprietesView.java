@@ -89,9 +89,8 @@ public class ProprietesView extends javax.swing.JPanel implements Observer{
              this.clearTable(model);
         }else if(arg instanceof ElementEvent){
             ElementEvent event = (ElementEvent) arg;
-            GUIEditor editor = (GUIEditor) o;
+            
             GElement ele = event.getElement();
-            this.jTable1.setEditor(editor);
             Map<String,String> attribut = ele.listAttributes();
             model.setNumRows(attribut.keySet().size());
             int line =0;
@@ -102,7 +101,7 @@ public class ProprietesView extends javax.swing.JPanel implements Observer{
                 line++;
             
             }
-           listener.setEditor(editor.getElementEditor(ele));
+           
            //end safe zone
            jTable1.getModel().addTableModelListener(listener);
          

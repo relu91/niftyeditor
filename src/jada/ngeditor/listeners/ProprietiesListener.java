@@ -16,8 +16,9 @@ package jada.ngeditor.listeners;
 
 
 import jada.ngeditor.controller.ElementEditor;
-import jada.ngeditor.controller.MainCrontroller;
+import jada.ngeditor.controller.CommandProcessor;
 import jada.ngeditor.controller.commands.EditAttributeCommand;
+import jada.ngeditor.controller.commands.RemoveAttributeCommand;
 import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -29,28 +30,30 @@ import javax.swing.table.TableModel;
  * @author cris
  */
 public class ProprietiesListener implements TableModelListener{
-    private ElementEditor editor = null;
+    
     
     public ProprietiesListener(){
-        editor = new ElementEditor(null,null);
+      
     }
     
     @Override
     public void tableChanged(TableModelEvent e) {
         
         if (e.getType() == TableModelEvent.UPDATE) {
-            EditAttributeCommand command = MainCrontroller.getInstance().getCommand(EditAttributeCommand.class);
+            EditAttributeCommand command = CommandProcessor.getInstance().getCommand(EditAttributeCommand.class);
+            RemoveAttributeCommand removecommand = CommandProcessor.getInstance().getCommand(RemoveAttributeCommand.class);
             TableModel mod = (TableModel) e.getSource();
             String proName = (String) mod.getValueAt(e.getLastRow(), 0);
             String proVal = (String) mod.getValueAt(e.getLastRow(), 1);
             if (proName != null && !proName.isEmpty()) {
                 try{
                 if (proVal == null || proVal.isEmpty()) {
-                    editor.removeAttribute(proName);
+                    removecommand.setAttributeKey(proName);
+                    CommandProcessor.getInstance().excuteCommand(removecommand);
                 } else {
                    command.setAttribute(proName);
                    command.setValue(proVal);
-                   MainCrontroller.getInstance().excuteCommand(command);
+                   CommandProcessor.getInstance().excuteCommand(command);
                 }
                 }catch(Exception ex){
                     ex.printStackTrace();
@@ -60,8 +63,6 @@ public class ProprietiesListener implements TableModelListener{
         }
     }
     
-    public void setEditor(ElementEditor editor){
-        this.editor = editor;
-    }
+  
     
 }

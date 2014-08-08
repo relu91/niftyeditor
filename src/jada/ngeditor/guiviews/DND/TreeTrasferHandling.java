@@ -14,8 +14,7 @@
  */
 package jada.ngeditor.guiviews.DND;
 
-import jada.ngeditor.controller.GUIEditor;
-import jada.ngeditor.controller.MainCrontroller;
+import jada.ngeditor.controller.CommandProcessor;
 import jada.ngeditor.controller.commands.AddElementCommand;
 import jada.ngeditor.model.GUI;
 import jada.ngeditor.model.GuiEditorModel;
@@ -42,7 +41,7 @@ public class TreeTrasferHandling extends TransferHandler implements Observer {
     private GElement copyTemplate;
 
     public TreeTrasferHandling() {
-        MainCrontroller.getInstance().getObservable().addObserver(TreeTrasferHandling.this);
+        CommandProcessor.getInstance().getObservable().addObserver(TreeTrasferHandling.this);
     }
     
     
@@ -92,10 +91,10 @@ public class TreeTrasferHandling extends TransferHandler implements Observer {
         try {
             GElement from  =  (GElement) support.getTransferable().getTransferData(WidgetData.FLAVOR);
             GElement cloned = from.clone();
-              AddElementCommand command = MainCrontroller.getInstance().getCommand(AddElementCommand.class);
+              AddElementCommand command = CommandProcessor.getInstance().getCommand(AddElementCommand.class);
               command.setChild(cloned);
               command.setParent(this.gui.getSelection().getFirst());
-           MainCrontroller.getInstance().excuteCommand(command);
+           CommandProcessor.getInstance().excuteCommand(command);
         }   catch (UnsupportedFlavorException ex) {
             Logger.getLogger(TreeTrasferHandling.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {

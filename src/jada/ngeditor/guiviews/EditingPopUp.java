@@ -4,8 +4,7 @@
  */
 package jada.ngeditor.guiviews;
 
-import jada.ngeditor.controller.GUIEditor;
-import jada.ngeditor.controller.MainCrontroller;
+import jada.ngeditor.controller.CommandProcessor;
 import jada.ngeditor.model.GUI;
 import jada.ngeditor.model.GuiEditorModel;
 import java.awt.KeyboardFocusManager;
@@ -35,7 +34,7 @@ public class EditingPopUp extends JPopupMenu implements Observer{
 
     public EditingPopUp() {
         super("Edit");
-        MainCrontroller.getInstance().getObservable().addObserver(EditingPopUp.this);
+        CommandProcessor.getInstance().getObservable().addObserver(EditingPopUp.this);
         
         JMenuItem menuItem = new JMenuItem(TransferHandler.getCopyAction());
          JMenuItem menuItemPaste = new JMenuItem(TransferHandler.getPasteAction());

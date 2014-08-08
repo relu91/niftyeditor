@@ -24,21 +24,21 @@ import javax.swing.undo.UndoableEdit;
  * This class is the entry-point for the editor. It holds all the logic.
  * @author cris
  */
-public class MainCrontroller {
+public class CommandProcessor {
     private UndoManager undoManager = new UndoManager();
     private final GUIEditor editor;
-    private static MainCrontroller instance;
+    private static CommandProcessor instance;
     
-    public static MainCrontroller getInstance(){
+    public static CommandProcessor getInstance(){
         if(instance == null){
-           instance = new MainCrontroller();
+           instance = new CommandProcessor();
         }
         return instance;
     }
     private LinkedList<Command> list;
     private CompoundEdit compoundEdit;
     
-    private MainCrontroller(){
+    private CommandProcessor(){
         this.editor = new GUIEditor();
         list = new LinkedList<Command>();
         this.compoundEdit = new CompoundEdit();
@@ -67,17 +67,17 @@ public class MainCrontroller {
             T newInstance = constructor.newInstance(this.editor,this.undoManager);
             return newInstance;
         } catch (InstantiationException ex) {
-            Logger.getLogger(MainCrontroller.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CommandProcessor.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            Logger.getLogger(MainCrontroller.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CommandProcessor.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalArgumentException ex) {
-            Logger.getLogger(MainCrontroller.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CommandProcessor.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InvocationTargetException ex) {
-            Logger.getLogger(MainCrontroller.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CommandProcessor.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoSuchMethodException ex) {
-            Logger.getLogger(MainCrontroller.class.getName()).log(Level.SEVERE, null, "WARING command not created"+ex);
+            Logger.getLogger(CommandProcessor.class.getName()).log(Level.SEVERE, null, "WARING command not created"+ex);
         } catch (SecurityException ex) {
-            Logger.getLogger(MainCrontroller.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CommandProcessor.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -109,10 +109,10 @@ public class MainCrontroller {
                 try{
                     this.get();
                 }catch(ExecutionException e){
-                       Logger.getLogger(MainCrontroller.class.getName()).log(Level.WARNING, null, e);
+                       Logger.getLogger(CommandProcessor.class.getName()).log(Level.WARNING, null, e);
                      JOptionPane.showMessageDialog(null,"Command "+command.getName()+" failed with this message:"+e.getCause().getMessage(),"Nifty-Editor error",JOptionPane.ERROR_MESSAGE);
                 } catch (InterruptedException ex) {
-                        Logger.getLogger(MainCrontroller.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(CommandProcessor.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             

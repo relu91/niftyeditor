@@ -17,7 +17,7 @@ package jada.ngeditor.guiviews;
 
 
 import jada.ngeditor.controller.GUIEditor;
-import jada.ngeditor.controller.MainCrontroller;
+import jada.ngeditor.controller.CommandProcessor;
 import jada.ngeditor.controller.commands.RedoCommand;
 import jada.ngeditor.controller.commands.UndoCommand;
 import jada.ngeditor.guiviews.DND.PaletteDropTarget;
@@ -55,7 +55,7 @@ public class MainView extends javax.swing.JFrame {
      * Creates new form MainView
      */
     public MainView() {
-        this.editor = MainCrontroller.getInstance().getGuiEditor();
+        this.editor = CommandProcessor.getInstance().getGuiEditor();
         IOmanager = new JFileChooser();
         XmlFileFilter filter = new XmlFileFilter();
         IOmanager.setFileFilter(filter);
@@ -70,8 +70,6 @@ public class MainView extends javax.swing.JFrame {
         Dimension screenSize = Toolkit.getDefaultToolkit ().getScreenSize ();
         Dimension frameSize = this.getSize ();
         this.setLocation ((screenSize.width - frameSize.width) / 2,(screenSize.height - frameSize.height) / 2);
-        this.editor.addObserver(tmp);
-        this.editor.addObserver(trans);
         this.editor.addObserver(this.treeGuiView1);
         this.editor.addObserver(cont);
         this.editor.addObserver(proprietesView2);
@@ -215,12 +213,12 @@ public class MainView extends javax.swing.JFrame {
 
         jMenu2.setText("Edit");
 
-        jMenuItem5.setAction(MainCrontroller.getInstance().createAction("Undo", UndoCommand.class));
+        jMenuItem5.setAction(CommandProcessor.getInstance().createAction("Undo", UndoCommand.class));
         jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem5.setText("Undo");
         jMenu2.add(jMenuItem5);
 
-        jMenuItem7.setAction(MainCrontroller.getInstance().createAction("Redo", RedoCommand.class));
+        jMenuItem7.setAction(CommandProcessor.getInstance().createAction("Redo", RedoCommand.class));
         jMenuItem7.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem7.setText("Redo");
         jMenu2.add(jMenuItem7);
