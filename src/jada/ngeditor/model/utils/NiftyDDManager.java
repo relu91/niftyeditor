@@ -108,5 +108,46 @@ public class NiftyDDManager {
         LinkedList<GElement> elements = dragged.getParent().getElements();
         return elements.indexOf(dragged);
     }
+    /**
+     * Get the state of the element before is dragged. This is handful to rever actions
+     * like move.
+     * @return 
+     */
+    public ElementState getElementState(){
+        return new ElementState(previousX, previousY, previousIndex);
+    }
+
+   public static class ElementState {
+        private final int x;
+        private final int y;
+        private final int index;
+
+        public ElementState(int x, int y, int index) {
+            this.x = x;
+            this.y = y;
+            this.index = index;
+        }
+
+        /**
+         * @return the x
+         */
+        public int getX() {
+            return x;
+        }
+
+        /**
+         * @return the y
+         */
+        public int getY() {
+            return y;
+        }
+
+        /**
+         * @return the index
+         */
+        public int getIndex() {
+            return index;
+        }
+    }
     
 }

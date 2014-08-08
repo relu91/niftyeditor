@@ -83,6 +83,7 @@ public class PaletteDropTarget extends DropTarget implements Observer {
                     MoveCommand command = MainCrontroller.getInstance().getCommand(MoveCommand.class);
                   command.setElement(from);
                   command.setTo(dtde.getLocation());
+                  command.setElementState(comp.getDDManager().getElementState());
                   MainCrontroller.getInstance().excuteCommand(command);
                comp.getDDManager().endDrag();
                dtde.dropComplete(true);
