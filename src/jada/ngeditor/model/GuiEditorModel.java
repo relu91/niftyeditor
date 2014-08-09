@@ -54,6 +54,12 @@ public class GuiEditorModel extends Observable {
      * @param current the current GUI to set
      */
     public void setCurentGUI(GUI current) {
+        if(current.equals(this.current)){
+            return;
+        }
+        if(!this.guis.contains(current)){
+            this.addGUI(current);
+        }
         this.current = current;
         this.setChanged();
         this.notifyObservers();

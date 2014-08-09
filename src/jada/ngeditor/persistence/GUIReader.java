@@ -24,7 +24,9 @@ import jada.ngeditor.model.elements.specials.GUseStyle;
 import jada.ngeditor.model.exception.NoProductException;
 import jada.ngeditor.model.utils.ClassUtils;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -57,11 +59,13 @@ public class GUIReader {
         this.errors = new HashSet<String>();
         gElementFactory = new GUIReader.GElementFactory();
     }
-
     public GUI readGUI(File f) throws ParserConfigurationException, IOException, SAXException, NoProductException {
+          return this.readGUI(new FileInputStream(f));
+    }
+    public GUI readGUI(InputStream is) throws ParserConfigurationException, IOException, SAXException, NoProductException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
-        Document document = builder.parse(f);
+        Document document = builder.parse(is);
         document.getDocumentElement().normalize();
         GUI result = GUIFactory.getInstance().createGUI(loader);
         IDgenerator.getInstance().invalidate();

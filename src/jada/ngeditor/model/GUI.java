@@ -68,10 +68,11 @@ public class GUI extends Observable {
     private GScreen currentS;
     private final Selection selection;
     private GLayer currentL;
-
+    private int ID;
     public GUI() {
         manager = null;
         selection = null;
+        ID = GUI.GUIID++;
     }
 
     /**
@@ -83,7 +84,7 @@ public class GUI extends Observable {
         this.manager = nifty;
         this.screens = new LinkedList<GScreen>();
         this.currentS = null;
-        this.GUIID++;
+        ID = GUI.GUIID++;
         this.assetsFile = new File(".");
         this.selection = new Selection();
     }
@@ -226,11 +227,11 @@ public class GUI extends Observable {
 
     @Override
     public String toString() {
-        return "GUI: " + this.GUIID;
+        return "GUI: " + this.ID;
     }
 
     public int getGUIid() {
-        return this.GUIID;
+        return this.ID;
     }
 
     public GLayer getTopLayer() {
@@ -296,4 +297,15 @@ public class GUI extends Observable {
     public void setCurrentLayer(GLayer currentL) {
         this.currentL = currentL;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof GUI)){
+            return false;
+        }
+        GUI object = (GUI) obj;
+        return ID == object.ID; //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
 }

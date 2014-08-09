@@ -58,7 +58,9 @@ public class FileChooserEditor extends AbstractCellEditor implements TableCellEd
         jFileChooser1.addPropertyChangeListener(JFileChooser.SELECTED_FILE_CHANGED_PROPERTY, this);
         this.assets = assets;
     }
-
+    public JFileChooser getFileChooser(){
+        return this.jFileChooser1;
+    }
     @Override
     public Object getCellEditorValue() {
         return this.editedValue;
@@ -71,32 +73,37 @@ public class FileChooserEditor extends AbstractCellEditor implements TableCellEd
                 public void run(){
                      int res = jFileChooser1.showOpenDialog(null);
              if(res == JFileChooser.APPROVE_OPTION){
-                 ButtonModel selection = group.getSelection(); 
-                 File selected = jFileChooser1.getSelectedFile();
-                 if(selection.equals(absolute.getModel())){
-                    editedValue= selected.getAbsolutePath();
-                 }else if (selection.equals(copy.getModel())){
-                     
-                     try { 
-                         File dest = new File(assets.getAbsolutePath()+"//"+selected.getName());
-                         FileUtils.copyFile(selected, dest);
-                         editedValue = assets.toURI().relativize(dest.toURI()).getPath();
-                     } catch (IOException ex) {
-                         Logger.getLogger(FileChooserEditor.class.getName()).log(Level.SEVERE, null, ex);
-                     }
-                     
-                 }else{
-                       editedValue= createReletive(selected);
-                 }
+                        traslateFile();
              }
            fireEditingStopped();
                 }
+
+                
             });
 	  
 	}
 	return new JLabel(String.valueOf(editedValue));
     }
-
+        public String traslateFile() {
+                    File selected = jFileChooser1.getSelectedFile();
+                    ButtonModel selection = group.getSelection(); 
+                    if(selection.equals(absolute.getModel())){
+                       editedValue= selected.getAbsolutePath();
+                    }else if (selection.equals(copy.getModel())){
+                        
+                        try { 
+                            File dest = new File(this.copyText.getText()+"//"+selected.getName());
+                            FileUtils.copyFile(selected, dest);
+                            editedValue = assets.toURI().relativize(dest.toURI()).getPath();
+                        } catch (IOException ex) {
+                            Logger.getLogger(FileChooserEditor.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        
+                    }else{
+                          editedValue= createReletive(selected);
+                    }
+                    return editedValue;
+                }
    private String createReletive(File selected) {
        String res = editedValue;
        String parentPath = selected.getParent();
@@ -194,7 +201,6 @@ public class FileChooserEditor extends AbstractCellEditor implements TableCellEd
     public void propertyChange(PropertyChangeEvent e) {
         boolean update = false;
         String prop = e.getPropertyName();
-
         //If the directory changed, don't show an image.
         if (JFileChooser.DIRECTORY_CHANGED_PROPERTY.equals(prop)) {
             file = null;

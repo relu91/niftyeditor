@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import javax.swing.AbstractCellEditor;
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
@@ -19,6 +20,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.TableCellEditor;
 
 public class SizeEditor extends AbstractCellEditor implements TableCellEditor,ActionListener,PropertyChangeListener {
+    private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     private JPanel editorPane;
     private ButtonGroup group;
     private JRadioButton perc;
@@ -88,7 +90,14 @@ public class SizeEditor extends AbstractCellEditor implements TableCellEditor,Ac
 	
 	return new JLabel(this.edited.toString());
     }
-
+    public Component getComponent(){
+        return this.editorPane;
+    }
+    
+    public void setValue(Object value){
+        SizeValue val = new SizeValue(value.toString());
+        this.setUpByType(val);
+    }
     private void setUpByType(Object value) {
 	if(value == null) {
 	   this.px.setEnabled(true);
@@ -117,7 +126,9 @@ public class SizeEditor extends AbstractCellEditor implements TableCellEditor,Ac
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         if(fill.equals(source)){
+            SizeValue old = this.edited;
             this.setUpByType(new SizeValue("*"));
+             pcs.firePropertyChange("value",old, edited); //event forwarding
         }else if(px.equals(source)){
             this.setUpByType(new SizeValue("0px"));
         }else if(perc.equals(source)){
@@ -129,6 +140,18 @@ public class SizeEditor extends AbstractCellEditor implements TableCellEditor,Ac
     public void propertyChange(PropertyChangeEvent evt) {
         if(evt.getPropertyName().equals("value")){
             this.edited = (SizeValue) evt.getNewValue();
+            pcs.firePropertyChange("value",evt.getOldValue(), evt.getNewValue());//event forwarding
         }
     }
+    
+    public void addPropertyChangeListener(PropertyChangeListener listener){
+        pcs.addPropertyChangeListener(listener);
+        
+    }
+    
+    public void removePropertyChangeListener(PropertyChangeListener listener){
+        pcs.removePropertyChangeListener(listener);
+    }
+    
+   
 }

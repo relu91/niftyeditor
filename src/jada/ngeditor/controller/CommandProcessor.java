@@ -6,6 +6,7 @@ package jada.ngeditor.controller;
 
 import com.google.common.annotations.Beta;
 import jada.ngeditor.controller.commands.CommandAction;
+import jada.ngeditor.model.GUI;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
@@ -163,6 +164,14 @@ public class CommandProcessor {
     @Deprecated
     public GUIEditor getGuiEditor(){
         return this.editor;
+    }
+    
+    public void setContext(GUI context){
+        this.editor.getModel().setCurentGUI(context);
+    }
+    
+    public void setContext(int id){
+        this.editor.getModel().setCurrentGUI(id);
     }
    
 }

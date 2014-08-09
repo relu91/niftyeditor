@@ -42,6 +42,7 @@ import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Observer;
@@ -193,6 +194,44 @@ public class GUIEditor extends Observable implements Observer{
             
     }
     
+    /**
+     * Create a new gui from a file with given assetsFolder
+     * @param nifty a valid Nifty instace @see Nifty
+     * @throws ParserConfigurationException if controller failed to create
+     * a valid document instance
+     * @throws IOException
+     * @throws  SAXException
+     * @throws Exception if nifty can't create the gui
+     * @return A string with the elements that weren't loaded
+      */
+     public String createNewGui(Nifty nifty , InputStream stream,File assetsFolder) throws ParserConfigurationException, IOException, SAXException, NoProductException, Exception{
+       GUIReader reader = new GUIReader(nifty);
+       String res = "";
+       this.gui = reader.readGUI(stream);
+       this.gui.setAssetFolder(assetsFolder);
+       res = reader.getTagNotLoaded();
+       final GScreen screen =this.getGui().gettopScreen();
+       for(String sel : nifty.getAllScreensName()){
+                    nifty.removeScreen(sel);
+       }
+       writer = new GUIWriter(gui);
+      nifty.scheduleEndOfFrameElementAction(new Reload(nifty, screen.getID()), new EndNotify() {
+
+            @Override
+            public void perform() {
+               setChanged();
+               notifyObservers(new ReloadGuiEvent(gui));
+               clearChanged();
+            }
+        });
+       currentL=gui.getTopLayer();
+       currentS=gui.gettopScreen();
+       currentlayers.addAll(gui.getLayers());
+       dragDropManager = new NiftyDDManager(nifty);
+       this.model.setCurentGUI(gui);
+       return res;
+            
+    }
     public void saveGui(String filename) throws FileNotFoundException, JAXBException{
         writer.writeGUI(filename);
     }
