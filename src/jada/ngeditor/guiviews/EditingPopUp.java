@@ -5,6 +5,10 @@
 package jada.ngeditor.guiviews;
 
 import jada.ngeditor.controller.CommandProcessor;
+import jada.ngeditor.controller.commands.DeleteCommand;
+import jada.ngeditor.controller.commands.EditAttributeCommand;
+import jada.ngeditor.controller.commands.NormalizeCommand;
+import jada.ngeditor.controller.commands.VisibilityCommand;
 import jada.ngeditor.model.GUI;
 import jada.ngeditor.model.GuiEditorModel;
 import java.awt.KeyboardFocusManager;
@@ -15,10 +19,13 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import javax.swing.TransferHandler;
@@ -90,40 +97,50 @@ public class EditingPopUp extends JPopupMenu implements Observer{
         
         @Override
         public void actionPerformed(ActionEvent e) {
-           // editor.getElementEditor().fill();
+            try {
+                EditAttributeCommand c1 = CommandProcessor.getInstance().getCommand(EditAttributeCommand.class);
+                EditAttributeCommand c2 = CommandProcessor.getInstance().getCommand(EditAttributeCommand.class);
+                c1.setAttribute("width");
+                c1.setValue("*");
+                c2.setAttribute("height");
+                c2.setValue("*");
+                CommandProcessor.getInstance().batchCommand(c2);
+                CommandProcessor.getInstance().batchCommand(c1);
+                CommandProcessor.getInstance().executeBatch();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Can't fill the element : "+ex);
+            }
         }
         
     }
     
     private class Normalize extends AbstractAction{
-        private final int action;
+        private final byte action;
 
         public Normalize(String name) {
             super(name);
             //Just to not make 3 inner class
             if(name.equalsIgnoreCase("normalize position")){
-                action = 0;
+                action = NormalizeCommand.POSITION;
             }else if(name.equalsIgnoreCase("normalize size")){
-                action = 1;
+                action = NormalizeCommand.SIZE;
             }else
-                action = 2;
+                action =  NormalizeCommand.ALL;
             
         }
         
         
         @Override
         public void actionPerformed(ActionEvent e) {
-            switch(action){
-                case 0 :
-                   // editor.getElementEditor().normalizeSize();
-                    break;
-                case 1 :
-                  //  editor.getElementEditor().normalizePosition();
-                    break;
-                default: 
-                   // editor.getElementEditor().normalize();
+            try {
+                NormalizeCommand command = CommandProcessor.getInstance().getCommand(NormalizeCommand.class);
+                command.setCommand(action);
+                CommandProcessor.getInstance().excuteCommand(command);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Can't normalize the element : "+ex);
             }
-        }
+            
+        }  
         
     }
     
@@ -135,7 +152,13 @@ public class EditingPopUp extends JPopupMenu implements Observer{
 
         @Override
         public void actionPerformed(ActionEvent e) {
-          // editor.getElementEditor().setVisibileSelected(false);
+         try {
+                VisibilityCommand command = CommandProcessor.getInstance().getCommand(VisibilityCommand.class);
+                command.setVisibility(false);
+                CommandProcessor.getInstance().excuteCommand(command);
+            } catch (Exception ex) {
+                Logger.getLogger(EditingPopUp.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         
         
@@ -149,8 +172,14 @@ public class EditingPopUp extends JPopupMenu implements Observer{
 
         @Override
         public void actionPerformed(ActionEvent e) {
-          // editor.getElementEditor().setVisibileSelected(true);
-        }
+            try {
+                VisibilityCommand command = CommandProcessor.getInstance().getCommand(VisibilityCommand.class);
+                command.setVisibility(true);
+                CommandProcessor.getInstance().excuteCommand(command);
+            } catch (Exception ex) {
+                Logger.getLogger(EditingPopUp.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }  
         
         
     }
@@ -163,7 +192,12 @@ public class EditingPopUp extends JPopupMenu implements Observer{
 
         @Override
         public void actionPerformed(ActionEvent e) {
-          // editor.removeSelected();
+            DeleteCommand command = CommandProcessor.getInstance().getCommand(DeleteCommand.class);
+            try {
+                CommandProcessor.getInstance().excuteCommand(command);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Can't delete the element : "+ex);
+            }
         }
         
         

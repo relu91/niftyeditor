@@ -366,24 +366,28 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if(!this.gui.getSelection().isEmpty()){
+        if(GuiSelectionListener.isArrowKey(e.getKeyCode())){
+            
         
+        if(!this.gui.getSelection().isEmpty()){
+        e.consume();
         GElement sel = this.getSelected();
         String layout = sel.getParent().getAttribute("childLayout");
         if(layout.equals("horizontal")) {
             horizontalBeahvior(sel,e.getKeyCode());
-            e.consume();
+            
         }
         else if(layout.equals("vertical")) {
             verticalBeahvior(sel,e.getKeyCode());
-             e.consume();
+             
         }
         else if(layout.equals("absolute")) {
             absoluteBehavior(sel,e.getKeyCode());
-             e.consume();
+            
         }else if(sel instanceof GLayer){
             layerBeahvior(sel,e.getKeyCode());
-             e.consume();
+            
+        }
         }
         }
         //NOTE: why it was here?
@@ -507,4 +511,9 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
             sel.setIndex(index);
         }
     }
+    
+    private static boolean isArrowKey(int keyCode){
+        return keyCode == KeyEvent.VK_DOWN || keyCode==KeyEvent.VK_UP || keyCode==KeyEvent.VK_LEFT || keyCode ==KeyEvent.VK_RIGHT ;
+    }
+    
 }

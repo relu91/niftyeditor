@@ -114,11 +114,11 @@ public class ProprietesView extends javax.swing.JPanel implements Observer{
             GElement ele = event.getElement();
             fillTable(ele, model);
            
-           //end safe zone
-           jTable1.getModel().addTableModelListener(listener);
+          
          
        }
-        
+         //end safe zone
+           jTable1.getModel().addTableModelListener(listener);
         
      
     }

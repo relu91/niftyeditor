@@ -50,6 +50,8 @@ public class TreeGuiView extends javax.swing.JPanel implements Observer {
      */
     public TreeGuiView() {
         initComponents();
+         TreeTrasferHandling trasferHandling = new TreeTrasferHandling();
+        this.jTree2.setTransferHandler(trasferHandling);
         CommandProcessor.getInstance().getObservable().addObserver(this);
         ActionMap map = this.getActionMap();
        map.put(TransferHandler.getCopyAction().getValue(javax.swing.Action.NAME),
@@ -65,8 +67,6 @@ public class TreeGuiView extends javax.swing.JPanel implements Observer {
     }
 
     public void initView(GUI gui) {
-        TreeTrasferHandling trasferHandling = new TreeTrasferHandling();
-        this.jTree2.setTransferHandler(trasferHandling);
         this.jTree2.addMouseListener(new PopUpShowListener(new EditingPopUp()));
         this.jTree2.addTreeSelectionListener(new ElementSelectionListener());
         jTree2.setCellRenderer(new NiftyTreeRender());
