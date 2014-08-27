@@ -235,6 +235,11 @@ public class GUIEditor extends Observable implements Observer{
     public void saveGui(String filename) throws FileNotFoundException, JAXBException{
         writer.writeGUI(filename);
     }
+    
+    public void saveGui(GUI gui,String filename) throws JAXBException, ClassNotFoundException, ClassNotFoundException, FileNotFoundException, IOException{
+        GUIWriter writer = new GUIWriter(gui);
+        writer.writeGUI(filename);
+    }
     /**
      * Refresh the current gui . It causes a call to nifty.fromXml method. 
      * @param nifty
@@ -588,6 +593,15 @@ public class GUIEditor extends Observable implements Observer{
     @Override
     public void update(Observable o, Object arg) {
        this.gui = this.model.getCurrent();
+        try {
+            this.writer = new GUIWriter(gui);
+        } catch (JAXBException ex) {
+            Logger.getLogger(GUIEditor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(GUIEditor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(GUIEditor.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private class Reload implements de.lessvoid.nifty.elements.Action{

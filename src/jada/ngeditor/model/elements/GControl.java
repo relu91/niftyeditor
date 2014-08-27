@@ -11,6 +11,7 @@ import jada.ngeditor.persistence.XmlTags;
 import java.util.Map;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.bushe.swing.event.EventTopicSubscriber;
 
 /**
  *
@@ -20,6 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public abstract class GControl extends GElement{
     
     protected String name;
+    private final SpecialRerefresher specialRerefresher = new SpecialRerefresher();
     @XmlAttribute
     public String getName() {
         return name;
@@ -53,7 +55,7 @@ public abstract class GControl extends GElement{
 
     @Override
     protected void internalRefresh(Nifty nifty, Attributes att) {
-         int index = parent.getNiftyElement().getChildren().indexOf(nElement);
+        int index = parent.getNiftyElement().getChildren().indexOf(nElement);
         final GElement telement = this;
 
         nElement.markForRemoval(new EndNotify() {
@@ -76,6 +78,9 @@ public abstract class GControl extends GElement{
 
         nElement = builder.build(nifty, nifty.getCurrentScreen(), this.parent.getDropContext(), index);
         nifty.getCurrentScreen().layoutLayers();
+        String keyWord = "style-refresh:"+attributes.get("style");
+        nifty.getEventService().unsubscribe(keyWord, specialRerefresher);
+        nifty.getEventService().subscribe(keyWord, specialRerefresher);
     }
     @Override
     public void initDefault() {
@@ -85,6 +90,17 @@ public abstract class GControl extends GElement{
     @Override
     public GElement create(String id) {
         return null;
+    }
+
+    private class SpecialRerefresher implements EventTopicSubscriber {
+
+        public SpecialRerefresher() {
+        }
+
+        @Override
+        public void onEvent(String string, Object t) {
+            GControl.this.refresh();
+        }
     }
     
     

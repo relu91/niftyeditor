@@ -30,8 +30,10 @@ import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.visitor.Visitor;
 import java.awt.geom.Point2D;
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Observable;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -93,6 +95,8 @@ public class GUI extends Observable {
         this.screens.add(screen);
         screen.createNiftyElement(manager);
         this.goTo(screen);
+        this.setChanged();
+        this.notifyObservers();
         //Needed to add other children after nifty has changed the screen.
         if (!screen.getElements().isEmpty()) {
             manager.scheduleEndOfFrameElementAction(new Action() {
@@ -265,17 +269,65 @@ public class GUI extends Observable {
     public File getAssetFolder() {
         return assetsFile;
     }
-
+    /**
+     * Simple add UseControls in the gui hiearchy
+     * @param controls 
+     */
     public void addUseControls(GUseControls controls) {
-        controls.createInNifty(manager);
         this.useControls.add(controls);
+        this.setChanged();
+        this.notifyObservers();
     }
-
+    /**
+     * Simple add and load UseControls.
+     * @param controls 
+     */
+    public void addLoadUseControls(GUseControls controls) {
+        controls.createInNifty(manager);
+        this.addUseControls(controls);
+    }
+    /**
+     * Simple add UseStyles in the gui hiearchy
+     * @param controls 
+     */
     public void addUseStyles(GUseStyle styles) {
-        styles.createInNifty(manager);
         this.useStyles.add(styles);
+        this.setChanged();
+        this.notifyObservers();
     }
-
+    /**
+     * Simple add and load UseStyles in the gui hiearchy
+     * @param controls 
+     */
+    public void addLoadUseStyle(GUseStyle styles){
+        //Nifty adds default styles by default no needs to add again.
+        if(!styles.getFilename().equals("nifty-default-styles")){
+            styles.createInNifty(manager);
+        }
+        this.addUseStyles(styles);
+    }
+    
+    public Collection<GUseStyle> getUseStyles(){
+        return Collections.unmodifiableCollection(this.useStyles);
+    }
+    
+    public Collection<GUseControls> getUseControls(){
+        return Collections.unmodifiableCollection(this.useControls);
+    }
+    public void reoloadStyles(String filename){
+        for(GUseStyle s : this.useStyles){
+            if(s.getFilename().endsWith(filename)){
+                s.createInNifty(manager);
+            }
+        }
+    }
+    public void reloadStyles(InputStream input,String filename){
+        for(GUseStyle s : this.useStyles){
+            if(s.getFilename().endsWith(filename)){
+                manager.loadStyleFileFromStream(input);
+            }
+        }
+    }
     /**
      *
      * @return the selection
@@ -306,6 +358,10 @@ public class GUI extends Observable {
         GUI object = (GUI) obj;
         return ID == object.ID; //To change body of generated methods, choose Tools | Templates.
     }
-    
+
+    @Override
+    public int hashCode() {
+        return ID;
+    }
     
 }

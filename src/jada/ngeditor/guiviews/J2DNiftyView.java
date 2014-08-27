@@ -139,8 +139,6 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
 	nifty = new Nifty(renderDevice,  new SoudDevicenull(), inputSystem,new TimeProvider());
        
         java.net.URL empty = getClass().getResource("/jada/ngeditor/resources/empty.xml");
-        nifty.loadStyleFile("nifty-default-styles.xml");
-        nifty.loadControlFile("nifty-default-controls.xml");
         try {
             nifty.fromXml(empty.getFile(),empty.openStream(), "screen1");
         } catch (IOException ex) {
@@ -224,6 +222,7 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
     public void newGui(GUI toChange) {
        
        toChange.addObserver(this);
+       toChange.getSelection().addObserver(this);
        this.setClickListener( new GuiSelectionListener(toChange,this));
        this.selecting=false;
     }

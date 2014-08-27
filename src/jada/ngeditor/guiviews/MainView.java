@@ -16,6 +16,7 @@
 package jada.ngeditor.guiviews;
 
 
+import jada.ngeditor.AddStyleAction;
 import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.controller.CommandProcessor;
 import jada.ngeditor.controller.commands.RedoCommand;
@@ -107,6 +108,8 @@ public class MainView extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem8 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
@@ -205,17 +208,22 @@ public class MainView extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jMenuItem3);
+        jMenu1.add(jSeparator2);
+
+        jMenuItem8.setAction(new AddStyleAction());
+        jMenuItem8.setText("AddStyle");
+        jMenu1.add(jMenuItem8);
 
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
 
-        jMenuItem5.setAction(CommandProcessor.getInstance().createAction("Undo", UndoCommand.class));
+        jMenuItem5.setAction(jada.ngeditor.controller.CommandProcessor.getInstance().createAction("Undo", UndoCommand.class));
         jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem5.setText("Undo");
         jMenu2.add(jMenuItem5);
 
-        jMenuItem7.setAction(CommandProcessor.getInstance().createAction("Redo", RedoCommand.class));
+        jMenuItem7.setAction(jada.ngeditor.controller.CommandProcessor.getInstance().createAction("Redo", RedoCommand.class));
         jMenuItem7.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem7.setText("Redo");
         jMenu2.add(jMenuItem7);
@@ -452,9 +460,11 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private jada.ngeditor.guiviews.PaletteView paletteView2;

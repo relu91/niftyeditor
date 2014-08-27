@@ -16,7 +16,6 @@ package jada.ngeditor.controller;
 
 import de.lessvoid.nifty.elements.Element;
 import jada.ngeditor.model.IDgenerator;
-import jada.ngeditor.persistence.XmlTags;
 import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.elements.GScreen;
 

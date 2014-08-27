@@ -142,10 +142,15 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
                     EditAttributeCommand yCommand = CommandProcessor.getInstance().getCommand(EditAttributeCommand.class);
                     EditAttributeCommand wCommand = CommandProcessor.getInstance().getCommand(EditAttributeCommand.class);
                     EditAttributeCommand hCommand = CommandProcessor.getInstance().getCommand(EditAttributeCommand.class);
+                    Element parent = this.getSelected().getParent().getNiftyElement();
+                    float hp = parent.getHeight();
+                    float wp = parent.getWidth();
+                    int X = this.getSelected().getNiftyElement().getConstraintX().getValueAsInt(wp);
+                    int Y = this.getSelected().getNiftyElement().getConstraintY().getValueAsInt(hp);
                     xCommand.setAttribute("x");
-                    xCommand.setValue(""+this.selected.x+"px");
+                    xCommand.setValue(""+X+"px");
                     yCommand.setAttribute("y");
-                    yCommand.setValue(""+this.selected.y+"px");
+                    yCommand.setValue(""+Y+"px");
                     wCommand.setAttribute("width");
                     wCommand.setValue(this.selected.width+"px");
                     hCommand.setAttribute("height");
@@ -278,7 +283,7 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
                     this.selected.height+=to;
                     
                     this.getSelected().getNiftyElement().setHeight(selected.height);
-                   // this.gui.getSelected().addAttribute("height",""+selected.height+"px" );
+                  
                      }
                     break;
                   case DIR_SE:
@@ -291,12 +296,12 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
                          this.selected.height+=toy;
                   
                     this.getSelected().getNiftyElement().setHeight(selected.height);
-                    //this.gui.getSelected().addAttribute("height",""+selected.height+"px" );
+                    
                    
                     this.selected.width+=to;
                    
                     this.getSelected().getNiftyElement().setWidth(selected.width);
-                   // this.gui.getSelected().addAttribute("width",""+selected.width+"px" );
+                   
                     
                     if(e.isControlDown()){
                         Point gtry = new Point((int)selected.getMaxX(),(int)selected.getMaxY());
@@ -312,7 +317,7 @@ public class GuiSelectionListener extends MouseAdapter implements ActionListener
                     this.selected.height+=to;
                     this.selected.y=e.getY();
                     
-                   // this.gui.getSelected().addAttribute("height",""+selected.height+"px" );
+                   
                     if(this.getSelected().getParent().getAttribute("childLayout").equals("absolute")){
                         int y = this.getSelected().getParent().getNiftyElement().getY();
                         this.getSelected().getNiftyElement().setConstraintY(SizeValue.px(e.getY()-y));
