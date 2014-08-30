@@ -4,6 +4,7 @@
  */
 package jada.ngeditor.guiviews;
 
+import jada.ngeditor.AddCostumControlAction;
 import jada.ngeditor.controller.CommandProcessor;
 import jada.ngeditor.controller.commands.DeleteCommand;
 import jada.ngeditor.controller.commands.EditAttributeCommand;
@@ -70,6 +71,7 @@ public class EditingPopUp extends JPopupMenu implements Observer{
         this.add(menuItem);
         this.add(menuItemCut);
         this.add(new Separator());
+        this.add(new JMenuItem(new AddCostumControlAction()));
         this.add(new JMenuItem(new Show()));
         this.add(new JMenuItem(new Hide()));
         this.add(new JMenuItem(new Delete()));

@@ -18,6 +18,7 @@ import de.lessvoid.nifty.Nifty;
 import jada.ngeditor.model.GUI;
 import jada.ngeditor.model.GUIFactory;
 import jada.ngeditor.model.IDgenerator;
+import jada.ngeditor.model.elements.GCostumControl;
 import jada.ngeditor.model.elements.GElement;
 import jada.ngeditor.model.elements.specials.GUseControls;
 import jada.ngeditor.model.elements.specials.GUseStyle;
@@ -163,9 +164,9 @@ public class GUIReader {
             try {
 
                 if ("control".equals(tag)) {
-                    gchild = this.internalInst(element.getAttribute("name"), element.getAttribute("id"));
+                    gchild = this.internalInst(element.getAttribute("name"), element.getAttribute("id"),true);
                 } else {
-                    gchild = this.internalInst(tag, element.getAttribute("id"));
+                    gchild = this.internalInst(tag, element.getAttribute("id"),false);
                 }
                 HashMap<QName, String> temp = new HashMap<QName, String>();
                 NamedNodeMap attr = element.getAttributes();
@@ -181,7 +182,10 @@ public class GUIReader {
             return gchild;
         }
 
-        private GElement internalInst(String name, String id) throws NoSuchMethodException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        private GElement internalInst(String name, String id,boolean control) throws NoSuchMethodException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+            if(control && !mappings.containsKey(name)){
+                return new GCostumControl(name, id);
+            }
             Constructor<? extends GElement> constructor = this.mappings.get(name).getConstructor(String.class);
             if (IDgenerator.getInstance().isUnique(this.mappings.get(name), id)) {
                 IDgenerator.getInstance().addID(id, this.mappings.get(name));

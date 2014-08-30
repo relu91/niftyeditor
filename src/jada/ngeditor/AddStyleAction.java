@@ -23,11 +23,11 @@ public class AddStyleAction extends AbstractAction implements Observer{
     @Override
     public void actionPerformed(ActionEvent e) {
         JFileChooser chooser = new JFileChooser(gui.getAssetFolder());
-        int result = chooser.showSaveDialog(null);
+        int result = chooser.showOpenDialog(null);
         if(result == JFileChooser.APPROVE_OPTION){
             GUseStyle style = new GUseStyle();
             style.setFilename(this.createReletive(chooser.getSelectedFile()));
-            gui.addUseStyles(style);
+            gui.addLoadUseStyle(style);
         }
     }
 

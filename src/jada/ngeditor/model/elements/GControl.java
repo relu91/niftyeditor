@@ -37,6 +37,7 @@ public abstract class GControl extends GElement{
     
     public GControl(String id) throws IllegalArgumentException {
         super(id);
+        
     }
     
     @Override

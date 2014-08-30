@@ -314,6 +314,18 @@ public class GUI extends Observable {
     public Collection<GUseControls> getUseControls(){
         return Collections.unmodifiableCollection(this.useControls);
     }
+    
+    public void removeStyle(GUseStyle style){
+        this.useStyles.remove(style);
+        this.setChanged();
+        this.notifyObservers();
+    }
+    
+    public void removeControl(GUseControls control){
+        this.useControls.remove(control);
+        this.setChanged();
+        this.notifyObservers();
+    }
     public void reoloadStyles(String filename){
         for(GUseStyle s : this.useStyles){
             if(s.getFilename().endsWith(filename)){

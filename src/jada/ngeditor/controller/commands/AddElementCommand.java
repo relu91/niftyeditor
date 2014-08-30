@@ -48,7 +48,7 @@ public class AddElementCommand extends AbstractUndoableEdit implements Command{
 
     @Override
     public void perform() throws Exception {
-        if(child == null || point == null){
+        if(child == null || (point == null && pointMode) || (parent == null && !pointMode)){
             throw new IllegalStateException("No child or point to add");
         }
         if(pointMode){
@@ -76,6 +76,10 @@ public class AddElementCommand extends AbstractUndoableEdit implements Command{
     public void setParent(GElement parent){
         pointMode= false;
         this.parent = parent;
+    }
+    
+    public void setParentSelected(){
+        this.setParent(editor.getGui().getSelection().getFirst());
     }
 
     @Override

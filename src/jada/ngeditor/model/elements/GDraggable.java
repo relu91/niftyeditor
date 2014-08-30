@@ -33,7 +33,7 @@ public class GDraggable extends GControl{
 
     @Override
     public GElement create(String id) {
-        return new GDraggable(id);
+        return null;
     }
 
     @Override
