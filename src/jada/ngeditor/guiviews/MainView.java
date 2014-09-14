@@ -16,6 +16,7 @@
 package jada.ngeditor.guiviews;
 
 
+import jada.ngeditor.AddControlsAction;
 import jada.ngeditor.AddStyleAction;
 import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.controller.CommandProcessor;
@@ -110,6 +111,7 @@ public class MainView extends javax.swing.JFrame {
         jMenuItem3 = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         jMenuItem8 = new javax.swing.JMenuItem();
+        jMenuItem9 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
@@ -125,7 +127,7 @@ public class MainView extends javax.swing.JFrame {
         jMenuItem4.setText("jMenuItem4");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Nifty-Editor v. 0.5.9");
+        setTitle("Nifty-Editor v. 0.6.0");
         setBackground(new java.awt.Color(51, 51, 51));
         getContentPane().setLayout(new java.awt.BorderLayout(3, 3));
 
@@ -213,6 +215,10 @@ public class MainView extends javax.swing.JFrame {
         jMenuItem8.setAction(new AddStyleAction());
         jMenuItem8.setText("AddStyle");
         jMenu1.add(jMenuItem8);
+
+        jMenuItem9.setAction(new AddControlsAction());
+        jMenuItem9.setText("AddControls");
+        jMenu1.add(jMenuItem9);
 
         jMenuBar1.add(jMenu1);
 
@@ -461,6 +467,7 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;

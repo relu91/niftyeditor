@@ -1,14 +1,11 @@
 package jada.ngeditor;
 
+import com.google.common.base.Strings;
 import jada.ngeditor.controller.CommandProcessor;
 import jada.ngeditor.controller.commands.AddElementCommand;
 import jada.ngeditor.model.IDgenerator;
 import jada.ngeditor.model.elements.GCostumControl;
-import java.awt.Component;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 
@@ -23,7 +20,7 @@ public class AddCostumControlAction extends AbstractAction{
     public void actionPerformed(ActionEvent e) {
         String name ="";
         name = JOptionPane.showInputDialog(null, "Insert the control name");
-        if(!name.equals("")){
+        if(!Strings.isNullOrEmpty(name)){
             AddElementCommand command = CommandProcessor.getInstance().getCommand(AddElementCommand.class);
             command.setParentSelected();
             String id = IDgenerator.getInstance().generate(GCostumControl.class);
