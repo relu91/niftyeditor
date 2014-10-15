@@ -6,6 +6,7 @@ package jada.ngeditor.guiviews;
 
 import jada.ngeditor.AddCostumControlAction;
 import jada.ngeditor.controller.CommandProcessor;
+import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.controller.commands.DeleteCommand;
 import jada.ngeditor.controller.commands.EditAttributeCommand;
 import jada.ngeditor.controller.commands.NormalizeCommand;
@@ -23,6 +24,7 @@ import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -37,13 +39,10 @@ import javax.swing.TransferHandler;
  */
 //TODO: make this class context aware like the popup menu of netbeans(i.e. providing
 // an action map for an element.
-public class EditingPopUp extends JPopupMenu implements Observer{
-    private GUI editor;
-
+public class EditingPopUp extends JPopupMenu {
+    
     public EditingPopUp() {
         super("Edit");
-        CommandProcessor.getInstance().getObservable().addObserver(EditingPopUp.this);
-        
         JMenuItem menuItem = new JMenuItem(TransferHandler.getCopyAction());
          JMenuItem menuItemPaste = new JMenuItem(TransferHandler.getPasteAction());
          JMenuItem menuItemCut = new JMenuItem(TransferHandler.getCutAction());
@@ -81,14 +80,19 @@ public class EditingPopUp extends JPopupMenu implements Observer{
         menu.add(new JMenuItem(new Normalize("Normalize Postion")));
         menu.add(new JMenuItem(new Normalize("Normalize")));
         this.add(menu);
+        this.add(new Separator());
+        //TODO remove this ugly method
+        this.add(new AbstractAction("Test effect") {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GUIEditor guiEditor = CommandProcessor.getInstance().getGuiEditor();
+                guiEditor.getGui().getSelection().getFirst().testUglyEffect();
+            }
+        });
     }
 
-     @Override
-    public void update(Observable o, Object arg) {
-       if(o instanceof GuiEditorModel){
-           this.editor = ((GuiEditorModel)o).getCurrent();
-       }
-    }
+    
     
     
     private class FillAction extends AbstractAction{

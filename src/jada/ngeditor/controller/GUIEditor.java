@@ -268,9 +268,6 @@ public class GUIEditor extends Observable implements Observer{
      */
     public void selectElement(int x,int y){
         this.selectElement(findElement(new Point(x,y)));
-       /* this.setChanged();
-        this.notifyObservers(new Action(Action.SEL,this.selected));
-        this.clearChanged();*/
     }
     
     /**

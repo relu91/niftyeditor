@@ -44,7 +44,7 @@ public class GUIWriter {
         Set<Class<?>> setXmlRoot = reflections.getTypesAnnotatedWith(XmlRootElement.class);
         Class[] classes = setXmlRoot.toArray(new Class[0]);
         
-        JAXBContext jc = JAXBContext.newInstance("jada.ngeditor.model:jada.ngeditor.model.elements:jada.ngeditor.model.elements.specials",this.getClass().getClassLoader());       
+        JAXBContext jc = JAXBContext.newInstance("jada.ngeditor.model:jada.ngeditor.model.elements:jada.ngeditor.model.elements.specials:jada.ngeditor.model.elements.effects",this.getClass().getClassLoader());       
        
         m = jc.createMarshaller();
         m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);

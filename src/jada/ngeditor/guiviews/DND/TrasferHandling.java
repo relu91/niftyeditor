@@ -49,35 +49,27 @@ public class TrasferHandling extends TransferHandler implements Observer{
         super();
         CommandProcessor.getInstance().getObservable().addObserver(this);
     }
-    
+  
     @Override
-    public  Transferable createTransferable(JComponent c) {
-        if(c instanceof NWidget){
-            NWidget comp = (NWidget)c;
+    public Transferable createTransferable(JComponent c) {
+        if (c instanceof NWidget) {
+            NWidget comp = (NWidget) c;
             return comp.getData();
-        } else{
-             if(!coping){
-             Rectangle rec = gui.getSelection().getFirst().getBounds();
-             int a = (int)rec.getCenterX() - gui.getSelection().getFirst().getNiftyElement().getX();
-             int b = (int)rec.getCenterY() - gui.getSelection().getFirst().getNiftyElement().getY();
-             return new WidgetData(gui.getSelection().getFirst(),a,b);
-             }
-             else{
-                if(copyTemplate!=null){
-                   
-                   
-                   return new WidgetData(copyTemplate,0,0);
-                
-                }else
-                    return null;
-             }
+        }
+        if (!coping) {
+            Rectangle rec = gui.getSelection().getFirst().getBounds();
+            int a = (int) rec.getCenterX() - gui.getSelection().getFirst().getNiftyElement().getX();
+            int b = (int) rec.getCenterY() - gui.getSelection().getFirst().getNiftyElement().getY();
+            return new WidgetData(gui.getSelection().getFirst(), a, b);
         }
         
-        
+        if (copyTemplate != null) {
+            return new WidgetData(copyTemplate, 0, 0);
+        } else {
+            return null;
+        }
+
     }
-    
-    
-    
    
     @Override
     public int getSourceActions(JComponent c) {
@@ -88,22 +80,22 @@ public class TrasferHandling extends TransferHandler implements Observer{
     }
     
     @Override
-    public boolean canImport(TransferSupport support){
-       if(support.getComponent() instanceof NWidget ) {
+    public boolean canImport(TransferSupport support) {
+        if (support.getComponent() instanceof NWidget) {
             return false;
-        } 
-       else {
-            try {
-               GElement ele = (GElement) support.getTransferable().getTransferData(WidgetData.FLAVOR);
-               if(ele instanceof GLayer)
-                        return false;
-            } catch (UnsupportedFlavorException ex) {
-                Logger.getLogger(TrasferHandling.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(TrasferHandling.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            GElement ele = (GElement) support.getTransferable().getTransferData(WidgetData.FLAVOR);
+            if (ele instanceof GLayer) {
+                return false;
             }
-       }
-       return true;
+        } catch (UnsupportedFlavorException ex) {
+            Logger.getLogger(TrasferHandling.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(TrasferHandling.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return true;
     }
 
     @Override

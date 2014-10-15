@@ -97,5 +97,5 @@ public class GScreen extends GElement{
     public Screen getScreen(){
         return nElement.getNifty().getScreen(id);
     }
-    
+   
 }

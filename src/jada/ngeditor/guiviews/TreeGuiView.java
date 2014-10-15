@@ -158,12 +158,7 @@ public class TreeGuiView extends javax.swing.JPanel implements Observer {
         } else if (o instanceof GuiEditorModel) {
             this.newGui(((GuiEditorModel) o).getCurrent());
         } else if (arg instanceof UpdateElementEvent) {
-            UpdateElementEvent event = (UpdateElementEvent) arg;
-            int i = this.getIndex(event.getElement());
-            DefaultMutableTreeNode node = searchNode(event.getElement());
-            DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
-            parent.insert(node, i);
-            jTree2.updateUI();
+            updateNode(arg);
         } else if (arg instanceof SelectionChanged){
             SelectionChanged event = (SelectionChanged) arg;
             if(!event.getNewSelection().isEmpty()){
@@ -179,6 +174,20 @@ public class TreeGuiView extends javax.swing.JPanel implements Observer {
             }
             
         }
+    }
+
+    private void updateNode(Object arg) {
+        UpdateElementEvent event = (UpdateElementEvent) arg;
+        if(event.getElement() instanceof GScreen){
+            //This function update the position in the tree
+            //but Screens never needs such of feature. 
+            return;
+        }
+        int i = this.getIndex(event.getElement());
+        DefaultMutableTreeNode node = searchNode(event.getElement());
+        DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
+        parent.insert(node, i);
+        jTree2.updateUI();
     }
 
     public DefaultMutableTreeNode searchNode(Object toFind) {

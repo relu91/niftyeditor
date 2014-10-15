@@ -94,9 +94,8 @@ public class GUI extends Observable {
     public void addScreen(final GScreen screen) {
         this.screens.add(screen);
         screen.createNiftyElement(manager);
+        this.currentS = screen;
         this.goTo(screen);
-        this.setChanged();
-        this.notifyObservers();
         //Needed to add other children after nifty has changed the screen.
         if (!screen.getElements().isEmpty()) {
             manager.scheduleEndOfFrameElementAction(new Action() {
@@ -108,6 +107,8 @@ public class GUI extends Observable {
                 }
             }, null);
         }
+        this.setChanged();
+        this.notifyObservers(new AddElementEvent(screen));
     }
 
     public LinkedList<GScreen> getScreens() {

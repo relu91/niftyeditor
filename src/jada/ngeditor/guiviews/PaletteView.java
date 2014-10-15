@@ -17,6 +17,9 @@ package jada.ngeditor.guiviews;
 import jada.ngeditor.guiviews.palettecomponents.*;
 import jada.ngeditor.model.elements.GControl;
 import jada.ngeditor.model.elements.GElement;
+import jada.ngeditor.model.elements.effects.GFade;
+import jada.ngeditor.model.elements.effects.GMove;
+import jada.ngeditor.model.elements.effects.GShake;
 import jada.ngeditor.model.utils.ClassUtils;
 import java.lang.reflect.Modifier;
 import java.util.Set;
@@ -51,6 +54,9 @@ public class PaletteView extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         controlsPane = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        effectPane = new javax.swing.JPanel();
 
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.PAGE_AXIS));
 
@@ -78,25 +84,33 @@ public class PaletteView extends javax.swing.JPanel {
 
         controlsPane.setLayout(new java.awt.GridLayout(0, 2));
         add(controlsPane);
+
+        jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jLabel3.setFont(new java.awt.Font("Simplified Arabic", 0, 14)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel3.setText("Effects");
+        jPanel3.add(jLabel3);
+
+        add(jPanel3);
+
+        effectPane.setLayout(new java.awt.GridLayout(0, 2));
+        add(effectPane);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel controlsPane;
+    private javax.swing.JPanel effectPane;
     private javax.swing.JPanel elementsPane;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
 
     private void addPaletteComponents(){
         try{
-            /* Class[] classes = ClassUtils.getClasses("jada.ngeditor.model.elements",new ClassUtils.Predicate<Class>() {
-            @Override
-            public boolean apply(Class object) {
-            boolean abs = Modifier.isAbstract( object.getModifiers() );
-            return !abs && !object.isAnonymousClass() && GElement.class.isAssignableFrom(object);
-            }
-            });*/
             Set<Class<? extends GElement>> classes = ClassUtils.findAllGElements();
             for(Class c : classes){
                 if(this.isConcreteClass(c)){
@@ -111,6 +125,12 @@ public class PaletteView extends javax.swing.JPanel {
     }catch (Exception e){
         e.printStackTrace();
     }
+    NWidgetEffect shake = new NWidgetEffect(new GShake());
+    NWidgetEffect fade = new NWidgetEffect(new GFade());
+    NWidgetEffect move = new NWidgetEffect(new GMove());
+    this.effectPane.add(fade);
+    this.effectPane.add(shake);
+    this.effectPane.add(move);
     }
     
     private boolean isConcreteClass(Class object){

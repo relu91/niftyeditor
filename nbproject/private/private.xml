@@ -1,4 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/Users/cris/Documents/NetBeansProjects/Nifty-Editor0.5.7/src/jada/ngeditor/model/elements/effects/GEffect.java</file>
+            <file>file:/C:/Users/cris/Documents/NetBeansProjects/Nifty-Editor0.5.7/src/jada/ngeditor/guiviews/palettecomponents/NWidgetEffect.java</file>
+            <file>file:/C:/Users/cris/Documents/NetBeansProjects/Nifty-Editor0.5.7/src/jada/ngeditor/guiviews/DND/TreeTrasferHandling.java</file>
+            <file>file:/C:/Users/cris/Documents/NetBeansProjects/Nifty-Editor0.5.7/src/jada/ngeditor/listeners/events/SelectionChanged.java</file>
+            <file>file:/C:/Users/cris/Documents/NetBeansProjects/Nifty-Editor0.5.7/src/jada/ngeditor/guiviews/palettecomponents/NWidget.java</file>
+            <file>file:/C:/Users/cris/Documents/NetBeansProjects/Nifty-Editor0.5.7/src/jada/ngeditor/guiviews/DND/DragHandler.java</file>
+            <file>file:/C:/Users/cris/Documents/NetBeansProjects/Nifty-Editor0.5.7/src/jada/ngeditor/model/elements/effects/GShake.java</file>
+            <file>file:/C:/Users/cris/Documents/NetBeansProjects/Nifty-Editor0.5.7/src/jada/ngeditor/controller/commands/SelectCommand.java</file>
+            <file>file:/C:/Users/cris/Documents/NetBeansProjects/Nifty-Editor0.5.7/src/jada/ngeditor/controller/GUIEditor.java</file>
+            <file>file:/C:/Users/cris/Documents/NetBeansProjects/Nifty-Editor0.5.7/src/jada/ngeditor/guiviews/DND/WidgetData.java</file>
+            <file>file:/C:/Users/cris/Documents/NetBeansProjects/Nifty-Editor0.5.7/src/jada/ngeditor/model/elements/effects/GFade.java</file>
+            <file>file:/C:/Users/cris/Documents/NetBeansProjects/Nifty-Editor0.5.7/src/jada/ngeditor/guiviews/DND/TrasferHandling.java</file>
+            <file>file:/C:/Users/cris/Documents/NetBeansProjects/Nifty-Editor0.5.7/src/jada/ngeditor/model/elements/effects/GMove.java</file>
+            <file>file:/C:/Users/cris/Documents/NetBeansProjects/Nifty-Editor0.5.7/src/jada/ngeditor/guiviews/DND/PaletteDropTarget.java</file>
+            <file>file:/C:/Users/cris/Documents/NetBeansProjects/Nifty-Editor0.5.7/src/jada/ngeditor/model/elements/GElement.java</file>
+            <file>file:/C:/Users/cris/Documents/NetBeansProjects/Nifty-Editor0.5.7/src/jada/ngeditor/listeners/GuiSelectionListener.java</file>
+            <file>file:/C:/Users/cris/Documents/NetBeansProjects/Nifty-Editor0.5.7/src/jada/ngeditor/model/elements/GLayer.java</file>
+            <file>file:/C:/Users/cris/Documents/NetBeansProjects/Nifty-Editor0.5.7/src/jada/ngeditor/guiviews/PaletteView.java</file>
+            <file>file:/C:/Users/cris/Documents/NetBeansProjects/Nifty-Editor0.5.7/src/jada/ngeditor/guiviews/EditingPopUp.java</file>
+        </group>
+    </open-files>
 </project-private>

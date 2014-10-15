@@ -14,16 +14,19 @@
  */
 package jada.ngeditor.model.elements;
 
+import com.google.common.annotations.Beta;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.builder.ElementBuilder;
+import de.lessvoid.nifty.effects.EffectEventId;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.ImageRenderer;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.xml.xpp3.Attributes;
 import jada.ngeditor.listeners.events.UpdateElementEvent;
+import jada.ngeditor.model.elements.effects.GEffect;
+import jada.ngeditor.model.elements.specials.GEffectsNode;
 import jada.ngeditor.model.visitor.Visitor;
 import java.awt.geom.Point2D;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -59,21 +62,20 @@ public abstract class GElement extends Observable implements Cloneable{
     private String oldStyle;
     private ArrayList<String> toBeRemoved = new ArrayList<String>();
     protected HashMap<String, String> attributes = new HashMap<String, String>();
-
+    @XmlElementRef
+    private GEffectsNode effects;
     protected GElement() {
     
     }
 
-    protected GElement(String id) throws IllegalArgumentException {
+    protected GElement(String id) {
         this.id = id;
         this.parent = null;
         this.children = new LinkedList<GElement>();
-        this.UniID = UID;
         UID++;
+        this.UniID = UID;
         attributes = new HashMap<String, String>();
-        attributes.put("id", this.id);
-
-
+        attributes.put("id", this.id);        
     }
     
     public void copy(GElement template){
@@ -144,11 +146,7 @@ public abstract class GElement extends Observable implements Cloneable{
     }
 
     public Element getNiftyElement() {
-
-
         return nElement;
-
-
     }
 
     public void setXmlAttributes(Map<QName, String> attrib) {
@@ -355,5 +353,18 @@ public abstract class GElement extends Observable implements Cloneable{
     public void fireUpdate() {
         this.setChanged();
         this.notifyObservers(new UpdateElementEvent(this));
+    }
+    
+    @Beta
+    public void addEffectForThisElement(GEffect effect){
+        if(effects == null){
+            effects = new GEffectsNode(nElement);
+        }
+        effects.addEffect(effect, EffectEventId.onStartScreen);
+       
+    }
+
+    public void testUglyEffect() {
+         effects.test(EffectEventId.onCustom);
     }
 }

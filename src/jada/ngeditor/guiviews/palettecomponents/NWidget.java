@@ -36,16 +36,15 @@ import javax.swing.JLabel;
  * @author cris
  */
 public class NWidget extends javax.swing.JPanel {
-    private final Class<? extends GElement> dataClass;
-
+    private final Class dataClass;
+    
     /**
      * Creates new form NWidget
      */
-    public NWidget(Class<? extends GElement> wrappedClass) {
+    public NWidget(Class wrappedClass) {
         this.dataClass = wrappedClass;
         try {
             initComponents();
-            
             this.addMouseListener(new DragHandler());
             this.setTransferHandler(new TrasferHandling());
             String name = wrappedClass.getSimpleName();
@@ -72,7 +71,7 @@ public class NWidget extends javax.swing.JPanel {
             return new WidgetData(e);
         } catch (NoProductException ex) {
             ex.printStackTrace();
-           return new WidgetData(null);
+           return new WidgetData();
         }
     }
     

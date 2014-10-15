@@ -69,7 +69,7 @@ public class J2DNiftyView extends javax.swing.JPanel implements GraphicsWrapper,
     private long time =0;
     private long diff = 0;
     private int frames;
-    private String fps;
+    private String fps = "";
     private final static Font fpsFont = new Font("arial",Font.BOLD, 14);
     private final static BasicStroke stroke = new BasicStroke(1.5f,BasicStroke.CAP_SQUARE,BasicStroke.JOIN_ROUND,30,new float[] { 10.0f, 4.0f },0);;
     private Timer timer;

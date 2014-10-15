@@ -14,14 +14,15 @@
  */
 package jada.ngeditor.guiviews.DND;
 
-import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.controller.CommandProcessor;
+import jada.ngeditor.controller.commands.AddEffectCommand;
 import jada.ngeditor.controller.commands.AddElementCommand;
 import jada.ngeditor.controller.commands.MoveCommand;
 import jada.ngeditor.guiviews.J2DNiftyView;
-import jada.ngeditor.listeners.events.ReloadGuiEvent;
 import jada.ngeditor.model.exception.IllegalDropException;
 import jada.ngeditor.model.elements.GElement;
+import jada.ngeditor.model.elements.effects.GEffect;
+import java.awt.HeadlessException;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
@@ -29,8 +30,6 @@ import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.geom.Point2D;
 import java.io.IOException;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -61,43 +60,52 @@ public class PaletteDropTarget extends DropTarget{
     }
     @Override
     public void drop(DropTargetDropEvent dtde) {
-        if(dtde.isDataFlavorSupported(WidgetData.FLAVOR)){
-           J2DNiftyView comp = (J2DNiftyView) this.getComponent();
-         try {
-          if(dtde.getDropAction() == DnDConstants.ACTION_COPY){
-            dtde.acceptDrop(DnDConstants.ACTION_COPY);
-            GElement res  =  (GElement) dtde.getTransferable().getTransferData(WidgetData.FLAVOR);
-            AddElementCommand command = CommandProcessor.getInstance().getCommand(AddElementCommand.class);
-                  command.setChild(res);
-                  command.setPoint(dtde.getLocation());
-                 CommandProcessor.getInstance().excuteCommand(command);
-            dtde.dropComplete(true);
-          } 
-          else if(dtde.getDropAction() == DnDConstants.ACTION_MOVE){
-               dtde.acceptDrop(DnDConstants.ACTION_MOVE);
-               GElement from  =  (GElement) dtde.getTransferable().getTransferData(WidgetData.FLAVOR); 
+        if (dtde.getTransferable().isDataFlavorSupported(WidgetData.EFFECTFLAVOR)){
+           GEffectDropEvent(dtde);
+        }else if(dtde.isDataFlavorSupported(WidgetData.FLAVOR)){
+            GElementDropEvent(dtde);
+        }else{
+           dtde.rejectDrop(); 
+        }
+    }
+
+    private void GElementDropEvent(DropTargetDropEvent dtde) throws HeadlessException {
+        J2DNiftyView comp = (J2DNiftyView) this.getComponent();
+        try {
+            if(dtde.getDropAction() == DnDConstants.ACTION_COPY){
+                dtde.acceptDrop(DnDConstants.ACTION_COPY);
+                GElement res  =  (GElement) dtde.getTransferable().getTransferData(WidgetData.FLAVOR);
+                AddElementCommand command = CommandProcessor.getInstance().getCommand(AddElementCommand.class); 
+                command.setChild(res);
+                command.setPoint(dtde.getLocation());
+                CommandProcessor.getInstance().excuteCommand(command);
+                dtde.dropComplete(true);
+            }
+            else if(dtde.getDropAction() == DnDConstants.ACTION_MOVE){
+                dtde.acceptDrop(DnDConstants.ACTION_MOVE);
+                GElement from  =  (GElement) dtde.getTransferable().getTransferData(WidgetData.FLAVOR);
                 if(dtde.getTransferable().isDataFlavorSupported(WidgetData.POINTFLAVOR)){
                     Point2D point = (Point2D) dtde.getTransferable().getTransferData(WidgetData.POINTFLAVOR);
                     dtde.getLocation().x= (int) (dtde.getLocation().x - point.getX());
                     dtde.getLocation().y= (int) (dtde.getLocation().y - point.getY());
                     MoveCommand command = CommandProcessor.getInstance().getCommand(MoveCommand.class);
-                  command.setElement(from);
-                  command.setTo(dtde.getLocation());
-                  command.setElementState(comp.getDDManager().getElementState());
-                  CommandProcessor.getInstance().excuteCommand(command);
-               comp.getDDManager().endDrag();
-               dtde.dropComplete(true);
+                    command.setElement(from);
+                    command.setTo(dtde.getLocation());
+                    command.setElementState(comp.getDDManager().getElementState());
+                    CommandProcessor.getInstance().excuteCommand(command);
+                    comp.getDDManager().endDrag();
+                    dtde.dropComplete(true);
                 }else{
-                     GElement res  =  (GElement) dtde.getTransferable().getTransferData(WidgetData.FLAVOR);
-                   AddElementCommand command = CommandProcessor.getInstance().getCommand(AddElementCommand.class);
-                  command.setChild(res);
-                  command.setPoint(dtde.getLocation());
+                    GElement res  =  (GElement) dtde.getTransferable().getTransferData(WidgetData.FLAVOR);
+                    AddElementCommand command = CommandProcessor.getInstance().getCommand(AddElementCommand.class);
+                    command.setChild(res);
+                    command.setPoint(dtde.getLocation());
                     CommandProcessor.getInstance().excuteCommand(command);
                     dtde.dropComplete(true);
                     dtde.dropComplete(true);
                 }
-               
-          }
+                
+            }
         }catch (IllegalDropException ex){
             JOptionPane.showMessageDialog(dtde.getDropTargetContext().getComponent(), ex.getMessage());
             comp.getDDManager().revertDrag();
@@ -105,17 +113,30 @@ public class PaletteDropTarget extends DropTarget{
             Logger.getLogger(PaletteDropTarget.class.getName()).log(Level.SEVERE, null, ex);
             comp.getDDManager().revertDrag();
         } catch (IOException ex) {
-             Logger.getLogger(PaletteDropTarget.class.getName()).log(Level.SEVERE, null, ex);
-             comp.getDDManager().revertDrag();
-           
+            Logger.getLogger(PaletteDropTarget.class.getName()).log(Level.SEVERE, null, ex);
+            comp.getDDManager().revertDrag();
         }catch (Exception ex){
-             JOptionPane.showMessageDialog(dtde.getDropTargetContext().getComponent(), ex.getMessage());
-              comp.getDDManager().revertDrag();
-        }   
-        } else {
-            dtde.rejectDrop();
+            JOptionPane.showMessageDialog(dtde.getDropTargetContext().getComponent(), ex.getMessage());
+            comp.getDDManager().revertDrag();
         }
-        
+    }
+
+    private void GEffectDropEvent(DropTargetDropEvent dtde) {
+        try {
+            GEffect effect  =  (GEffect) dtde.getTransferable().getTransferData(WidgetData.EFFECTFLAVOR);
+             AddEffectCommand command = CommandProcessor.getInstance().getCommand(AddEffectCommand.class);
+             command.setEffectToAdd(effect);
+             CommandProcessor.getInstance().excuteCommand(command);
+        } catch (UnsupportedFlavorException ex) {
+            Logger.getLogger(PaletteDropTarget.class.getName()).log(Level.SEVERE, null, ex);
+            dtde.dropComplete(false);
+        } catch (IOException ex) {
+            Logger.getLogger(PaletteDropTarget.class.getName()).log(Level.SEVERE, null, ex);
+            dtde.dropComplete(false);
+        } catch (Exception ex) {
+            Logger.getLogger(PaletteDropTarget.class.getName()).log(Level.SEVERE, null, ex);
+            dtde.dropComplete(false);
+        }
     }
  
     
